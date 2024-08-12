@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">WarmMeal</string>
+    <string name="warm_meal">Warm Meal</string>
+    <string name="cook_the_books">Cook the books</string>
+</resources>
