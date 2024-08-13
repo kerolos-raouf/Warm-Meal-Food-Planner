@@ -49,5 +49,24 @@ dependencies {
 
     implementation(libs.lottie)
 
+    // RXJava Dependency
+    implementation(libs.rxjava)
+    implementation(libs.rxandroid)
+
+
+//retrofit and gson converter
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.adapter.rxjava3)
+
+    ///glide dependeny for images
+    implementation(libs.glide)
+
+    ///room database
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
+    // optional - RxJava3 support for Room
+    implementation(libs.room.rxjava3)
+
 
 }
