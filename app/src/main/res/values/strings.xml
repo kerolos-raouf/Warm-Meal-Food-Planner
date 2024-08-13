@@ -3,12 +3,15 @@
     <string name="warm_meal">Warm Meal</string>
     <string name="cook_the_books">Cook the books</string>
     <string name="log_in_underLine"><u>Log in</u></string>
-    <string name="passwordText">Password...</string>
-    <string name="confirm_password_text">Confirm Password...</string>
+    <string name="passwordText">Password…</string>
+    <string name="confirm_password_text">Confirm Password…</string>
     <string name="sign_up">SIGN UP</string>
     <string name="back">Back</string>
     <string name="skip">Skip</string>
     <string name="sign_up_with_new_email">Sign up with new Email</string>
     <string name="already_have_an_account">Already Have An Account?</string>
     <string name="gmail_login">Gmail Login</string>
+    <string name="log_in">LOG IN</string>
+    <string name="log_in_text">LOG IN</string>
+    <string name="email_hint_text">Email...</string>
 </resources>

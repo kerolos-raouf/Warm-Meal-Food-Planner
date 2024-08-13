@@ -59,13 +59,13 @@ public class SignUp extends AppCompatActivity implements OnCreatingAccountRespon
 
             if(!isThatValidEmail(emailText) || emailText.isEmpty())
             {
-                Toast.makeText(this, "Illegal email format.", Toast.LENGTH_SHORT).show();
+                email.setError("Illegal email format.");
             }
             else if(passText.length() < 6){
-                Toast.makeText(this, "Password length must be greater than or equal 6.", Toast.LENGTH_SHORT).show();
+                password.setError("The password length must be greater than 5 characters.");
             }
             else if(conPassText.isEmpty() || !passText.equals(conPassText)){
-                Toast.makeText(this, "Password and confirm password must be the same.", Toast.LENGTH_SHORT).show();
+                conPassword.setError("Password and confirm password must be the same.");
             }
             else {
                 customProgressBar.startProgressBar();
