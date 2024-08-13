@@ -6,9 +6,12 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
+    <color name="transparent_black">#50000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="dark_gray">#153448</color>
     <color name="light_gray">#3C5B6F</color>
     <color name="dark_sugar">#948979</color>
     <color name="light_sugar">#DFD0B8</color>
+    <color name="transparent_white">#10FFFFFF</color>
+    <color name="blue">#2548FF</color>
 </resources>
