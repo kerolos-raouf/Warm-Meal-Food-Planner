@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".loginways.view.LoginWays">
+
+    <Button
+        android:id="@+id/loginWaysSkip"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:text="Skip"
+        android:background="@drawable/transparent_button"
+        app:backgroundTint="@color/transparent_black"
+        android:layout_margin="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/loginWaysBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/login_ways"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/foreground_shadow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+    <TextView
+        android:id="@+id/loginWaysName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/warm_meal"
+        android:textColor="@color/white"
+        android:textSize="100sp"
+        android:fontFamily="@font/inspiration_regular"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/loginWaysGmail"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="30sp"
+        android:src="@drawable/gmail_logo"
+        android:background="@drawable/sign_up_button_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginWaysName" />
+
+    <ImageButton
+        android:id="@+id/loginWaysFacebook"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="30sp"
+        android:background="@drawable/facebook_background"
+        android:src="@drawable/face_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginWaysName" />
+
+    <Button
+        android:id="@+id/loginWaysSignUp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+
+        android:background="@drawable/sign_up_button_background"
+        app:backgroundTint="@color/white"
+        android:text="Sign up with new Email"
+        android:textColor="@color/black"
+        android:fontFamily="@font/roboto"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginWaysGmail" />
+
+    <TextView
+        android:id="@+id/alreadyHaveAnAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Already Have An Account? "
+        android:textColor="@color/white"
+        android:fontFamily="@font/roboto"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginWaysSignUp" />
+
+    <TextView
+        android:id="@+id/loginWaysLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/log_in_underLine"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/alreadyHaveAnAccount"
+        app:layout_constraintTop_toBottomOf="@+id/loginWaysSignUp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
