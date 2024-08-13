@@ -79,6 +79,7 @@
         app:backgroundTint="@color/white"
         android:text="@string/sign_up_with_new_email"
         android:textColor="@color/black"
+        android:textSize="16sp"
         android:fontFamily="@font/roboto"
         android:layout_marginTop="@dimen/normalMargin"
         android:layout_marginEnd="@dimen/normalMargin"
@@ -93,9 +94,10 @@
         android:layout_height="wrap_content"
         android:text="@string/already_have_an_account"
         android:textColor="@color/white"
-        android:fontFamily="@font/roboto"
+        android:fontFamily="@font/roboto_normal"
         android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="18sp"
+        android:layout_marginStart="60dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginWaysSignUp" />
 
@@ -107,7 +109,9 @@
         android:fontFamily="@font/roboto"
         android:text="@string/log_in_underLine"
         android:textColor="@color/white"
+        android:textSize="20sp"
         android:textStyle="bold"
+
         app:layout_constraintStart_toEndOf="@+id/alreadyHaveAnAccount"
         app:layout_constraintTop_toBottomOf="@+id/loginWaysSignUp" />
 

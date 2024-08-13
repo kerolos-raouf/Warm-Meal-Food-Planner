@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.warmmeal.R;
+import com.example.warmmeal.login.view.Login;
 import com.example.warmmeal.signup.view.SignUp;
 
 public class LoginWays extends AppCompatActivity{
@@ -32,7 +33,6 @@ public class LoginWays extends AppCompatActivity{
     void initViews()
     {
         gmail = findViewById(R.id.loginWaysGmail);
-        facebook = findViewById(R.id.loginWaysFacebook);
         signUp = findViewById(R.id.loginWaysSignUp);
         login = findViewById(R.id.loginWaysLogin);
     }
@@ -42,6 +42,11 @@ public class LoginWays extends AppCompatActivity{
         signUp.setOnClickListener((e)->
         {
             Intent intent = new Intent(this, SignUp.class);
+            startActivity(intent);
+        });
+
+        login.setOnClickListener((e)->{
+            Intent intent = new Intent(this, Login.class);
             startActivity(intent);
         });
     }
