@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.warmmeal" />
+                  <option name="mobileSdkAppId" value="1:361394315922:android:9c2e7ad140c18329b6bc4b" />
+                  <option name="projectId" value="warm-meal" />
+                  <option name="projectNumber" value="361394315922" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

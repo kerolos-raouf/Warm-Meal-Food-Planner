@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     id("androidx.navigation.safeargs")
+    alias(libs.plugins.google.gms.google.services)
 
 }
 
@@ -39,6 +40,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.firebase.auth)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -67,6 +69,7 @@ dependencies {
     annotationProcessor(libs.room.compiler)
     // optional - RxJava3 support for Room
     implementation(libs.room.rxjava3)
+
 
 
 }

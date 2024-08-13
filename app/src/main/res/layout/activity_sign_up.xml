@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".signup.view.SignUp"
+    android:background="@color/dark_gray"
+    >
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/roboto"
+        android:text="SIGN UP"
+        android:textColor="@color/light_sugar"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <EditText
+        android:id="@+id/emailEditText"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="@dimen/normalMargin"
+        android:layout_marginStart="@dimen/normalMargin"
+        android:layout_marginEnd="@dimen/normalMargin"
+        android:hint="Email..."
+        android:textColor="@color/light_sugar"
+        android:paddingStart="@dimen/normalMargin"
+        android:fontFamily="@font/roboto_normal"
+        android:textColorHint="@color/dark_sugar"
+        android:background="@drawable/custom_edit_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="@dimen/normalMargin"
+        android:layout_marginStart="@dimen/normalMargin"
+        android:layout_marginEnd="@dimen/normalMargin"
+        android:hint="@string/passwordText"
+        android:textColor="@color/light_sugar"
+        android:paddingStart="@dimen/normalMargin"
+        android:fontFamily="@font/roboto_normal"
+        android:textColorHint="@color/dark_sugar"
+        android:background="@drawable/custom_edit_text"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
+
+    <EditText
+        android:id="@+id/confirmPasswordEditText"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="@dimen/normalMargin"
+        android:layout_marginStart="@dimen/normalMargin"
+        android:layout_marginEnd="@dimen/normalMargin"
+        android:hint="@string/confirm_password_text"
+        android:textColor="@color/light_sugar"
+        android:paddingStart="@dimen/normalMargin"
+        android:fontFamily="@font/roboto_normal"
+        android:textColorHint="@color/dark_sugar"
+        android:background="@drawable/custom_edit_text"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
+
+    <Button
+        android:id="@+id/signUpBtn"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/sign_up_button_background"
+        app:backgroundTint="@color/white"
+        android:text="@string/sign_up"
+        android:textColor="@color/dark_gray"
+        android:fontFamily="@font/roboto"
+        android:layout_marginTop="@dimen/normalMargin"
+        android:layout_marginEnd="@dimen/normalMargin"
+        android:layout_marginStart="@dimen/normalMargin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordEditText" />
+
+    <Button
+        android:id="@+id/signUpBackBtn"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/sign_up_button_background"
+        app:backgroundTint="@color/white"
+        android:text="@string/back"
+        android:textColor="@color/dark_gray"
+        android:fontFamily="@font/roboto"
+        android:layout_marginTop="@dimen/normalMargin"
+        android:layout_marginEnd="@dimen/normalMargin"
+        android:layout_marginStart="@dimen/normalMargin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpBtn" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 [versions]
 agp = "8.5.1"
+androidSpinkit = "1.4.0"
 glide = "4.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -14,9 +15,12 @@ retrofit = "2.9.0"
 roomRuntime = "2.6.1"
 rxandroid = "3.0.2"
 rxjava = "3.1.5"
+googleGmsGoogleServices = "4.4.2"
+firebaseAuth = "23.0.0"
 
 [libraries]
 adapter-rxjava3 = { module = "com.squareup.retrofit2:adapter-rxjava3", version.ref = "retrofit" }
+android-spinkit = { module = "com.github.ybq:Android-SpinKit", version.ref = "androidSpinkit" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -36,7 +40,9 @@ room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRunti
 room-rxjava3 = { module = "androidx.room:room-rxjava3", version.ref = "roomRuntime" }
 rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
 rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
 
