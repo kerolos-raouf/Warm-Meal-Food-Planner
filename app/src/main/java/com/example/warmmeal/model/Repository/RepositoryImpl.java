@@ -1,5 +1,6 @@
 package com.example.warmmeal.model.Repository;
 
+import com.example.warmmeal.login.view.OnLoginResponse;
 import com.example.warmmeal.signup.view.OnCreatingAccountResponse;
 import com.example.warmmeal.model.contracts.ManagingAccount;
 
@@ -30,7 +31,7 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
-    public void loginWithUsernameAndPassword(String userName, String password, OnCreatingAccountResponse response) {
-
+    public void loginUser(String userName, String password, OnLoginResponse response) {
+        managingAccount.loginWithUserNameAndPassword(userName,password,response);
     }
 }

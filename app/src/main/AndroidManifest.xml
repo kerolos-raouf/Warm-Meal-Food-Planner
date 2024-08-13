@@ -15,6 +15,9 @@
         android:theme="@style/Theme.WarmMeal"
         tools:targetApi="31">
         <activity
+            android:name=".login.view.Login"
+            android:exported="false" />
+        <activity
             android:name=".signup.view.SignUp"
             android:exported="false" />
         <activity
