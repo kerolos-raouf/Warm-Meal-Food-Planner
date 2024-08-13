@@ -7,6 +7,8 @@ import com.example.warmmeal.signup.view.OnCreatingAccountResponse;
 import com.example.warmmeal.model.contracts.ManagingAccount;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
+
 public class FirebaseHandler implements ManagingAccount {
 
 
@@ -17,6 +19,7 @@ public class FirebaseHandler implements ManagingAccount {
 
     private FirebaseHandler(Context context)
     {
+        mAuth = FirebaseAuth.getInstance();
         this.context = context;
     }
 
@@ -35,7 +38,7 @@ public class FirebaseHandler implements ManagingAccount {
     @Override
     public void signUpWithUserNameAndPassword(String userName, String password, OnCreatingAccountResponse response) {
         mAuth.createUserWithEmailAndPassword(userName, password)
-                .addOnCompleteListener((Activity) context, task -> {
+                .addOnCompleteListener((Activity) context,task -> {
                     if (task.isSuccessful()) {
                         response.onCreatingAccountSuccess();
                         // Sign in success, update UI with the signed-in user's information
@@ -43,7 +46,7 @@ public class FirebaseHandler implements ManagingAccount {
                         FirebaseUser user = mAuth.getCurrentUser();
                         updateUI(user);*/
                     } else {
-                        response.onCreatingAccountFail(task.getResult().toString());
+                        response.onCreatingAccountFail(Objects.requireNonNull(task.getException()).toString());
                         // If sign in fails, display a message to the user.
                         /*Log.w(TAG, "createUserWithEmail:failure", task.getException());
                         Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",

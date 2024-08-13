@@ -1,5 +1,6 @@
 [versions]
 agp = "8.5.1"
+androidSpinkit = "1.4.0"
 glide = "4.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -19,6 +20,7 @@ firebaseAuth = "23.0.0"
 
 [libraries]
 adapter-rxjava3 = { module = "com.squareup.retrofit2:adapter-rxjava3", version.ref = "retrofit" }
+android-spinkit = { module = "com.github.ybq:Android-SpinKit", version.ref = "androidSpinkit" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

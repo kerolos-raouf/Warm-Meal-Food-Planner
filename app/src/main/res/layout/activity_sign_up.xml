@@ -9,6 +9,7 @@
     android:background="@color/dark_gray"
     >
 
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -47,12 +48,13 @@
         android:layout_marginTop="@dimen/normalMargin"
         android:layout_marginStart="@dimen/normalMargin"
         android:layout_marginEnd="@dimen/normalMargin"
-        android:hint="Password..."
+        android:hint="@string/passwordText"
         android:textColor="@color/light_sugar"
         android:paddingStart="@dimen/normalMargin"
         android:fontFamily="@font/roboto_normal"
         android:textColorHint="@color/dark_sugar"
         android:background="@drawable/custom_edit_text"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
@@ -64,12 +66,13 @@
         android:layout_marginTop="@dimen/normalMargin"
         android:layout_marginStart="@dimen/normalMargin"
         android:layout_marginEnd="@dimen/normalMargin"
-        android:hint="Confirm Password..."
+        android:hint="@string/confirm_password_text"
         android:textColor="@color/light_sugar"
         android:paddingStart="@dimen/normalMargin"
         android:fontFamily="@font/roboto_normal"
         android:textColorHint="@color/dark_sugar"
         android:background="@drawable/custom_edit_text"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
@@ -80,7 +83,7 @@
         android:layout_height="50dp"
         android:background="@drawable/sign_up_button_background"
         app:backgroundTint="@color/white"
-        android:text="SIGN UP"
+        android:text="@string/sign_up"
         android:textColor="@color/dark_gray"
         android:fontFamily="@font/roboto"
         android:layout_marginTop="@dimen/normalMargin"
@@ -91,12 +94,12 @@
         app:layout_constraintTop_toBottomOf="@+id/confirmPasswordEditText" />
 
     <Button
-        android:id="@+id/backBtn"
+        android:id="@+id/signUpBackBtn"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="@drawable/sign_up_button_background"
         app:backgroundTint="@color/white"
-        android:text="Back"
+        android:text="@string/back"
         android:textColor="@color/dark_gray"
         android:fontFamily="@font/roboto"
         android:layout_marginTop="@dimen/normalMargin"
