@@ -1,32 +1,36 @@
 package com.example.warmmeal.signup.presenter;
 
 import com.example.warmmeal.loginways.presenter.LoginWaysPresenter;
+import com.example.warmmeal.model.Repository.Repository;
 import com.example.warmmeal.model.Repository.RepositoryImpl;
+import com.example.warmmeal.signup.view.ISignUpView;
 import com.example.warmmeal.signup.view.OnCreatingAccountResponse;
 
 public class SignUpPresenter {
 
 
-    private RepositoryImpl repository;
+    private ISignUpView iSignUpView;
+    private final Repository repository;
     private static SignUpPresenter presenter;
 
-    private SignUpPresenter(RepositoryImpl repository)
+    private SignUpPresenter(Repository repository,ISignUpView iSignUpView)
     {
         this.repository = repository;
+        this.iSignUpView = iSignUpView;
     }
 
-    public static SignUpPresenter getInstance(RepositoryImpl repository)
+    public static SignUpPresenter getInstance(Repository repository,ISignUpView iSignUpView)
     {
         if(presenter == null)
         {
-            presenter = new SignUpPresenter(repository);
+            presenter = new SignUpPresenter(repository,iSignUpView);
         }
 
         return presenter;
     }
 
 
-    void createNewAccount(String userName, String password, OnCreatingAccountResponse response)
+    public void createNewAccount(String userName, String password, OnCreatingAccountResponse response)
     {
         repository.createNewUser(userName,password,response);
     }

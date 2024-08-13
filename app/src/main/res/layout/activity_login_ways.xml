@@ -11,7 +11,7 @@
         android:id="@+id/loginWaysSkip"
         android:layout_width="80dp"
         android:layout_height="50dp"
-        android:text="Skip"
+        android:text="@string/skip"
         android:background="@drawable/transparent_button"
         app:backgroundTint="@color/transparent_black"
         android:layout_margin="20dp"
@@ -56,25 +56,19 @@
 
     <ImageButton
         android:id="@+id/loginWaysGmail"
-        android:layout_width="150dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
+        android:layout_marginEnd="@dimen/normalMargin"
+        android:layout_marginStart="@dimen/normalMargin"
         android:layout_marginTop="50dp"
-        android:layout_marginStart="30sp"
-        android:src="@drawable/gmail_logo"
         android:background="@drawable/sign_up_button_background"
+        android:contentDescription="@string/gmail_login"
+        android:src="@drawable/gmail_logo"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginWaysName" />
 
-    <ImageButton
-        android:id="@+id/loginWaysFacebook"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="30sp"
-        android:background="@drawable/facebook_background"
-        android:src="@drawable/face_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginWaysName" />
+
 
     <Button
         android:id="@+id/loginWaysSignUp"
@@ -83,12 +77,12 @@
 
         android:background="@drawable/sign_up_button_background"
         app:backgroundTint="@color/white"
-        android:text="Sign up with new Email"
+        android:text="@string/sign_up_with_new_email"
         android:textColor="@color/black"
         android:fontFamily="@font/roboto"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginStart="30dp"
+        android:layout_marginTop="@dimen/normalMargin"
+        android:layout_marginEnd="@dimen/normalMargin"
+        android:layout_marginStart="@dimen/normalMargin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginWaysGmail" />
@@ -97,7 +91,7 @@
         android:id="@+id/alreadyHaveAnAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Already Have An Account? "
+        android:text="@string/already_have_an_account"
         android:textColor="@color/white"
         android:fontFamily="@font/roboto"
         android:layout_marginTop="10dp"
