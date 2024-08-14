@@ -1,10 +1,12 @@
 package com.example.warmmeal.fragment_home.view;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.StackView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,11 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.warmmeal.R;
+import com.example.warmmeal.fragment_home.view.adapters.HomeRecyclerViewAdapter;
 import com.example.warmmeal.model.pojo.Meal;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemClickedListener {
 
 
     RecyclerView recyclerView;
@@ -26,6 +29,7 @@ public class HomeFragment extends Fragment {
     ArrayList<Meal> categories;
     ArrayList<Meal> countries;
     ArrayList<HomeFragmentItem<Object>> homeFragmentItems;
+    Context context;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -41,7 +45,7 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
 
-        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(getContext(), homeFragmentItems);
+        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(getContext(), homeFragmentItems,this);
         recyclerView.setAdapter(adapter);
 
 
@@ -54,6 +58,7 @@ public class HomeFragment extends Fragment {
         categories = new ArrayList<>();
         countries = new ArrayList<>();
         homeFragmentItems = new ArrayList<>();
+        context = view.getContext();
     }
 
     void setUp()
@@ -118,5 +123,25 @@ public class HomeFragment extends Fragment {
         homeFragmentItems.add(new HomeFragmentItem<>(ItemType.MEALS_YOU_MIGHT_LIKE, meal));
         homeFragmentItems.add(new HomeFragmentItem<>(ItemType.MEALS_YOU_MIGHT_LIKE, meal));
 
+    }
+
+    @Override
+    public void onMealClicked(Meal meal) {
+        Toast.makeText(context, "meal clicked " + meal.getStrMeal(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onAddToFavouriteClicked(Meal meal) {
+        Toast.makeText(context, "add to favourite clicked " + meal.getStrMeal() , Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCategoryClicked(String category) {
+        Toast.makeText(context, "category clicked " + category, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCountryClicked(String country) {
+        Toast.makeText(context, "category clicked " + country, Toast.LENGTH_SHORT).show();
     }
 }
