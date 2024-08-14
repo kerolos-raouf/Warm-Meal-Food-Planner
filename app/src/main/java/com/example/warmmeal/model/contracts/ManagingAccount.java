@@ -7,5 +7,6 @@ public interface ManagingAccount {
 
     void signUpWithUserNameAndPassword(String userName, String password, OnCreatingAccountResponse response);
     void loginWithUserNameAndPassword(String userName, String password, OnLoginResponse response);
+    void signUsingGmailAccount();
 
 }

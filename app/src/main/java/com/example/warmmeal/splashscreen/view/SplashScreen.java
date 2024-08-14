@@ -32,7 +32,7 @@ public class SplashScreen extends AppCompatActivity implements ISplashScreen {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         init();
-        presenter = SplashScreenPresenter.getInstance(this);
+
     }
 
     void init()
@@ -40,6 +40,7 @@ public class SplashScreen extends AppCompatActivity implements ISplashScreen {
         Window window = getWindow();
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN  | View.SYSTEM_UI_FLAG_FULLSCREEN);
+        presenter = SplashScreenPresenter.getInstance(this);
     }
 
     @Override
