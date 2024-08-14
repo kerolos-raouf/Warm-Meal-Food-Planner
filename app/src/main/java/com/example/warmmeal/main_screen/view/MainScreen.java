@@ -38,7 +38,6 @@ public class MainScreen extends AppCompatActivity {
     void init()
     {
         navView = findViewById(R.id.nav_view);
-        navView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.mainToolBar);
         setSupportActionBar(toolbar);
     }
@@ -53,4 +52,7 @@ public class MainScreen extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         return navController.navigateUp() || super.onSupportNavigateUp();
     }
+
+
+
 }

@@ -1,4 +1,4 @@
-package com.example.warmmeal.fragment_search;
+package com.example.warmmeal.fragment_search.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
