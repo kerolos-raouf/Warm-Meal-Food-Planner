@@ -10,7 +10,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SplashScreenPresenter {
 
-    private ISplashScreen iSplashScreen;
+    private final ISplashScreen iSplashScreen;
     private static SplashScreenPresenter presenter;
 
     private SplashScreenPresenter(ISplashScreen iSplashScreen)

@@ -12,7 +12,20 @@
           "package_name": "com.example.warmmeal"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "361394315922-sc16pk16512f4l78cqdufkopskaltkcn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.warmmeal",
+            "certificate_hash": "52ba2a08d3ec8f215a2028c2130f37365a72cb4d"
+          }
+        },
+        {
+          "client_id": "361394315922-4epdnd6sg3p09e59vs6jfeelfljpv9a0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDQKOTG7PXesAvo_2QD1UxzK5cJgesbU54"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "361394315922-4epdnd6sg3p09e59vs6jfeelfljpv9a0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

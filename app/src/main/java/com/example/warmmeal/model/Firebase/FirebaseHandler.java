@@ -6,6 +6,7 @@ import android.content.Context;
 import com.example.warmmeal.login.view.OnLoginResponse;
 import com.example.warmmeal.signup.view.OnCreatingAccountResponse;
 import com.example.warmmeal.model.contracts.ManagingAccount;
+import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
@@ -13,7 +14,7 @@ import java.util.Objects;
 public class FirebaseHandler implements ManagingAccount {
 
 
-    private FirebaseAuth mAuth;
+    private final FirebaseAuth mAuth;
     Context context;
 
     private static FirebaseHandler firebaseHandler;
@@ -58,5 +59,10 @@ public class FirebaseHandler implements ManagingAccount {
                         response.onLoginFail(Objects.requireNonNull(task.getException()).toString());
                     }
                 });
+    }
+
+    @Override
+    public void signUsingGmailAccount() {
+
     }
 }
