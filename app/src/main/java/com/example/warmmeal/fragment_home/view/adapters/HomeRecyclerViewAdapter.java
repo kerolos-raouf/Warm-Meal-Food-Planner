@@ -1,4 +1,4 @@
-package com.example.warmmeal.fragment_home.view;
+package com.example.warmmeal.fragment_home.view.adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.warmmeal.R;
+import com.example.warmmeal.fragment_home.view.HomeFragmentItem;
+import com.example.warmmeal.fragment_home.view.OnNestedRecyclerViewItemClickedListener;
 import com.example.warmmeal.model.pojo.Meal;
 
 import java.util.ArrayList;
@@ -29,10 +31,12 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
     private ArrayList<HomeFragmentItem<Object>> items;
     Context context;
+    OnNestedRecyclerViewItemClickedListener listener;
 
-    public HomeRecyclerViewAdapter(Context context, ArrayList<HomeFragmentItem<Object>> items) {
+    public HomeRecyclerViewAdapter(Context context, ArrayList<HomeFragmentItem<Object>> items, OnNestedRecyclerViewItemClickedListener listener) {
         this.items = items;
         this.context = context;
+        this.listener = listener;
     }
 
 
@@ -66,26 +70,35 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             ((HeaderTextViewHolder) holder).header.setText(headerText);
         }
         else if(holder instanceof CategoryViewHolder) {
+
             ArrayList<Meal> meals = (ArrayList<Meal>)items.get(position).getItem();
 
             LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
             ((CategoryViewHolder) holder).recyclerView.setLayoutManager(layoutManager);
 
-            ((CategoryViewHolder) holder).recyclerView.setAdapter(new CategoryCountryRecyclerViewAdapter(context,  meals));
+            ((CategoryViewHolder) holder).recyclerView.setAdapter(new CategoryCountryRecyclerViewAdapter(context,  meals,listener));
+
         }
         else if(holder instanceof DailyInspirationViewHolder) {
+
             ArrayList<Meal> meals = (ArrayList<Meal>)items.get(position).getItem();
             LinearLayoutManager layoutManager = new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false);
             ((DailyInspirationViewHolder) holder).recyclerView.setLayoutManager(layoutManager);
-            ((DailyInspirationViewHolder) holder).recyclerView.setAdapter(new DailyInspirationRecyclerViewAdapter(context,  meals));
+            ((DailyInspirationViewHolder) holder).recyclerView.setAdapter(new DailyInspirationRecyclerViewAdapter(context,  meals,listener));
 
-            Log.d("Kerolos", "onBindViewHolder: " + meals.size());
         }
         else if(holder instanceof MealsYouMightLikeViewHolder)
         {
+
             Meal meal = (Meal)items.get(position).getItem();
             ((MealsYouMightLikeViewHolder)holder).mealName.setText(meal.getStrMeal());
             Glide.with(context).load(meal.getStrMealThumb()).into(((MealsYouMightLikeViewHolder)holder).mealImage);
+            ((MealsYouMightLikeViewHolder)holder).addToFavouriteButton.setOnClickListener((e)->{
+                listener.onAddToFavouriteClicked(meal);
+            });
+            ((MealsYouMightLikeViewHolder)holder).mealImage.setOnClickListener((e)->{
+                listener.onMealClicked(meal);
+            });
         }
     }
 

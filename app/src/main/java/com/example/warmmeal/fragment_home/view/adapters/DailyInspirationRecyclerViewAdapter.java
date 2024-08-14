@@ -1,7 +1,6 @@
-package com.example.warmmeal.fragment_home.view;
+package com.example.warmmeal.fragment_home.view.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.warmmeal.R;
+import com.example.warmmeal.fragment_home.view.OnNestedRecyclerViewItemClickedListener;
 import com.example.warmmeal.model.pojo.Meal;
 
 import java.util.ArrayList;
@@ -22,11 +22,13 @@ public class DailyInspirationRecyclerViewAdapter extends RecyclerView.Adapter<Da
 
     ArrayList<Meal> meals;
     Context context;
+    OnNestedRecyclerViewItemClickedListener listener;
 
 
-    DailyInspirationRecyclerViewAdapter(Context context, ArrayList<Meal> objects) {
+    DailyInspirationRecyclerViewAdapter(Context context, ArrayList<Meal> objects, OnNestedRecyclerViewItemClickedListener listener) {
         this.meals = objects;
         this.context = context;
+        this.listener = listener;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -54,6 +56,12 @@ public class DailyInspirationRecyclerViewAdapter extends RecyclerView.Adapter<Da
         Glide.with(context).load(meals.get(position).getStrMealThumb()).into(holder.dailyMealImage);
 
         holder.dailyMealName.setText(meals.get(position).getStrMeal());
+        holder.dailyAdd.setOnClickListener((e)->{
+            listener.onAddToFavouriteClicked(meals.get(position));
+        });
+        holder.dailyMealImage.setOnClickListener((e)->{
+            listener.onMealClicked(meals.get(position));
+        });
         //holder.dailyAdd.setText(meals.get(position).get());
     }
 
