@@ -1,4 +1,4 @@
-package com.example.warmmeal.splashscreen.view;
+package com.example.warmmeal.splash_screen.view;
 
 public interface ISplashScreen {
 

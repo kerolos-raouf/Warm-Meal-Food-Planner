@@ -1,6 +1,6 @@
-package com.example.warmmeal.splashscreen.presenter;
+package com.example.warmmeal.splash_screen.presenter;
 
-import com.example.warmmeal.splashscreen.view.ISplashScreen;
+import com.example.warmmeal.splash_screen.view.ISplashScreen;
 
 import java.util.concurrent.TimeUnit;
 

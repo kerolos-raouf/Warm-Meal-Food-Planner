@@ -1,4 +1,4 @@
-package com.example.warmmeal.loginways.presenter;
+package com.example.warmmeal.login_ways.presenter;
 
 import com.example.warmmeal.signup.view.OnCreatingAccountResponse;
 import com.example.warmmeal.model.Repository.RepositoryImpl;

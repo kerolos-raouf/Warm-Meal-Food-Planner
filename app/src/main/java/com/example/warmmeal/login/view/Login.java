@@ -5,11 +5,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.warmmeal.R;
 import com.example.warmmeal.login.presenter.LoginPresenter;
@@ -17,6 +13,8 @@ import com.example.warmmeal.model.Firebase.FirebaseHandler;
 import com.example.warmmeal.model.Repository.Repository;
 import com.example.warmmeal.model.Repository.RepositoryImpl;
 import com.example.warmmeal.model.util.CustomProgressBar;
+import com.example.warmmeal.model.util.Navigator;
+import com.example.warmmeal.main_screen.view.MainScreen;
 
 public class Login extends AppCompatActivity implements OnLoginResponse{
 
@@ -79,7 +77,7 @@ public class Login extends AppCompatActivity implements OnLoginResponse{
     @Override
     public void onLoginSuccess() {
         customProgressBar.dismissProgressBar();
-        Toast.makeText(this, "Logged in successfully.", Toast.LENGTH_SHORT).show();
+        Navigator.navigate(this, MainScreen.class);
     }
 
     @Override

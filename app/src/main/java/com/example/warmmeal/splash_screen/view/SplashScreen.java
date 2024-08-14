@@ -1,26 +1,16 @@
-package com.example.warmmeal.splashscreen.view;
+package com.example.warmmeal.splash_screen.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.warmmeal.R;
-import com.example.warmmeal.loginways.view.LoginWays;
-import com.example.warmmeal.splashscreen.presenter.SplashScreenPresenter;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.core.Scheduler;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import com.example.warmmeal.login_ways.view.LoginWays;
+import com.example.warmmeal.splash_screen.presenter.SplashScreenPresenter;
 
 public class SplashScreen extends AppCompatActivity implements ISplashScreen {
 
