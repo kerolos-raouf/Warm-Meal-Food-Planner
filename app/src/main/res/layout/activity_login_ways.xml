@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".loginways.view.LoginWays">
+    tools:context=".login_ways.view.LoginWays">
 
     <Button
         android:id="@+id/loginWaysSkip"
