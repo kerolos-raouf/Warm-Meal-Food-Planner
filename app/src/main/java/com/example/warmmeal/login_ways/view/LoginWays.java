@@ -1,43 +1,22 @@
-package com.example.warmmeal.loginways.view;
+package com.example.warmmeal.login_ways.view;
 
 import android.content.Intent;
-import android.credentials.GetCredentialRequest;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.warmmeal.R;
 import com.example.warmmeal.login.view.Login;
+import com.example.warmmeal.main_screen.view.MainScreen;
 import com.example.warmmeal.model.util.ISkipAlertDialog;
+import com.example.warmmeal.model.util.Navigator;
 import com.example.warmmeal.model.util.SkipAlertDialog;
 import com.example.warmmeal.signup.view.SignUp;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.GoogleAuthProvider;
-
-import java.util.ArrayList;
-import java.util.Objects;
 
 public class LoginWays extends AppCompatActivity{
 
@@ -70,13 +49,11 @@ public class LoginWays extends AppCompatActivity{
     {
         signUp.setOnClickListener((e)->
         {
-            Intent intent = new Intent(this, SignUp.class);
-            startActivity(intent);
+            Navigator.navigate(this, SignUp.class);
         });
 
         login.setOnClickListener((e)->{
-            Intent intent = new Intent(this, Login.class);
-            startActivity(intent);
+            Navigator.navigate(this, Login.class);
         });
 
         skip.setOnClickListener((e)->{
@@ -93,9 +70,7 @@ public class LoginWays extends AppCompatActivity{
         alertDialog.startAlertDialog(new ISkipAlertDialog() {
             @Override
             public void onPositiveButtonClick() {
-
-                Intent intent = new Intent(LoginWays.this, Login.class);
-                startActivity(intent);
+                Navigator.navigate(LoginWays.this, MainScreen.class);
             }
 
             @Override
