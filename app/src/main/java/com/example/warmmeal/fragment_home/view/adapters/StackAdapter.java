@@ -1,4 +1,4 @@
-package com.example.warmmeal.fragment_home.view;
+package com.example.warmmeal.fragment_home.view.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

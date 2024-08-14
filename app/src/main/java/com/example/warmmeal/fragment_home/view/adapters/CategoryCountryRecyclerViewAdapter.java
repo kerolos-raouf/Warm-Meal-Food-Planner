@@ -1,4 +1,4 @@
-package com.example.warmmeal.fragment_home.view;
+package com.example.warmmeal.fragment_home.view.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.warmmeal.R;
+import com.example.warmmeal.fragment_home.view.OnNestedRecyclerViewItemClickedListener;
 import com.example.warmmeal.model.pojo.Meal;
 
 import java.util.ArrayList;
@@ -20,11 +21,13 @@ public class CategoryCountryRecyclerViewAdapter extends RecyclerView.Adapter<Cat
 
     ArrayList<Meal> meals;
     Context context;
+    OnNestedRecyclerViewItemClickedListener listener;
 
 
-    CategoryCountryRecyclerViewAdapter(Context context, ArrayList<Meal> objects) {
+    CategoryCountryRecyclerViewAdapter(Context context, ArrayList<Meal> objects, OnNestedRecyclerViewItemClickedListener listener) {
         this.meals = objects;
         this.context = context;
+        this.listener = listener;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -46,9 +49,11 @@ public class CategoryCountryRecyclerViewAdapter extends RecyclerView.Adapter<Cat
 
     @Override
     public void onBindViewHolder(@NonNull CategoryCountryRecyclerViewAdapter.ViewHolder holder, int position) {
-        ViewHolder viewHolder = (ViewHolder) holder;
-        Glide.with(context).load(meals.get(position).getStrMealThumb()).into(viewHolder.categoryImage);
-        viewHolder.categoryTitle.setText(meals.get(position).getStrCategory());
+        Glide.with(context).load(meals.get(position).getStrMealThumb()).into(holder.categoryImage);
+        holder.categoryTitle.setText(meals.get(position).getStrCategory());
+        holder.categoryImage.setOnClickListener((e)->{
+            listener.onCategoryClicked(meals.get(position).getStrCategory());
+        });
     }
 
 
