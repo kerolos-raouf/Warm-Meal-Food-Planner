@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.warmmeal.R;
+
 import com.example.warmmeal.fragment_home.presenter.HomeFragmentPresenter;
 import com.example.warmmeal.fragment_home.view.adapters.HomeRecyclerViewAdapter;
 import com.example.warmmeal.fragment_search.view.OnNetworkCallResponse;
@@ -25,6 +26,9 @@ import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
 import com.example.warmmeal.model.network.NetworkAPI;
+
+import com.example.warmmeal.fragment_home.view.adapters.HomeRecyclerViewAdapter;
+
 import com.example.warmmeal.model.pojo.Meal;
 import com.example.warmmeal.model.pojo.Meals;
 import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
@@ -33,6 +37,7 @@ import com.example.warmmeal.model.util.CustomProgressBar;
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemClickedListener, OnNetworkCallResponse {
+
 
 
     ////
@@ -48,6 +53,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     ArrayList<Meal> countries;
     ArrayList<Meal> mealsYouMightLike;
     ArrayList<HomeFragmentItem<Object>> homeFragmentItems;
+    Context context;
 
 
     Context context;
@@ -74,7 +80,6 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
         mAdapter = new HomeRecyclerViewAdapter(getContext(), homeFragmentItems,this);
         recyclerView.setAdapter(mAdapter);
-
 
     }
 
@@ -202,5 +207,28 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
         //Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
         customProgressBar.dismissProgressBar();
     }
+
     ////////
+
+
+    @Override
+    public void onMealClicked(Meal meal) {
+        Toast.makeText(context, "meal clicked " + meal.getStrMeal(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onAddToFavouriteClicked(Meal meal) {
+        Toast.makeText(context, "add to favourite clicked " + meal.getStrMeal() , Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCategoryClicked(String category) {
+        Toast.makeText(context, "category clicked " + category, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCountryClicked(String country) {
+        Toast.makeText(context, "category clicked " + country, Toast.LENGTH_SHORT).show();
+    }
+
 }
