@@ -14,7 +14,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.warmmeal.R;
 import com.example.warmmeal.login.view.Login;
+import com.example.warmmeal.login_ways.presenter.LoginWaysPresenter;
 import com.example.warmmeal.main_screen.view.MainScreen;
+import com.example.warmmeal.model.Firebase.FirebaseHandler;
+import com.example.warmmeal.model.Repository.Repository;
+import com.example.warmmeal.model.Repository.RepositoryImpl;
+import com.example.warmmeal.model.contracts.ManagingAccount;
 import com.example.warmmeal.model.util.ISkipAlertDialog;
 import com.example.warmmeal.model.util.Navigator;
 import com.example.warmmeal.model.util.SkipAlertDialog;
@@ -32,7 +37,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class LoginWays extends AppCompatActivity{
+public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResponse{
 
     ImageButton gmail;
     Button signUp,skip;
@@ -40,6 +45,10 @@ public class LoginWays extends AppCompatActivity{
 
     GoogleSignInClient mGoogleSignInClient;
     private final int RC_SIGN = 20;
+
+    ManagingAccount managingAccount;
+    Repository repository;
+    private LoginWaysPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +66,10 @@ public class LoginWays extends AppCompatActivity{
         signUp = findViewById(R.id.loginWaysSignUp);
         login = findViewById(R.id.loginWaysLogin);
         skip = findViewById(R.id.loginWaysSkip);
+
+        managingAccount = FirebaseHandler.getInstance(this);
+        repository = RepositoryImpl.getInstance(managingAccount);
+        presenter = LoginWaysPresenter.getInstance(repository);
     }
 
     void setUp()
@@ -74,7 +87,10 @@ public class LoginWays extends AppCompatActivity{
             showDialog();
         });
 
-        signInUsingGoogle();
+        gmail.setOnClickListener((e)->{
+            signInUsingGoogle();
+        });
+
     }
 
     void showDialog()
@@ -97,17 +113,13 @@ public class LoginWays extends AppCompatActivity{
     void signInUsingGoogle()
     {
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.gcm_defaultSenderId))
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail().build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this,signInOptions);
 
-        gmail.setOnClickListener((e)->{
-            Intent intent = mGoogleSignInClient.getSignInIntent();
-            startActivityForResult(intent,RC_SIGN);
-
-        });
-
+        Intent intent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(intent,RC_SIGN);
     }
 
     @Override
@@ -118,7 +130,7 @@ public class LoginWays extends AppCompatActivity{
             Task<GoogleSignInAccount> accountTask = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = accountTask.getResult(ApiException.class);
-                fireBaseAuth(account.getIdToken());
+                presenter.loginWithGmail(account.getIdToken(),this);
             }catch (ApiException e)
             {
                 Toast.makeText(this, "Error "+e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -126,17 +138,15 @@ public class LoginWays extends AppCompatActivity{
         }
     }
 
-    void fireBaseAuth(String token)
-    {
-        AuthCredential credential = GoogleAuthProvider.getCredential(token,null);
-        FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful())
-                {
-                    Toast.makeText(LoginWays.this, "Logging in done.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
+
+    @Override
+    public void onLoginWithGmailSuccess() {
+        Navigator.navigate(this, MainScreen.class);
+    }
+
+    @Override
+    public void onLoginWithGmailFail(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 }
