@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.warmmeal.R;
 import com.example.warmmeal.fragment_home.view.OnNestedRecyclerViewItemClickedListener;
-import com.example.warmmeal.model.pojo.Category;
 import com.example.warmmeal.model.pojo.Meal;
 
 import java.util.ArrayList;
@@ -37,13 +36,13 @@ public class CountryRecyclerViewAdapter extends RecyclerView.Adapter<CountryRecy
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView categoryImage;
-        TextView categoryTitle;
+        ImageView countryImage;
+        TextView countryTitle;
 
         ViewHolder(View view) {
             super(view);
-            categoryImage = view.findViewById(R.id.categoryImage);
-            categoryTitle = view.findViewById(R.id.categoryName);
+            countryImage = view.findViewById(R.id.categoryImage);
+            countryTitle = view.findViewById(R.id.categoryName);
         }
     }
 
@@ -55,16 +54,12 @@ public class CountryRecyclerViewAdapter extends RecyclerView.Adapter<CountryRecy
 
     @Override
     public void onBindViewHolder(@NonNull CountryRecyclerViewAdapter.ViewHolder holder, int position) {
-        Glide.with(context).load(meals.get(position).getStrMealThumb()).placeholder(R.drawable.login_ways).into(holder.categoryImage);
-        holder.categoryTitle.setText(meals.get(position).getStrCategory());
-        holder.categoryImage.setOnClickListener((e)->{
-            listener.onCategoryClicked(meals.get(position).getStrCategory());
+        Glide.with(context).load(getFlagResId(meals.get(position).getStrArea())).placeholder(R.drawable.login_ways).into(holder.countryImage);
+        holder.countryTitle.setText(meals.get(position).getStrArea());
+        holder.countryImage.setOnClickListener((e)->{
+            listener.onCountryClicked(meals.get(position).getStrCategory());
         });
     }
-
-
-
-
 
 
     @Override
@@ -72,5 +67,69 @@ public class CountryRecyclerViewAdapter extends RecyclerView.Adapter<CountryRecy
         return meals.size();
     }
 
+    int getFlagResId(String countryName)
+    {
+        switch (countryName)
+        {
+            case "American":
+                return R.drawable.america;
+            case "British":
+                return R.drawable.british;
+            case "Canadian":
+                return R.drawable.canada;
+            case "Chinese":
+                return R.drawable.china;
+            case "Croatian":
+                return R.drawable.croatian;
+            case "Dutch":
+                return R.drawable.dutch;
+            case "Egyptian":
+                return R.drawable.egypt;
+            case "Filipino":
+                return R.drawable.malaysian;
+            case "French":
+                return R.drawable.french;
+            case "Greek":
+                return R.drawable.greek;
+            case "Indian":
+                return R.drawable.indian;
+            case "Irish":
+                return R.drawable.ireland;
+            case "Italian":
+                return R.drawable.italian;
+            case "Jamaican":
+                return R.drawable.jamaican;
+            case "Japanese":
+                return R.drawable.japan;
+            case "Kenyan":
+                return R.drawable.kenya;
+            case "Malaysian":
+                return R.drawable.malaysian;
+            case "Mexican":
+                return R.drawable.mexico;
+            case "Moroccan":
+                return R.drawable.moroco;
+            case "Polish":
+                return R.drawable.poland;
+            case "Portuguese":
+                return R.drawable.portug;
+            case "Russian":
+                return R.drawable.russian;
+            case "Spanish":
+                return R.drawable.spani;
+            case "Thai":
+                return R.drawable.thia;
+            case "Tunisian":
+                return R.drawable.tunisian;
+            case "Turkish":
+                return R.drawable.turcia;
+            case "Ukrainian":
+                return R.drawable.dutch;
+            case "Vietnamese":
+                return R.drawable.vietname;
+            default:
+                return R.drawable.unknown;
+        }
+    }
 
 }

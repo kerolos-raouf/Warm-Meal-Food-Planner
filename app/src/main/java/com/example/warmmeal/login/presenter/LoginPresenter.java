@@ -25,7 +25,7 @@ public class LoginPresenter {
 
     public void login(String userName, String password, OnLoginResponse response)
     {
-        repository.loginUser(userName,password,response);
+        repository.loginWithUserNameAndPassword(userName,password,response);
     }
 
 

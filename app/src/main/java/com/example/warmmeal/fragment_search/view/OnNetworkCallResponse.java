@@ -6,9 +6,9 @@ import com.example.warmmeal.model.pojo.Meals;
 public interface OnNetworkCallResponse  {
 
     void onGetMealByCharacterSuccess(Meals meals);
-    void onGetMealByCharacterFailure(String message);
     void onGetCategorySuccess(Categories categories);
-    void onGetCategoryFailure(String message);
+    void onGetAllCountriesSuccess(Meals meals);
+    void onFailure(String message);
 
 
 }

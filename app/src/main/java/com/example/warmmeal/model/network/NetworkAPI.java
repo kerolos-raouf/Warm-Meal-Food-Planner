@@ -41,7 +41,7 @@ public class NetworkAPI implements RemoteDataSource {
         mealDTO.getMealsByFirstLetter(letter).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
             response.onGetMealByCharacterSuccess(meals);
         }, (throwable) -> {
-            response.onGetMealByCharacterFailure(throwable.getMessage());
+            response.onFailure(throwable.getMessage());
         });
     }
 
@@ -50,7 +50,7 @@ public class NetworkAPI implements RemoteDataSource {
         mealDTO.getRandomMeal().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
             response.onGetMealByCharacterSuccess(meals);
         }, (throwable) -> {
-            response.onGetMealByCharacterFailure(throwable.getMessage());
+            response.onFailure(throwable.getMessage());
         });
     }
 
@@ -64,13 +64,17 @@ public class NetworkAPI implements RemoteDataSource {
         mealDTO.getAllCategories().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((categories) -> {
             response.onGetCategorySuccess(categories);
         }, (throwable) -> {
-            response.onGetMealByCharacterFailure(throwable.getMessage());
+            response.onFailure(throwable.getMessage());
         });
     }
 
     @Override
     public void getAllCountries(OnNetworkCallResponse response) {
-
+        mealDTO.getAllCountries().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
+            response.onGetAllCountriesSuccess(meals);
+        }, (throwable) -> {
+            response.onFailure(throwable.getMessage());
+        });
     }
 
     @Override

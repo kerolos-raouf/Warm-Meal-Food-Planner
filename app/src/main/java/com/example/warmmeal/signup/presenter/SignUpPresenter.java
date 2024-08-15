@@ -30,7 +30,7 @@ public class SignUpPresenter {
 
     public void createNewAccount(String userName, String password, OnCreatingAccountResponse response)
     {
-        repository.createNewUser(userName,password,response);
+        repository.signUpWithUserNameAndPassword(userName,password,response);
     }
 
 }

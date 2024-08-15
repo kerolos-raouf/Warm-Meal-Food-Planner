@@ -2,6 +2,7 @@ package com.example.warmmeal.login_ways.presenter;
 
 import com.example.warmmeal.login_ways.view.OnLoginWithGmailResponse;
 import com.example.warmmeal.model.repository.Repository;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginWaysPresenter {
 
@@ -27,7 +28,12 @@ public class LoginWaysPresenter {
 
   public void loginWithGmail(String idToken, OnLoginWithGmailResponse response)
   {
-      repository.loginWithGmail(idToken,response);
+      repository.signInUsingGmailAccount(idToken,response);
+  }
+
+  public FirebaseUser getCurrentUser()
+  {
+      return repository.getCurrentUser();
   }
 
 }

@@ -1,6 +1,7 @@
 package com.example.warmmeal.model.network;
 
 import com.example.warmmeal.model.pojo.Categories;
+import com.example.warmmeal.model.pojo.Meal;
 import com.example.warmmeal.model.pojo.Meals;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -19,5 +20,8 @@ public interface MealDTO {
 
     @GET("categories.php")
     Observable<Categories> getAllCategories();
+
+    @GET("list.php?a=list")
+    Observable<Meals> getAllCountries();
 
 }

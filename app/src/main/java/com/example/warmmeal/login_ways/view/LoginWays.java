@@ -19,6 +19,7 @@ import com.example.warmmeal.model.firebase.FirebaseHandler;
 import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.network.NetworkAPI;
 import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
+import com.example.warmmeal.model.util.CustomProgressBar;
 import com.example.warmmeal.model.util.ISkipAlertDialog;
 import com.example.warmmeal.model.util.Navigator;
 import com.example.warmmeal.model.util.SkipAlertDialog;
@@ -41,6 +42,7 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
 
     private LoginWaysPresenter presenter;
 
+    CustomProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,8 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
 
     void initViews()
     {
+        progressBar = new CustomProgressBar(LoginWays.this);
+        progressBar.startProgressBar();
         gmail = findViewById(R.id.loginWaysGmail);
         signUp = findViewById(R.id.loginWaysSignUp);
         login = findViewById(R.id.loginWaysLogin);
@@ -76,6 +80,8 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
         });
 
         gmail.setOnClickListener((e)->{
+
+            progressBar.startProgressBar();
             signInUsingGoogle();
         });
 
@@ -88,7 +94,9 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
         alertDialog.startAlertDialog(new ISkipAlertDialog() {
             @Override
             public void onPositiveButtonClick() {
+
                 Navigator.navigate(LoginWays.this, MainScreen.class);
+
             }
 
             @Override
@@ -131,10 +139,26 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
     @Override
     public void onLoginWithGmailSuccess() {
         Navigator.navigate(this, MainScreen.class);
+        progressBar.dismissProgressBar();
     }
 
     @Override
     public void onLoginWithGmailFail(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        progressBar.dismissProgressBar();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(presenter.getCurrentUser() != null)
+        {
+            Navigator.navigate(this, MainScreen.class);
+            progressBar.dismissProgressBar();
+        }else
+        {
+            progressBar.dismissProgressBar();
+        }
+
     }
 }

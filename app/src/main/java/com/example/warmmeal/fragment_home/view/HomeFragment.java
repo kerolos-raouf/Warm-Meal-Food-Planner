@@ -28,6 +28,7 @@ import com.example.warmmeal.model.network.NetworkAPI;
 import com.example.warmmeal.model.pojo.Meal;
 import com.example.warmmeal.model.pojo.Meals;
 import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
+import com.example.warmmeal.model.util.CustomProgressBar;
 
 import java.util.ArrayList;
 
@@ -52,6 +53,11 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     Context context;
     HomeRecyclerViewAdapter mAdapter;
 
+    ///for dialog
+    CustomProgressBar customProgressBar;
+    int numberOfCalls = 3;
+    int counter = 0;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -74,6 +80,8 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     void init(View view)
     {
+        customProgressBar = new CustomProgressBar(getActivity());
+        customProgressBar.startProgressBar();
         recyclerView = view.findViewById(R.id.homeRecyclerView);
         dailyInspirationMeals = new ArrayList<>();
         categories = new ArrayList<>();
@@ -81,15 +89,11 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
         homeFragmentItems = new ArrayList<>();
         context = view.getContext();
 
-        try {
-            presenter = HomeFragmentPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(context), SharedPrefHandler.getInstance()));
+        presenter = HomeFragmentPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(context), SharedPrefHandler.getInstance()));
 
-            presenter.getMealsByFirstLetter('b',this);
-            presenter.getAllCategories(this);
-        }catch (Exception e) {
-            Log.d("Kerolos", "init: " + e.getMessage());
-            Toast.makeText(context, "Error : " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+        presenter.getMealsByFirstLetter('b',this);
+        presenter.getAllCategories(this);
+        presenter.getAllCountries(this);
 
     }
 
@@ -117,36 +121,6 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
         dailyInspirationMeals.add(meal);
 
         homeFragmentItems.add(new HomeFragmentItem<>(ItemType.DAILY_INSPIRATION,dailyInspirationMeals));
-
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Categories :"));
-
-
-
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.CATEGORY,categories));
-
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Countries :"));
-
-        countries.add(meal);
-        countries.add(meal);
-        countries.add(meal);
-        countries.add(meal);
-        countries.add(meal);
-        countries.add(meal);
-        countries.add(meal);
-        countries.add(meal);
-
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.CATEGORY,countries));
-
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Meals you might like :"));
-
-
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.MEALS_YOU_MIGHT_LIKE, meal));
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.MEALS_YOU_MIGHT_LIKE, meal));
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.MEALS_YOU_MIGHT_LIKE, meal));
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.MEALS_YOU_MIGHT_LIKE, meal));
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.MEALS_YOU_MIGHT_LIKE, meal));
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.MEALS_YOU_MIGHT_LIKE, meal));
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.MEALS_YOU_MIGHT_LIKE, meal));
 
     }
 
@@ -194,7 +168,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     @Override
     public void onCountryClicked(String country) {
-        Toast.makeText(context, "category clicked " + country, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "country clicked " + country, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -203,23 +177,30 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     public void onGetMealByCharacterSuccess(Meals meals) {
         mealsYouMightLike = (ArrayList<Meal>) meals.getMeals();
         setUpRecyclerViewWithLists();
+        customProgressBar.dismissProgressBar();
     }
 
-    @Override
-    public void onGetMealByCharacterFailure(String message) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-    }
+
 
     @Override
     public void onGetCategorySuccess(Categories categories) {
         this.categories = (ArrayList<Category>) categories.getCategories();
-        Log.d("Kerolos", "onGetCategorySuccess: " + categories.getCategories().size());
         //setUpRecyclerViewWithLists();
+        customProgressBar.dismissProgressBar();
     }
 
     @Override
-    public void onGetCategoryFailure(String message) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    public void onGetAllCountriesSuccess(Meals meals) {
+        this.countries = (ArrayList<Meal>) meals.getMeals();
+        //setUpRecyclerViewWithLists();
+        customProgressBar.dismissProgressBar();
+    }
+
+    @Override
+    public void onFailure(String message) {
+        Log.d("Kerolos", "onFailure: " + message);
+        //Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        customProgressBar.dismissProgressBar();
     }
     ////////
 }

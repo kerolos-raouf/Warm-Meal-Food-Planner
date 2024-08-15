@@ -38,4 +38,9 @@ public class HomeFragmentPresenter {
         repository.getAllCategories(response);
     }
 
+    public void getAllCountries(OnNetworkCallResponse response)
+    {
+        repository.getAllCountries(response);
+    }
+
 }

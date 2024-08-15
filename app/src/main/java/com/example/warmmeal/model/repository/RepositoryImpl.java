@@ -8,6 +8,7 @@ import com.example.warmmeal.model.contracts.ManagingAccountState;
 import com.example.warmmeal.model.contracts.RemoteDataSource;
 import com.example.warmmeal.signup.view.OnCreatingAccountResponse;
 import com.example.warmmeal.model.contracts.ManagingAccount;
+import com.google.firebase.auth.FirebaseUser;
 
 public class RepositoryImpl implements Repository{
 
@@ -37,20 +38,29 @@ public class RepositoryImpl implements Repository{
         return repository;
     }
 
-
     @Override
-    public void createNewUser(String userName, String password, OnCreatingAccountResponse response) {
+    public void signUpWithUserNameAndPassword(String userName, String password, OnCreatingAccountResponse response) {
         managingAccount.signUpWithUserNameAndPassword(userName,password,response);
     }
 
     @Override
-    public void loginUser(String userName, String password, OnLoginResponse response) {
+    public void loginWithUserNameAndPassword(String userName, String password, OnLoginResponse response) {
         managingAccount.loginWithUserNameAndPassword(userName,password,response);
     }
 
     @Override
-    public void loginWithGmail(String idToken, OnLoginWithGmailResponse response) {
+    public void signInUsingGmailAccount(String idToken, OnLoginWithGmailResponse response) {
         managingAccount.signInUsingGmailAccount(idToken,response);
+    }
+
+    @Override
+    public FirebaseUser getCurrentUser() {
+        return managingAccount.getCurrentUser();
+    }
+
+    @Override
+    public void signOutUser() {
+
     }
 
     @Override
@@ -75,7 +85,7 @@ public class RepositoryImpl implements Repository{
 
     @Override
     public void getAllCountries(OnNetworkCallResponse response) {
-
+        remoteDataSource.getAllCountries(response);
     }
 
     @Override
