@@ -7,10 +7,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.warmmeal.R;
-import com.example.warmmeal.model.Firebase.FirebaseHandler;
-import com.example.warmmeal.model.Repository.Repository;
-import com.example.warmmeal.model.Repository.RepositoryImpl;
+import com.example.warmmeal.model.database.DatabaseHandler;
+import com.example.warmmeal.model.firebase.FirebaseHandler;
+import com.example.warmmeal.model.repository.Repository;
+import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.contracts.ManagingAccount;
+import com.example.warmmeal.model.network.NetworkAPI;
+import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
 import com.example.warmmeal.model.util.CustomProgressBar;
 import com.example.warmmeal.signup.presenter.SignUpPresenter;
 
@@ -45,9 +48,7 @@ public class SignUp extends AppCompatActivity implements OnCreatingAccountRespon
 
         customProgressBar = new CustomProgressBar(this);
 
-        managingAccount = FirebaseHandler.getInstance(this);
-        repository = RepositoryImpl.getInstance(managingAccount);
-        presenter = SignUpPresenter.getInstance(repository,this);
+        presenter = SignUpPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance()),this);
     }
 
     void setUp()

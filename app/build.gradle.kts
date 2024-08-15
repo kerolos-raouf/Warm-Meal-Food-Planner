@@ -69,7 +69,7 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.adapter.rxjava3)
 
-    ///glide dependeny for images
+    ///glide dependency for images
     implementation(libs.glide)
 
     ///room database
@@ -85,8 +85,10 @@ dependencies {
     implementation(libs.credentials.play.services.auth)
     implementation(libs.googleid)
 
-    ///glide
+    ///glide and circlar Image
     implementation(libs.glide)
+    implementation(libs.circleimageview)
+
 
 
 

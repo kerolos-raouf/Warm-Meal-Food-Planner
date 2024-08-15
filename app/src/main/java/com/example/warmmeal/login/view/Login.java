@@ -9,9 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.warmmeal.R;
 import com.example.warmmeal.login.presenter.LoginPresenter;
-import com.example.warmmeal.model.Firebase.FirebaseHandler;
-import com.example.warmmeal.model.Repository.Repository;
-import com.example.warmmeal.model.Repository.RepositoryImpl;
+import com.example.warmmeal.model.database.DatabaseHandler;
+import com.example.warmmeal.model.firebase.FirebaseHandler;
+import com.example.warmmeal.model.repository.RepositoryImpl;
+import com.example.warmmeal.model.network.NetworkAPI;
+import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
 import com.example.warmmeal.model.util.CustomProgressBar;
 import com.example.warmmeal.model.util.Navigator;
 import com.example.warmmeal.main_screen.view.MainScreen;
@@ -22,8 +24,6 @@ public class Login extends AppCompatActivity implements OnLoginResponse{
     Button login,back;
     EditText email,password;
 
-    FirebaseHandler firebaseHandler;
-    Repository repository;
     LoginPresenter presenter;
 
     CustomProgressBar customProgressBar;
@@ -44,9 +44,7 @@ public class Login extends AppCompatActivity implements OnLoginResponse{
 
         customProgressBar = new CustomProgressBar(this);
 
-        firebaseHandler = FirebaseHandler.getInstance(this);
-        repository = RepositoryImpl.getInstance(firebaseHandler);
-        presenter = LoginPresenter.getInstance(repository);
+        presenter = LoginPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance()));
     }
 
     void setUp()

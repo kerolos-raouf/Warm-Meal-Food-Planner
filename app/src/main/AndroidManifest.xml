@@ -15,6 +15,9 @@
         android:theme="@style/Theme.WarmMeal"
         tools:targetApi="31">
         <activity
+            android:name=".meal_screen.view.MealActivity"
+            android:exported="false" />
+        <activity
             android:name=".main_screen.view.MainScreen"
             android:exported="false"
             android:label="@string/title_activity_main_screen" />

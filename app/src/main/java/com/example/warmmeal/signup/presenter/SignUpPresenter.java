@@ -1,6 +1,6 @@
 package com.example.warmmeal.signup.presenter;
 
-import com.example.warmmeal.model.Repository.Repository;
+import com.example.warmmeal.model.repository.Repository;
 import com.example.warmmeal.signup.view.ISignUpView;
 import com.example.warmmeal.signup.view.OnCreatingAccountResponse;
 
@@ -30,7 +30,7 @@ public class SignUpPresenter {
 
     public void createNewAccount(String userName, String password, OnCreatingAccountResponse response)
     {
-        repository.createNewUser(userName,password,response);
+        repository.signUpWithUserNameAndPassword(userName,password,response);
     }
 
 }
