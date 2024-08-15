@@ -1,6 +1,7 @@
 package com.example.warmmeal.fragment_home.view.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,25 +14,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.warmmeal.R;
 import com.example.warmmeal.fragment_home.view.OnNestedRecyclerViewItemClickedListener;
-import com.example.warmmeal.model.pojo.Meal;
+import com.example.warmmeal.model.pojo.Category;
 
 import java.util.ArrayList;
 
-public class CategoryCountryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryCountryRecyclerViewAdapter.ViewHolder> {
+public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRecyclerViewAdapter.ViewHolder> {
 
-    ArrayList<Meal> meals;
+    ArrayList<Category> categories;
     Context context;
     OnNestedRecyclerViewItemClickedListener listener;
 
 
-    CategoryCountryRecyclerViewAdapter(Context context, ArrayList<Meal> objects, OnNestedRecyclerViewItemClickedListener listener) {
-        this.meals = objects;
+    CategoryRecyclerViewAdapter(Context context, ArrayList<Category> objects, OnNestedRecyclerViewItemClickedListener listener) {
+        this.categories = objects;
         this.context = context;
         this.listener = listener;
     }
 
-    void setData(ArrayList<Meal> objects) {
-        meals = objects;
+    void setData(ArrayList<Category> objects) {
+        categories = objects;
         notifyDataSetChanged();
     }
 
@@ -47,24 +48,28 @@ public class CategoryCountryRecyclerViewAdapter extends RecyclerView.Adapter<Cat
     }
 
     @Override
-    public CategoryCountryRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CategoryRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CategoryCountryRecyclerViewAdapter.ViewHolder holder, int position) {
-        Glide.with(context).load(meals.get(position).getStrMealThumb()).into(holder.categoryImage);
-        holder.categoryTitle.setText(meals.get(position).getStrCategory());
-        holder.categoryImage.setOnClickListener((e)->{
-            listener.onCategoryClicked(meals.get(position).getStrCategory());
-        });
+    public void onBindViewHolder(@NonNull CategoryRecyclerViewAdapter.ViewHolder holder, int position) {
+        try {
+            holder.categoryTitle.setText(categories.get(position).getStrCategory());
+            Glide.with(context).load(categories.get(position).getStrCategoryThumb()).placeholder(R.drawable.login_ways).into(holder.categoryImage);
+            holder.categoryImage.setOnClickListener((e)->{
+                listener.onCategoryClicked(categories.get(position).getStrCategory());
+            });
+        } catch (Exception e) {
+            Log.d("Kerolos", "onBindViewHolder: " + e.getMessage());
+        }
     }
 
 
     @Override
     public int getItemCount() {
-        return meals.size();
+        return categories.size();
     }
 
 

@@ -55,7 +55,7 @@ public class RepositoryImpl implements Repository{
 
     @Override
     public void getMealsByFirstLetter(char letter, OnNetworkCallResponse response) {
-
+        remoteDataSource.getMealsByFirstLetter(letter,response);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class RepositoryImpl implements Repository{
 
     @Override
     public void getAllCategories(OnNetworkCallResponse response) {
-
+        remoteDataSource.getAllCategories(response);
     }
 
     @Override

@@ -19,6 +19,8 @@ import com.example.warmmeal.R;
 import com.example.warmmeal.fragment_home.presenter.HomeFragmentPresenter;
 import com.example.warmmeal.fragment_home.view.adapters.HomeRecyclerViewAdapter;
 import com.example.warmmeal.fragment_search.view.OnNetworkCallResponse;
+import com.example.warmmeal.model.pojo.Categories;
+import com.example.warmmeal.model.pojo.Category;
 import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
@@ -38,11 +40,17 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     ////
     RecyclerView recyclerView;
     StackView stackView;
+
+    ///lists
     ArrayList<Meal> dailyInspirationMeals;
-    ArrayList<Meal> categories;
+    ArrayList<Category> categories;
     ArrayList<Meal> countries;
+    ArrayList<Meal> mealsYouMightLike;
     ArrayList<HomeFragmentItem<Object>> homeFragmentItems;
+
+
     Context context;
+    HomeRecyclerViewAdapter mAdapter;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -58,8 +66,8 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
 
-        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(getContext(), homeFragmentItems,this);
-        recyclerView.setAdapter(adapter);
+        mAdapter = new HomeRecyclerViewAdapter(getContext(), homeFragmentItems,this);
+        recyclerView.setAdapter(mAdapter);
 
 
     }
@@ -76,7 +84,8 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
         try {
             presenter = HomeFragmentPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(context), SharedPrefHandler.getInstance()));
 
-            presenter.getRandomMeal(this);
+            presenter.getMealsByFirstLetter('b',this);
+            presenter.getAllCategories(this);
         }catch (Exception e) {
             Log.d("Kerolos", "init: " + e.getMessage());
             Toast.makeText(context, "Error : " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -111,16 +120,9 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
         homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Categories :"));
 
-        categories.add(meal);
-        categories.add(meal);
-        categories.add(meal);
-        categories.add(meal);
-        categories.add(meal);
-        categories.add(meal);
-        categories.add(meal);
-        categories.add(meal);
 
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.CATEGORY_COUNTRY,categories));
+
+        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.CATEGORY,categories));
 
         homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Countries :"));
 
@@ -133,7 +135,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
         countries.add(meal);
         countries.add(meal);
 
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.CATEGORY_COUNTRY,countries));
+        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.CATEGORY,countries));
 
         homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Meals you might like :"));
 
@@ -145,6 +147,33 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
         homeFragmentItems.add(new HomeFragmentItem<>(ItemType.MEALS_YOU_MIGHT_LIKE, meal));
         homeFragmentItems.add(new HomeFragmentItem<>(ItemType.MEALS_YOU_MIGHT_LIKE, meal));
         homeFragmentItems.add(new HomeFragmentItem<>(ItemType.MEALS_YOU_MIGHT_LIKE, meal));
+
+    }
+
+    void setUpRecyclerViewWithLists()
+    {
+        homeFragmentItems.clear();
+
+        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Daily Inspiration :"));
+
+        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.DAILY_INSPIRATION,dailyInspirationMeals));
+
+        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Categories :"));
+
+        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.CATEGORY,categories));
+
+        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Countries :"));
+
+        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.COUNTRY,countries));
+
+        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Meals you might like :"));
+
+        for(Meal meal : mealsYouMightLike)
+        {
+            homeFragmentItems.add(new HomeFragmentItem<>(ItemType.MEALS_YOU_MIGHT_LIKE, meal));
+        }
+
+        mAdapter.setData(homeFragmentItems);
 
     }
 
@@ -171,13 +200,25 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
 ///////onNetworkCallResponse
     @Override
-    public void onGetRandomMealSuccess(Meals meals) {
-        Log.d("Kerolos", "onGetRandomMealSuccess: " + meals.getMeals().get(0).getStrMeal());
-        Toast.makeText(context, "meal clicked " + meals.getMeals().get(0).getStrMeal(), Toast.LENGTH_SHORT).show();
+    public void onGetMealByCharacterSuccess(Meals meals) {
+        mealsYouMightLike = (ArrayList<Meal>) meals.getMeals();
+        setUpRecyclerViewWithLists();
     }
 
     @Override
-    public void onGetRandomMealFailure(String message) {
+    public void onGetMealByCharacterFailure(String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onGetCategorySuccess(Categories categories) {
+        this.categories = (ArrayList<Category>) categories.getCategories();
+        Log.d("Kerolos", "onGetCategorySuccess: " + categories.getCategories().size());
+        //setUpRecyclerViewWithLists();
+    }
+
+    @Override
+    public void onGetCategoryFailure(String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
     ////////

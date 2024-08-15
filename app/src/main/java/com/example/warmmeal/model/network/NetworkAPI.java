@@ -1,7 +1,5 @@
 package com.example.warmmeal.model.network;
 
-import android.util.Log;
-
 import com.example.warmmeal.fragment_search.view.OnNetworkCallResponse;
 import com.example.warmmeal.model.contracts.RemoteDataSource;
 
@@ -40,15 +38,19 @@ public class NetworkAPI implements RemoteDataSource {
 
     @Override
     public void getMealsByFirstLetter(char letter, OnNetworkCallResponse response) {
-
+        mealDTO.getMealsByFirstLetter(letter).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
+            response.onGetMealByCharacterSuccess(meals);
+        }, (throwable) -> {
+            response.onGetMealByCharacterFailure(throwable.getMessage());
+        });
     }
 
     @Override
     public void getRandomMeal(OnNetworkCallResponse response) {
         mealDTO.getRandomMeal().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
-            response.onGetRandomMealSuccess(meals);
+            response.onGetMealByCharacterSuccess(meals);
         }, (throwable) -> {
-            response.onGetRandomMealFailure(throwable.getMessage());
+            response.onGetMealByCharacterFailure(throwable.getMessage());
         });
     }
 
@@ -59,7 +61,11 @@ public class NetworkAPI implements RemoteDataSource {
 
     @Override
     public void getAllCategories(OnNetworkCallResponse response) {
-
+        mealDTO.getAllCategories().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((categories) -> {
+            response.onGetCategorySuccess(categories);
+        }, (throwable) -> {
+            response.onGetMealByCharacterFailure(throwable.getMessage());
+        });
     }
 
     @Override

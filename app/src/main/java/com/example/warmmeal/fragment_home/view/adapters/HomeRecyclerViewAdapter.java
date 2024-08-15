@@ -17,21 +17,26 @@ import com.bumptech.glide.Glide;
 import com.example.warmmeal.R;
 import com.example.warmmeal.fragment_home.view.HomeFragmentItem;
 import com.example.warmmeal.fragment_home.view.OnNestedRecyclerViewItemClickedListener;
+import com.example.warmmeal.model.pojo.Category;
 import com.example.warmmeal.model.pojo.Meal;
 
 import java.util.ArrayList;
 
 public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerViewAdapter.BaseViewHolder> {
 
-    static final int CATEGORY_COUNTRY = 0;
-    static final int MEALS_YOU_MIGHT_LIKE = 1;
-    static final int DAILY_INSPIRATION = 2;
-    static final int HEADER_TEXT = 3;
+    static final int CATEGORY = 0;
+    static final int COUNTRY = 1;
+    static final int MEALS_YOU_MIGHT_LIKE = 2;
+    static final int DAILY_INSPIRATION = 3;
+    static final int HEADER_TEXT = 4;
 
 
     private ArrayList<HomeFragmentItem<Object>> items;
     Context context;
     OnNestedRecyclerViewItemClickedListener listener;
+
+
+
 
     public HomeRecyclerViewAdapter(Context context, ArrayList<HomeFragmentItem<Object>> items, OnNestedRecyclerViewItemClickedListener listener) {
         this.items = items;
@@ -39,7 +44,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         this.listener = listener;
     }
 
-    void setData(ArrayList<HomeFragmentItem<Object>> objects) {
+    public void setData(ArrayList<HomeFragmentItem<Object>> objects) {
         items = objects;
         notifyDataSetChanged();
     }
@@ -54,8 +59,10 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
-            case CATEGORY_COUNTRY:
+            case CATEGORY:
                 return new CategoryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_categories_countries, parent, false));
+            case COUNTRY:
+                return new CountryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_categories_countries, parent, false));
             case MEALS_YOU_MIGHT_LIKE:
                 return new MealsYouMightLikeViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_more_you_might_like, parent, false));
             case DAILY_INSPIRATION:
@@ -75,14 +82,26 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             ((HeaderTextViewHolder) holder).header.setText(headerText);
         }
         else if(holder instanceof CategoryViewHolder) {
+            try{
 
-            ArrayList<Meal> meals = (ArrayList<Meal>)items.get(position).getItem();
+                ArrayList<Category> categories = (ArrayList<Category>)items.get(position).getItem();
+                LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+                ((CategoryViewHolder) holder).recyclerView.setLayoutManager(layoutManager);
+                ((CategoryViewHolder) holder).recyclerView.setAdapter(new CategoryRecyclerViewAdapter(context,  categories,listener));
+            }catch (Exception e)
+            {
+                Log.d("Kerolos", "onBindViewHolder: " + e.getMessage());
+            }
 
-            LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-            ((CategoryViewHolder) holder).recyclerView.setLayoutManager(layoutManager);
+        }
+        else if(holder instanceof CountryViewHolder) {
+            {
+                ArrayList<Meal> meals = (ArrayList<Meal>)items.get(position).getItem();
+                LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+                ((CountryViewHolder) holder).recyclerView.setLayoutManager(layoutManager);
+                ((CountryViewHolder) holder).recyclerView.setAdapter(new CountryRecyclerViewAdapter(context,  meals,listener));
 
-            ((CategoryViewHolder) holder).recyclerView.setAdapter(new CategoryCountryRecyclerViewAdapter(context,  meals,listener));
-
+            }
         }
         else if(holder instanceof DailyInspirationViewHolder) {
 
@@ -111,8 +130,10 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     public int getItemViewType(int position) {
         HomeFragmentItem<Object> currentItem = items.get(position);
         switch (currentItem.getItemType()) {
-            case CATEGORY_COUNTRY:
-                return CATEGORY_COUNTRY;
+            case CATEGORY:
+                return CATEGORY;
+            case COUNTRY:
+                return COUNTRY;
             case MEALS_YOU_MIGHT_LIKE:
                 return MEALS_YOU_MIGHT_LIKE;
             case DAILY_INSPIRATION:
@@ -151,6 +172,13 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
         RecyclerView recyclerView;
         public CategoryViewHolder(View itemView) {
+            super(itemView);
+            recyclerView = itemView.findViewById(R.id.category_recycler_view);
+        }
+    }
+    class CountryViewHolder extends BaseViewHolder {
+        RecyclerView recyclerView;
+        public CountryViewHolder(View itemView) {
             super(itemView);
             recyclerView = itemView.findViewById(R.id.category_recycler_view);
         }

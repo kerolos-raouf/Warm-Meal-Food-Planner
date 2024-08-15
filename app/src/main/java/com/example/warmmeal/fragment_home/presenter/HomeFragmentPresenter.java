@@ -28,4 +28,14 @@ public class HomeFragmentPresenter {
         repository.getRandomMeal(response);
     }
 
+    public void getMealsByFirstLetter(char letter, OnNetworkCallResponse response)
+    {
+        repository.getMealsByFirstLetter(letter,response);
+    }
+
+    public  void getAllCategories(OnNetworkCallResponse response)
+    {
+        repository.getAllCategories(response);
+    }
+
 }
