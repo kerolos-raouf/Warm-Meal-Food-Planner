@@ -1,7 +1,7 @@
 package com.example.warmmeal.login.presenter;
 
 import com.example.warmmeal.login.view.OnLoginResponse;
-import com.example.warmmeal.model.Repository.Repository;
+import com.example.warmmeal.model.repository.Repository;
 
 public class LoginPresenter {
 
@@ -25,7 +25,7 @@ public class LoginPresenter {
 
     public void login(String userName, String password, OnLoginResponse response)
     {
-        repository.loginUser(userName,password,response);
+        repository.loginWithUserNameAndPassword(userName,password,response);
     }
 
 
