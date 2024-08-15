@@ -1,14 +1,12 @@
 package com.example.warmmeal.login_ways.view;
 
 import android.content.Intent;
-import android.credentials.GetCredentialRequest;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,10 +14,11 @@ import com.example.warmmeal.R;
 import com.example.warmmeal.login.view.Login;
 import com.example.warmmeal.login_ways.presenter.LoginWaysPresenter;
 import com.example.warmmeal.main_screen.view.MainScreen;
-import com.example.warmmeal.model.Firebase.FirebaseHandler;
-import com.example.warmmeal.model.Repository.Repository;
-import com.example.warmmeal.model.Repository.RepositoryImpl;
-import com.example.warmmeal.model.contracts.ManagingAccount;
+import com.example.warmmeal.model.database.DatabaseHandler;
+import com.example.warmmeal.model.firebase.FirebaseHandler;
+import com.example.warmmeal.model.repository.RepositoryImpl;
+import com.example.warmmeal.model.network.NetworkAPI;
+import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
 import com.example.warmmeal.model.util.ISkipAlertDialog;
 import com.example.warmmeal.model.util.Navigator;
 import com.example.warmmeal.model.util.SkipAlertDialog;
@@ -29,13 +28,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResponse{
 
@@ -46,8 +39,6 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
     GoogleSignInClient mGoogleSignInClient;
     private final int RC_SIGN = 20;
 
-    ManagingAccount managingAccount;
-    Repository repository;
     private LoginWaysPresenter presenter;
 
     @Override
@@ -66,10 +57,7 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
         signUp = findViewById(R.id.loginWaysSignUp);
         login = findViewById(R.id.loginWaysLogin);
         skip = findViewById(R.id.loginWaysSkip);
-
-        managingAccount = FirebaseHandler.getInstance(this);
-        repository = RepositoryImpl.getInstance(managingAccount);
-        presenter = LoginWaysPresenter.getInstance(repository);
+        presenter = LoginWaysPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance()));;
     }
 
     void setUp()

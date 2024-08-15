@@ -39,6 +39,11 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         this.listener = listener;
     }
 
+    void setData(ArrayList<HomeFragmentItem<Object>> objects) {
+        items = objects;
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public int getItemCount() {

@@ -30,6 +30,11 @@ public class CategoryCountryRecyclerViewAdapter extends RecyclerView.Adapter<Cat
         this.listener = listener;
     }
 
+    void setData(ArrayList<Meal> objects) {
+        meals = objects;
+        notifyDataSetChanged();
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView categoryImage;
         TextView categoryTitle;

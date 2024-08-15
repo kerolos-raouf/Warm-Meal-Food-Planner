@@ -2,6 +2,7 @@ package com.example.warmmeal.fragment_home.view;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +16,26 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.warmmeal.R;
+import com.example.warmmeal.fragment_home.presenter.HomeFragmentPresenter;
 import com.example.warmmeal.fragment_home.view.adapters.HomeRecyclerViewAdapter;
+import com.example.warmmeal.fragment_search.view.OnNetworkCallResponse;
+import com.example.warmmeal.model.repository.RepositoryImpl;
+import com.example.warmmeal.model.database.DatabaseHandler;
+import com.example.warmmeal.model.firebase.FirebaseHandler;
+import com.example.warmmeal.model.network.NetworkAPI;
 import com.example.warmmeal.model.pojo.Meal;
+import com.example.warmmeal.model.pojo.Meals;
+import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemClickedListener {
+public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemClickedListener, OnNetworkCallResponse {
 
 
+    ////
+    HomeFragmentPresenter presenter;
+
+    ////
     RecyclerView recyclerView;
     StackView stackView;
     ArrayList<Meal> dailyInspirationMeals;
@@ -59,6 +72,16 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
         countries = new ArrayList<>();
         homeFragmentItems = new ArrayList<>();
         context = view.getContext();
+
+        try {
+            presenter = HomeFragmentPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(context), SharedPrefHandler.getInstance()));
+
+            presenter.getRandomMeal(this);
+        }catch (Exception e) {
+            Log.d("Kerolos", "init: " + e.getMessage());
+            Toast.makeText(context, "Error : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     void setUp()
@@ -144,4 +167,18 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     public void onCountryClicked(String country) {
         Toast.makeText(context, "category clicked " + country, Toast.LENGTH_SHORT).show();
     }
+
+
+///////onNetworkCallResponse
+    @Override
+    public void onGetRandomMealSuccess(Meals meals) {
+        Log.d("Kerolos", "onGetRandomMealSuccess: " + meals.getMeals().get(0).getStrMeal());
+        Toast.makeText(context, "meal clicked " + meals.getMeals().get(0).getStrMeal(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onGetRandomMealFailure(String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+    ////////
 }

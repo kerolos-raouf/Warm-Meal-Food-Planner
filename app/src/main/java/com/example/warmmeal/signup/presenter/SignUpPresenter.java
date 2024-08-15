@@ -1,6 +1,6 @@
 package com.example.warmmeal.signup.presenter;
 
-import com.example.warmmeal.model.Repository.Repository;
+import com.example.warmmeal.model.repository.Repository;
 import com.example.warmmeal.signup.view.ISignUpView;
 import com.example.warmmeal.signup.view.OnCreatingAccountResponse;
 
