@@ -1,5 +1,6 @@
 package com.example.warmmeal.model.network;
 
+import com.example.warmmeal.fragment_home.view.DataPurpose;
 import com.example.warmmeal.fragment_search.view.OnNetworkCallResponse;
 import com.example.warmmeal.model.contracts.RemoteDataSource;
 
@@ -37,9 +38,16 @@ public class NetworkAPI implements RemoteDataSource {
     }
 
     @Override
-    public void getMealsByFirstLetter(char letter, OnNetworkCallResponse response) {
+    public void getMealsByFirstLetter(char letter, DataPurpose dataPurpose, OnNetworkCallResponse response) {
         mealDTO.getMealsByFirstLetter(letter).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
-            response.onGetMealByCharacterSuccess(meals);
+            if(dataPurpose == DataPurpose.INSPIRATION)
+            {
+                response.onGetMealByCharacterForMoreYouLikeSuccess(meals);
+            }
+            else
+            {
+                response.onGetMealByCharacterForInspirationSuccess(meals);
+            }
         }, (throwable) -> {
             response.onFailure(throwable.getMessage());
         });
@@ -48,7 +56,7 @@ public class NetworkAPI implements RemoteDataSource {
     @Override
     public void getRandomMeal(OnNetworkCallResponse response) {
         mealDTO.getRandomMeal().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
-            response.onGetMealByCharacterSuccess(meals);
+            response.onGetMealByCharacterForMoreYouLikeSuccess(meals);
         }, (throwable) -> {
             response.onFailure(throwable.getMessage());
         });

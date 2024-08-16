@@ -15,24 +15,25 @@ import com.bumptech.glide.Glide;
 import com.example.warmmeal.R;
 import com.example.warmmeal.fragment_home.view.OnNestedRecyclerViewItemClickedListener;
 import com.example.warmmeal.model.pojo.Category;
+import com.example.warmmeal.model.pojo.Meal;
 
 import java.util.ArrayList;
 
 public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRecyclerViewAdapter.ViewHolder> {
 
-    ArrayList<Category> categories;
+    ArrayList<Meal> meals;
     Context context;
     OnNestedRecyclerViewItemClickedListener listener;
 
 
-    CategoryRecyclerViewAdapter(Context context, ArrayList<Category> objects, OnNestedRecyclerViewItemClickedListener listener) {
-        this.categories = objects;
+    CategoryRecyclerViewAdapter(Context context, ArrayList<Meal> objects, OnNestedRecyclerViewItemClickedListener listener) {
+        this.meals = objects;
         this.context = context;
         this.listener = listener;
     }
 
-    void setData(ArrayList<Category> objects) {
-        categories = objects;
+    void setData(ArrayList<Meal> objects) {
+        this.meals = objects;
         notifyDataSetChanged();
     }
 
@@ -55,21 +56,17 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
 
     @Override
     public void onBindViewHolder(@NonNull CategoryRecyclerViewAdapter.ViewHolder holder, int position) {
-        try {
-            holder.categoryTitle.setText(categories.get(position).getStrCategory());
-            Glide.with(context).load(categories.get(position).getStrCategoryThumb()).placeholder(R.drawable.login_ways).into(holder.categoryImage);
-            holder.categoryImage.setOnClickListener((e)->{
-                listener.onCategoryClicked(categories.get(position).getStrCategory());
-            });
-        } catch (Exception e) {
-            Log.d("Kerolos", "onBindViewHolder: " + e.getMessage());
-        }
+        holder.categoryTitle.setText(meals.get(position).getStrCategory());
+        Glide.with(context).load(meals.get(position).getStrCategoryThumb()).placeholder(R.drawable.login_ways).into(holder.categoryImage);
+        holder.categoryImage.setOnClickListener((e)->{
+            listener.onCategoryClicked(meals.get(position).getStrCategory());
+        });
     }
 
 
     @Override
     public int getItemCount() {
-        return categories.size();
+        return meals.size();
     }
 
 

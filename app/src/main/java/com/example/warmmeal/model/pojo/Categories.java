@@ -4,18 +4,15 @@ import java.util.List;
 
 public class Categories {
 
-    List<Category> categories;
+    List<Meal> categories;
 
     public Categories (){}
-    public Categories(List<Category> categories) {
-        this.categories = categories;
-    }
 
-    public List<Category> getCategories() {
+    public List<Meal> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Category> categories) {
+    public void setCategories(List<Meal> categories) {
         this.categories = categories;
     }
 }

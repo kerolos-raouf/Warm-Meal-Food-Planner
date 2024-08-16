@@ -1,5 +1,6 @@
 package com.example.warmmeal.fragment_home.presenter;
 
+import com.example.warmmeal.fragment_home.view.DataPurpose;
 import com.example.warmmeal.fragment_search.view.OnNetworkCallResponse;
 import com.example.warmmeal.model.repository.Repository;
 
@@ -28,9 +29,9 @@ public class HomeFragmentPresenter {
         repository.getRandomMeal(response);
     }
 
-    public void getMealsByFirstLetter(char letter, OnNetworkCallResponse response)
+    public void getMealsByFirstLetter(char letter, DataPurpose dataPurpose, OnNetworkCallResponse response)
     {
-        repository.getMealsByFirstLetter(letter,response);
+        repository.getMealsByFirstLetter(letter,dataPurpose,response);
     }
 
     public  void getAllCategories(OnNetworkCallResponse response)

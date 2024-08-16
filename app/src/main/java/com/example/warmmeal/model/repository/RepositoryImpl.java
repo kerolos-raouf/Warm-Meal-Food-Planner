@@ -1,5 +1,7 @@
 package com.example.warmmeal.model.repository;
 
+import com.example.warmmeal.fragment_home.view.DataPurpose;
+import com.example.warmmeal.fragment_profile.view.OnLogOutResponse;
 import com.example.warmmeal.fragment_search.view.OnNetworkCallResponse;
 import com.example.warmmeal.login.view.OnLoginResponse;
 import com.example.warmmeal.login_ways.view.OnLoginWithGmailResponse;
@@ -59,13 +61,13 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
-    public void signOutUser() {
-
+    public void signOutUser(OnLogOutResponse response) {
+        managingAccount.signOutUser(response);
     }
 
     @Override
-    public void getMealsByFirstLetter(char letter, OnNetworkCallResponse response) {
-        remoteDataSource.getMealsByFirstLetter(letter,response);
+    public void getMealsByFirstLetter(char letter, DataPurpose dataPurpose, OnNetworkCallResponse response) {
+        remoteDataSource.getMealsByFirstLetter(letter, dataPurpose,response);
     }
 
     @Override

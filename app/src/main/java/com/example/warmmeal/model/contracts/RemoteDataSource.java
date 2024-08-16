@@ -1,10 +1,11 @@
 package com.example.warmmeal.model.contracts;
 
+import com.example.warmmeal.fragment_home.view.DataPurpose;
 import com.example.warmmeal.fragment_search.view.OnNetworkCallResponse;
 
 public interface RemoteDataSource {
 
-    void getMealsByFirstLetter(char letter, OnNetworkCallResponse response);
+    void getMealsByFirstLetter(char letter, DataPurpose dataPurpose, OnNetworkCallResponse response);
     void getRandomMeal(OnNetworkCallResponse response);
     void getMealByName(String name, OnNetworkCallResponse response);
     void getAllCategories(OnNetworkCallResponse response);

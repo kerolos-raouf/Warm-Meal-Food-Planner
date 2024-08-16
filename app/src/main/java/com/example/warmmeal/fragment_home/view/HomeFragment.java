@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     ///lists
     ArrayList<Meal> dailyInspirationMeals;
-    ArrayList<Category> categories;
+    ArrayList<Meal> categories;
     ArrayList<Meal> countries;
     ArrayList<Meal> mealsYouMightLike;
     ArrayList<HomeFragmentItem<Object>> homeFragmentItems;
@@ -55,8 +55,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     ///for dialog
     CustomProgressBar customProgressBar;
-    int numberOfCalls = 3;
-    int counter = 0;
+    boolean putInDailyInspiration = false;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -91,7 +90,8 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
         presenter = HomeFragmentPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(context), SharedPrefHandler.getInstance()));
 
-        presenter.getMealsByFirstLetter('b',this);
+        presenter.getMealsByFirstLetter('a',DataPurpose.INSPIRATION,this);
+        presenter.getMealsByFirstLetter('b',DataPurpose.MORE_YOU_LIKE,this);
         presenter.getAllCategories(this);
         presenter.getAllCountries(this);
 
@@ -100,27 +100,6 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     void setUp()
     {
 
-
-
-        Meal meal = new Meal();
-        meal.setStrMeal("Kepda");
-        meal.setStrArea("Egypt");
-        meal.setStrMealThumb("https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg");
-        meal.setStrCategory("Dessert");
-
-
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Daily Inspiration :"));
-
-        dailyInspirationMeals.add(meal);
-        dailyInspirationMeals.add(meal);
-        dailyInspirationMeals.add(meal);
-        dailyInspirationMeals.add(meal);
-        dailyInspirationMeals.add(meal);
-        dailyInspirationMeals.add(meal);
-        dailyInspirationMeals.add(meal);
-        dailyInspirationMeals.add(meal);
-
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.DAILY_INSPIRATION,dailyInspirationMeals));
 
     }
 
@@ -174,32 +153,35 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
 ///////onNetworkCallResponse
     @Override
-    public void onGetMealByCharacterSuccess(Meals meals) {
+    public void onGetMealByCharacterForMoreYouLikeSuccess(Meals meals) {
         mealsYouMightLike = (ArrayList<Meal>) meals.getMeals();
         setUpRecyclerViewWithLists();
         customProgressBar.dismissProgressBar();
     }
 
+    @Override
+    public void onGetMealByCharacterForInspirationSuccess(Meals meals) {
+        dailyInspirationMeals = (ArrayList<Meal>) meals.getMeals();
+        setUpRecyclerViewWithLists();
+        customProgressBar.dismissProgressBar();
+    }
 
 
     @Override
     public void onGetCategorySuccess(Categories categories) {
-        this.categories = (ArrayList<Category>) categories.getCategories();
-        //setUpRecyclerViewWithLists();
+        this.categories = (ArrayList<Meal>) categories.getCategories();
         customProgressBar.dismissProgressBar();
     }
 
     @Override
     public void onGetAllCountriesSuccess(Meals meals) {
         this.countries = (ArrayList<Meal>) meals.getMeals();
-        //setUpRecyclerViewWithLists();
         customProgressBar.dismissProgressBar();
     }
 
     @Override
     public void onFailure(String message) {
         Log.d("Kerolos", "onFailure: " + message);
-        //Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
         customProgressBar.dismissProgressBar();
     }
     ////////

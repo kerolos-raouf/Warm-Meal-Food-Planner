@@ -5,6 +5,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import com.example.warmmeal.fragment_profile.view.OnLogOutResponse;
 import com.example.warmmeal.login.view.OnLoginResponse;
 import com.example.warmmeal.login_ways.view.OnLoginWithGmailResponse;
 import com.example.warmmeal.signup.view.OnCreatingAccountResponse;
@@ -92,7 +93,8 @@ public class FirebaseHandler implements ManagingAccount {
     }
 
     @Override
-    public void signOutUser() {
+    public void signOutUser(OnLogOutResponse response) {
         mAuth.signOut();
+        response.onLogOutSuccess();
     }
 }
