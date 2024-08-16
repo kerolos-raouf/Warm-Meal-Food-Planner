@@ -2,7 +2,8 @@ package com.example.warmmeal.model.repository;
 
 import com.example.warmmeal.fragment_home.view.DataPurpose;
 import com.example.warmmeal.fragment_profile.view.OnLogOutResponse;
-import com.example.warmmeal.fragment_search.view.OnNetworkCallResponse;
+import com.example.warmmeal.fragment_home.view.OnNetworkCallResponse;
+import com.example.warmmeal.fragment_search.view.OnSearchResponse;
 import com.example.warmmeal.login.view.OnLoginResponse;
 import com.example.warmmeal.login_ways.view.OnLoginWithGmailResponse;
 import com.example.warmmeal.model.contracts.LocalDataSource;
@@ -76,8 +77,8 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
-    public void getMealByName(String name, OnNetworkCallResponse response) {
-
+    public void getMealByName(String name, OnSearchResponse response) {
+        remoteDataSource.getMealByName(name, response);
     }
 
     @Override
@@ -91,17 +92,17 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
-    public void getMealsByMainIngredient(String ingredient, OnNetworkCallResponse response) {
-
+    public void getMealsByMainIngredient(String ingredient, OnSearchResponse response) {
+        remoteDataSource.getMealsByMainIngredient(ingredient, response);
     }
 
     @Override
-    public void getMealsByCategory(String category, OnNetworkCallResponse response) {
-
+    public void getMealsByCategory(String category, OnSearchResponse response) {
+        remoteDataSource.getMealsByCategory(category, response);
     }
 
     @Override
-    public void getMealsByCountry(String country, OnNetworkCallResponse response) {
-
+    public void getMealsByCountry(String country, OnSearchResponse response) {
+        remoteDataSource.getMealsByCountry(country, response);
     }
 }

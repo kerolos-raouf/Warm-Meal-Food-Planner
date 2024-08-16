@@ -22,6 +22,8 @@
 
         android:paddingStart="30dp"
 
+        android:inputType="text"
+
         android:paddingEnd="30dp"
         android:textColor="@color/light_sugar"
         android:textColorHint="@color/dark_sugar"
@@ -51,18 +53,18 @@
             app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chipAll"
+                android:id="@+id/chipMealName"
                 style="@style/ChipCustomStyle"
-                android:layout_width="60dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:textAlignment="center"
-                android:text="ALL" />
+                android:text="Meal Name" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipCategory"
                 style="@style/ChipCustomStyle"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:text="Category" />
@@ -70,7 +72,7 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipCountry"
                 style="@style/ChipCustomStyle"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:text="Country" />
@@ -78,7 +80,7 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipIngredient"
                 style="@style/ChipCustomStyle"
-                android:layout_width="110dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:text="Ingreadient" />

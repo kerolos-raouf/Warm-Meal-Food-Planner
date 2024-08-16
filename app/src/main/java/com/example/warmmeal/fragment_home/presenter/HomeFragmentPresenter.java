@@ -1,7 +1,7 @@
 package com.example.warmmeal.fragment_home.presenter;
 
 import com.example.warmmeal.fragment_home.view.DataPurpose;
-import com.example.warmmeal.fragment_search.view.OnNetworkCallResponse;
+import com.example.warmmeal.fragment_home.view.OnNetworkCallResponse;
 import com.example.warmmeal.model.repository.Repository;
 
 public class HomeFragmentPresenter {

@@ -1,4 +1,4 @@
-package com.example.warmmeal.fragment_search.view;
+package com.example.warmmeal.fragment_home.view;
 
 import com.example.warmmeal.model.pojo.Categories;
 import com.example.warmmeal.model.pojo.Meals;
