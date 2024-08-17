@@ -31,7 +31,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 import java.util.ArrayList;
 
-public class MealActivity extends AppCompatActivity implements OnMealScreenResponse{
+public class MealActivity extends AppCompatActivity {
 
     ImageView mealImage;
     TextView mealName;
@@ -49,6 +49,8 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
 
     String mealId;
 
+    Meal currentMeal;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,9 +62,7 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
 
     void init()
     {
-        customProgressBar = new CustomProgressBar(this);
-        customProgressBar.startProgressBar();
-        mealId = getIntent().getStringExtra(HomeFragment.ID_KEY);
+        currentMeal = getIntent().getParcelableExtra(HomeFragment.ID_KEY);
         mealImage = findViewById(R.id.mealScreenImage);
         mealName = findViewById(R.id.mealScreenMealName);
         mealCountry = findViewById(R.id.mealScreenMealCountry);
@@ -74,7 +74,8 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
 
         presenter = MealScreenPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance()));
 
-        presenter.getMealById(mealId,this);
+
+        setMealData(currentMeal);
     }
 
     void setUp()
@@ -84,19 +85,6 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
         });
     }
 
-
-    @Override
-    public void onGetMealByIdSuccess(Meals meals) {
-        setMealData(meals.getMeals().get(0));
-        customProgressBar.dismissProgressBar();
-    }
-
-    @Override
-    public void onFailure(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        Log.d("Kerolos", "Meal Activity onFailure: " + message);
-        customProgressBar.dismissProgressBar();
-    }
 
 
     @Override

@@ -139,7 +139,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     @Override
     public void onMealClicked(Meal meal) {
         customProgressBar.startProgressBar();
-        Navigator.navigateWithStringExtra(context, MealActivity.class,ID_KEY,meal.getIdMeal());
+        Navigator.navigateWithMealExtra(context, MealActivity.class,ID_KEY,meal);
     }
 
     @Override

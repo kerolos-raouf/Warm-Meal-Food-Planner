@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.example.warmmeal.login_ways.view.LoginWays;
+import com.example.warmmeal.model.pojo.Meal;
 
 public class Navigator {
 
@@ -27,6 +28,13 @@ public class Navigator {
 
 
     public static void navigateWithStringExtra(Context context, Class cls,String extraKey,String extraValue)
+    {
+        Intent intent = new Intent(context,cls);
+        intent.putExtra(extraKey,extraValue);
+        context.startActivity(intent);
+    }
+
+    public static void navigateWithMealExtra(Context context, Class cls, String extraKey, Meal extraValue)
     {
         Intent intent = new Intent(context,cls);
         intent.putExtra(extraKey,extraValue);

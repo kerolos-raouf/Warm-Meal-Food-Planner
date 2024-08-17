@@ -19,7 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.warmmeal.R;
+import com.example.warmmeal.fragment_home.view.HomeFragment;
 import com.example.warmmeal.fragment_search.presenter.SearchPresenter;
+import com.example.warmmeal.meal_screen.view.MealActivity;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
 import com.example.warmmeal.model.network.NetworkAPI;
@@ -29,6 +31,8 @@ import com.example.warmmeal.model.pojo.Meal;
 import com.example.warmmeal.model.pojo.Meals;
 import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
+import com.example.warmmeal.model.util.CustomProgressBar;
+import com.example.warmmeal.model.util.Navigator;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
@@ -57,6 +61,9 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
     //ingredients
     ArrayList<String> ingredients;
 
+    //progressBar
+    CustomProgressBar customProgressBar;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -75,6 +82,7 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
 
     void init(View view)
     {
+        customProgressBar = new CustomProgressBar(getActivity());
         ingredients = new ArrayList<>();
         context = view.getContext();
         recyclerView = view.findViewById(R.id.searchRecyclerView);
@@ -282,9 +290,25 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
         return null;
     }
 
+    ///
+
+    @Override
+    public void onMealClicked(Meal meal) {
+        customProgressBar.startProgressBar();
+        Navigator.navigateWithStringExtra(context, MealActivity.class, HomeFragment.ID_KEY,meal.getIdMeal());
+    }
+
+    @Override
+    public void onAddToFavouriteClicked(Meal meal) {
+
+    }
+
     @Override
     public void onStop() {
         super.onStop();
         NetworkAPI.getInstance().clearDisposable();
+        customProgressBar.dismissProgressBar();
     }
+
+
 }

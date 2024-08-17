@@ -1,11 +1,15 @@
 package com.example.warmmeal.model.pojo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-public class Meal {
+public class Meal implements Parcelable {
 
     private String idMeal;
     private String strMeal;
@@ -60,6 +64,72 @@ public class Meal {
     String strCategoryDescription;
 
 
+
+    public static final Parcelable.Creator<Meal> CREATOR = new Parcelable.Creator<Meal>() {
+        @Override
+        public Meal createFromParcel(Parcel in) {
+            return new Meal(in);
+        }
+
+        @Override
+        public Meal[] newArray(int size) {
+            return new Meal[size];
+        }
+    };
+
+
+    public Meal(Parcel in) {
+
+        this.idMeal = in.readString();
+        this.strMeal = in.readString();
+        this.strCategory = in.readString();
+        this.strArea = in.readString();
+        this.strInstructions = in.readString();
+        this.strMealThumb = in.readString();
+        this.strTags = in.readString();
+        this.strYoutube = in.readString();
+        this.strIngredient1 = in.readString();
+        this.strIngredient2 = in.readString();
+        this.strIngredient3 = in.readString();
+        this.strIngredient4 = in.readString();
+        this.strIngredient5 = in.readString();
+        this.strIngredient6 = in.readString();
+        this.strIngredient8 = in.readString();
+        this.strIngredient9 = in.readString();
+        this.strIngredient10 = in.readString();
+        this.strIngredient11 = in.readString();
+        this.strIngredient12 = in.readString();
+        this.strIngredient13 = in.readString();
+        this.strIngredient14 = in.readString();
+        this.strIngredient15 = in.readString();
+        this.strIngredient16 = in.readString();
+        this.strIngredient17 = in.readString();
+        this.strIngredient18 = in.readString();
+        this.strIngredient19 = in.readString();
+        this.strIngredient20 = in.readString();
+        this.strMeasure1 = in.readString();
+        this.strMeasure2 = in.readString();
+        this.strMeasure3 = in.readString();
+        this.strMeasure4 = in.readString();
+        this.strMeasure5 = in.readString();
+        this.strMeasure6 = in.readString();
+        this.strMeasure7 = in.readString();
+        this.strMeasure8 = in.readString();
+        this.strMeasure9 = in.readString();
+        this.strMeasure10 = in.readString();
+        this.strMeasure11 = in.readString();
+        this.strMeasure13 = in.readString();
+        this.strMeasure14 = in.readString();
+        this.strMeasure15 = in.readString();
+        this.strMeasure16 = in.readString();
+        this.strMeasure17 = in.readString();
+        this.strMeasure18 = in.readString();
+        this.strMeasure19 = in.readString();
+        this.strMeasure20 = in.readString();
+        this.idCategory = in.readString();
+        this.strCategoryThumb = in.readString();
+        this.strCategoryDescription = in.readString();
+    }
 
     public Meal() {
 
@@ -562,5 +632,66 @@ public class Meal {
             }
         }
         return measures;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(this.idMeal);
+        dest.writeString(this.strMeal);
+        dest.writeString(this.strCategory);
+        dest.writeString(this.strArea);
+        dest.writeString(this.strInstructions);
+        dest.writeString(this.strMealThumb);
+        dest.writeString(this.strTags);
+        dest.writeString(this.strYoutube);
+        dest.writeString(this.strIngredient1);
+        dest.writeString(this.strIngredient2);
+        dest.writeString(this.strIngredient3);
+        dest.writeString(this.strIngredient4);
+        dest.writeString(this.strIngredient5);
+        dest.writeString(this.strIngredient6);
+        dest.writeString(this.strIngredient7);
+        dest.writeString(this.strIngredient8);
+        dest.writeString(this.strIngredient9);
+        dest.writeString(this.strIngredient10);
+        dest.writeString(this.strIngredient11);
+        dest.writeString(this.strIngredient12);
+        dest.writeString(this.strIngredient13);
+        dest.writeString(this.strIngredient14);
+        dest.writeString(this.strIngredient15);
+        dest.writeString(this.strIngredient16);
+        dest.writeString(this.strIngredient17);
+        dest.writeString(this.strIngredient18);
+        dest.writeString(this.strIngredient19);
+        dest.writeString(this.strIngredient20);
+        dest.writeString(this.strMeasure1);
+        dest.writeString(this.strMeasure1);
+        dest.writeString(this.strMeasure2);
+        dest.writeString(this.strMeasure3);
+        dest.writeString(this.strMeasure4);
+        dest.writeString(this.strMeasure5);
+        dest.writeString(this.strMeasure6);
+        dest.writeString(this.strMeasure7);
+        dest.writeString(this.strMeasure8);
+        dest.writeString(this.strMeasure9);
+        dest.writeString(this.strMeasure10);
+        dest.writeString(this.strMeasure11);
+        dest.writeString(this.strMeasure12);
+        dest.writeString(this.strMeasure13);
+        dest.writeString(this.strMeasure14);
+        dest.writeString(this.strMeasure15);
+        dest.writeString(this.strMeasure16);
+        dest.writeString(this.strMeasure17);
+        dest.writeString(this.strMeasure18);
+        dest.writeString(this.strMeasure19);
+        dest.writeString(this.strMeasure20);
+        dest.writeString(this.strCategory);
+        dest.writeString(this.strCategoryThumb);
+        dest.writeString(this.strCategoryDescription);
     }
 }
