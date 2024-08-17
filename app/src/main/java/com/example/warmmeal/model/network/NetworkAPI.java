@@ -1,7 +1,11 @@
 package com.example.warmmeal.model.network;
 
+import android.util.Log;
+
 import com.example.warmmeal.fragment_home.view.DataPurpose;
 import com.example.warmmeal.fragment_home.view.OnNetworkCallResponse;
+import com.example.warmmeal.fragment_search.view.ListPurpose;
+import com.example.warmmeal.fragment_search.view.OnGetListsResponse;
 import com.example.warmmeal.fragment_search.view.OnSearchResponse;
 import com.example.warmmeal.model.contracts.RemoteDataSource;
 
@@ -114,6 +118,18 @@ public class NetworkAPI implements RemoteDataSource {
     public void getMealsByCountry(String country, OnSearchResponse response) {
         mealDTO.getMealByCountry(country).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
             response.onSuccess(meals);
+        }, (throwable) -> {
+            response.onFailure(throwable.getMessage());
+        });
+    }
+
+    @Override
+    public void getIngredients(OnGetListsResponse response, ListPurpose purpose) {
+        mealDTO.getIngredients().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((ingredients) -> {
+            if(purpose == ListPurpose.INGREDIENTS)
+            {
+                response.onGetIngredientsSuccess(ingredients);
+            }
         }, (throwable) -> {
             response.onFailure(throwable.getMessage());
         });

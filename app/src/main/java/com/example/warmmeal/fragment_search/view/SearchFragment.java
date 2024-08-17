@@ -2,6 +2,7 @@ package com.example.warmmeal.fragment_search.view;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,8 @@ import com.example.warmmeal.fragment_search.presenter.SearchPresenter;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
 import com.example.warmmeal.model.network.NetworkAPI;
+import com.example.warmmeal.model.pojo.Ingredient;
+import com.example.warmmeal.model.pojo.Ingredients;
 import com.example.warmmeal.model.pojo.Meal;
 import com.example.warmmeal.model.pojo.Meals;
 import com.example.warmmeal.model.repository.RepositoryImpl;
@@ -30,7 +33,7 @@ import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 
-public class SearchFragment extends Fragment implements OnSearchResponse ,OnSearchRecyclerViewItemClicked{
+public class SearchFragment extends Fragment implements OnSearchResponse ,OnSearchRecyclerViewItemClicked,OnGetListsResponse{
 
 
     EditText searchEditText;
@@ -48,6 +51,9 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
     SearchRecyclerViewAdapter mAdapter;
 
     Context context;
+
+    //ingredients
+    ArrayList<String> ingredients;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -67,6 +73,7 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
 
     void init(View view)
     {
+        ingredients = new ArrayList<>();
         context = view.getContext();
         recyclerView = view.findViewById(R.id.searchRecyclerView);
         chipGroup = view.findViewById(R.id.chipGroup);
@@ -76,8 +83,11 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
         chipIngredient = view.findViewById(R.id.chipIngredient);
         noResult = view.findViewById(R.id.searchNoResult);
         searchEditText = view.findViewById(R.id.searchEditText);
-
+        ////
         presenter = SearchPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(view.getContext()), SharedPrefHandler.getInstance()));
+        presenter.getIngredients(this, ListPurpose.INGREDIENTS);
+
+
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -92,22 +102,7 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
             {
                 if(!searchEditText.getText().toString().isEmpty())
                 {
-                    if(chipMealName.isChecked())
-                    {
-                        presenter.getMealByName(searchEditText.getText().toString(), this);
-                    }
-                    else if(chipCategory.isChecked())
-                    {
-                        presenter.getMealByCategory(searchEditText.getText().toString(), this);
-                    }
-                    else if (chipCountry.isChecked())
-                    {
-                        presenter.getMealByCountry(searchEditText.getText().toString(), this);
-                    }
-                    else if (chipIngredient.isChecked())
-                    {
-                        presenter.getMealByMainIngredient(searchEditText.getText().toString(), this);
-                    }
+                    doActionOnSearchBegin();
                 }
                 return true;
             }
@@ -116,19 +111,166 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
     }
 
 
+
     @Override
     public void onSuccess(Meals meals) {
-        if(!meals.getMeals().isEmpty())
+        if(meals.getMeals() != null && !meals.getMeals().isEmpty())
         {
             recyclerView.setVisibility(View.VISIBLE);
             noResult.setVisibility(View.GONE);
             mAdapter.setMeals((ArrayList<Meal>) meals.getMeals());
-            //recyclerView.setAdapter(new SearchAdapter(meals.getMeals(),getContext()));
+        }
+        else
+        {
+            recyclerView.setVisibility(View.GONE);
+            noResult.setVisibility(View.VISIBLE);
+        }
+    }
+
+    ///////////
+    @Override
+    public void onGetIngredientsSuccess(Ingredients ingredients) {
+        this.ingredients.clear();
+        for(Ingredient ingredient : ingredients.getMeals())
+        {
+            this.ingredients.add(ingredient.getStrIngredient());
         }
     }
 
     @Override
     public void onFailure(String message) {
+        Log.d("Kerolos", "onFailure: " + message);
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+
+    void doActionOnSearchBegin()
+    {
+        if(chipMealName.isChecked())
+        {
+            presenter.getMealByName(searchEditText.getText().toString(), this);
+        }
+        else if(chipCategory.isChecked())
+        {
+            String newCategory = parseToLegalCategoryName(searchEditText.getText().toString());
+            if(newCategory!= null)
+            {
+                presenter.getMealByCategory(newCategory, this);
+            }else
+            {
+                Toast.makeText(context, "Illegal Category Name.", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else if (chipCountry.isChecked())
+        {
+            String newName = parseToLegalCountryName(searchEditText.getText().toString());
+            if(newName!= null)
+            {
+                presenter.getMealByCountry(newName, this);
+            }else
+            {
+                Toast.makeText(context, "Illegal Country Name.", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else if (chipIngredient.isChecked())
+        {
+            String newIngredient = parseToLegalIngredientName(searchEditText.getText().toString());
+            if(newIngredient!= null)
+            {
+                presenter.getMealByMainIngredient(newIngredient, this);
+            }else
+            {
+                Toast.makeText(context, "Illegal Ingredient Name.", Toast.LENGTH_SHORT).show();
+            }
+        }
+            presenter.getMealByMainIngredient(searchEditText.getText().toString(), this);
+        }
+    }
+
+
+
+    String parseToLegalCountryName(String country)
+    {
+        ArrayList<String> countries = new ArrayList<>();
+        countries.add("American");
+        countries.add( "British");
+        countries.add( "Canadian");
+        countries.add( "Chinese");
+        countries.add( "Croatian");
+        countries.add( "Dutch");
+        countries.add( "Egyptian");
+        countries.add( "Filipino");
+        countries.add( "French");
+        countries.add( "Greek");
+        countries.add( "Indian");
+        countries.add( "Irish");
+        countries.add( "Italian");
+        countries.add( "Jamaican");
+        countries.add( "Japanese");
+        countries.add( "Kenyan");
+        countries.add( "Malaysian");
+        countries.add( "Mexican");
+        countries.add( "Moroccan");
+        countries.add( "Polish");
+        countries.add( "Portuguese");
+        countries.add( "Russian");
+        countries.add( "Spanish");
+        countries.add( "Thai");
+        countries.add( "Tunisian");
+        countries.add( "Turkish");
+        countries.add( "Ukrainian");
+        countries.add( "Vietnamese");
+
+        for(String c : countries)
+        {
+            String temp = c.toLowerCase();
+            if(temp.equals(country.toLowerCase()) || temp.contains(country.toLowerCase()))
+            {
+                return c;
+            }
+        }
+        return null;
+    }
+
+    String parseToLegalCategoryName(String category)
+    {
+        ArrayList<String> categories = new ArrayList<>();
+        categories.add("Beef");
+        categories.add( "Breakfast");
+        categories.add( "Chicken");
+        categories.add( "Dessert");
+        categories.add( "Goat");
+        categories.add( "Lamb");
+        categories.add( "Miscellaneous");
+        categories.add( "Pasta");
+        categories.add( "Pork");
+        categories.add( "Seafood");
+        categories.add( "Side");
+        categories.add( "Starter");
+        categories.add( "Vegan");
+        categories.add( "Vegetarian");
+        for(String c : categories)
+        {
+            String temp = c.toLowerCase();
+            //Log.d("Kerolos", "parseToLegalCategoryName: " + c + " " + category + " " + temp);
+            if(temp.equals(category.toLowerCase()) || temp.contains(category.toLowerCase()))
+            {
+                return c;
+            }
+        }
+        return null;
+    }
+
+    String parseToLegalIngredientName(String ingredient)
+    {
+        for(String c : ingredients)
+        {
+            String temp = c.toLowerCase();
+            if(temp.equals(ingredient.toLowerCase()) || temp.contains(ingredient.toLowerCase()))
+            {
+                return c;
+            }
+        }
+        return null;
     }
 }

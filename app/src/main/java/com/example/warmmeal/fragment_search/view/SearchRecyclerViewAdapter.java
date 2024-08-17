@@ -28,6 +28,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     public SearchRecyclerViewAdapter(ArrayList<Meal> meals, OnSearchRecyclerViewItemClicked listener, Context context) {
         this.meals = meals;
         this.listener = listener;
+        this.context = context;
     }
 
     void setMeals(ArrayList<Meal> meals)
