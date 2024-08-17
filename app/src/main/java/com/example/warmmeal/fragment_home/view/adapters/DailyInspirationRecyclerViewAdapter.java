@@ -31,6 +31,7 @@ public class DailyInspirationRecyclerViewAdapter extends RecyclerView.Adapter<Da
         this.listener = listener;
     }
 
+
     void setData(ArrayList<Meal> objects) {
         meals = objects;
         notifyDataSetChanged();

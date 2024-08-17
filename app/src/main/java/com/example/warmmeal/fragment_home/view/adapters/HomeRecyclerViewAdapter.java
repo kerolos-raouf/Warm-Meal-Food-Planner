@@ -18,11 +18,13 @@ import com.example.warmmeal.R;
 import com.example.warmmeal.fragment_home.view.HomeFragmentItem;
 import com.example.warmmeal.fragment_home.view.OnNestedRecyclerViewItemClickedListener;
 import com.example.warmmeal.model.pojo.Category;
+
 import com.example.warmmeal.model.pojo.Meal;
 
 import java.util.ArrayList;
 
 public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerViewAdapter.BaseViewHolder> {
+
 
     static final int CATEGORY = 0;
     static final int COUNTRY = 1;
@@ -31,12 +33,10 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     static final int HEADER_TEXT = 4;
 
 
+
     private ArrayList<HomeFragmentItem<Object>> items;
     Context context;
     OnNestedRecyclerViewItemClickedListener listener;
-
-
-
 
     public HomeRecyclerViewAdapter(Context context, ArrayList<HomeFragmentItem<Object>> items, OnNestedRecyclerViewItemClickedListener listener) {
         this.items = items;
@@ -59,6 +59,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
+
             case CATEGORY:
                 return new CategoryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_categories_countries, parent, false));
             case COUNTRY:
@@ -164,6 +165,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             recyclerView = itemView.findViewById(R.id.category_recycler_view);
         }
     }
+
     class CountryViewHolder extends BaseViewHolder {
         RecyclerView recyclerView;
         public CountryViewHolder(View itemView) {
@@ -171,6 +173,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             recyclerView = itemView.findViewById(R.id.category_recycler_view);
         }
     }
+
 
     class MealsYouMightLikeViewHolder extends BaseViewHolder {
 
