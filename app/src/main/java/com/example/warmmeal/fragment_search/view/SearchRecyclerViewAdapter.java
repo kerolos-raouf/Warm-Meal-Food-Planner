@@ -31,7 +31,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
         this.context = context;
     }
 
-    void setMeals(ArrayList<Meal> meals)
+    public void setMeals(ArrayList<Meal> meals)
     {
         this.meals = meals;
         notifyDataSetChanged();

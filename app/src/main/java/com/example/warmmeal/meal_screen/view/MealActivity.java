@@ -1,11 +1,9 @@
 package com.example.warmmeal.meal_screen.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,7 +29,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 import java.util.ArrayList;
 
-public class MealActivity extends AppCompatActivity {
+public class MealActivity extends AppCompatActivity implements OnMealScreenResponse{
 
     ImageView mealImage;
     TextView mealName;
@@ -62,7 +60,8 @@ public class MealActivity extends AppCompatActivity {
 
     void init()
     {
-        currentMeal = getIntent().getParcelableExtra(HomeFragment.ID_KEY);
+        //currentMeal = getIntent().getParcelableExtra(HomeFragment.MEAL_KEY);
+        mealId = getIntent().getStringExtra(HomeFragment.MEAL_KEY);
         mealImage = findViewById(R.id.mealScreenImage);
         mealName = findViewById(R.id.mealScreenMealName);
         mealCountry = findViewById(R.id.mealScreenMealCountry);
@@ -74,8 +73,8 @@ public class MealActivity extends AppCompatActivity {
 
         presenter = MealScreenPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance()));
 
-
-        setMealData(currentMeal);
+        presenter.getMealById(mealId,this);
+        //setMealData(currentMeal);
     }
 
     void setUp()
@@ -147,4 +146,14 @@ public class MealActivity extends AppCompatActivity {
         return mealIngredients;
     }
 
+    @Override
+    public void onGetMealByIdSuccess(Meals meals) {
+
+        setMealData(meals.getMeals().get(0));
+    }
+
+    @Override
+    public void onFailure(String message) {
+
+    }
 }

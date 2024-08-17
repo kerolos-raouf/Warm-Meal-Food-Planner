@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.warmmeal.R;
 
+import com.example.warmmeal.category_country_screen.view.CategoryAndCountryScreen;
+import com.example.warmmeal.category_country_screen.view.Type;
 import com.example.warmmeal.fragment_home.presenter.HomeFragmentPresenter;
 import com.example.warmmeal.fragment_home.view.adapters.HomeRecyclerViewAdapter;
 import com.example.warmmeal.meal_screen.view.MealActivity;
@@ -25,8 +27,6 @@ import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
 import com.example.warmmeal.model.network.NetworkAPI;
-
-import com.example.warmmeal.fragment_home.view.adapters.HomeRecyclerViewAdapter;
 
 import com.example.warmmeal.model.pojo.Meal;
 import com.example.warmmeal.model.pojo.Meals;
@@ -41,7 +41,9 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
 
     ////
-    public static final String ID_KEY= "ID_KEY";
+    public static final String MEAL_KEY = "MEAL_KEY";
+    public static final String CATEGORY_COUNTRY_KEY = "CATEGORY_COUNTRY_KEY";
+    public static String CATEGORY_COUNTRY_TYPE = "CATEGORY";
     ////
     HomeFragmentPresenter presenter;
 
@@ -139,7 +141,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     @Override
     public void onMealClicked(Meal meal) {
         customProgressBar.startProgressBar();
-        Navigator.navigateWithMealExtra(context, MealActivity.class,ID_KEY,meal);
+        Navigator.navigateWithStringExtra(context, MealActivity.class, MEAL_KEY,meal.getIdMeal());
     }
 
     @Override
@@ -149,12 +151,14 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     @Override
     public void onCategoryClicked(String category) {
-        Toast.makeText(context, "category clicked " + category, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "category clicked " + category + " " + Type.CATEGORY.toString(), Toast.LENGTH_SHORT).show();
+        Navigator.navigateWithStringExtra(context, CategoryAndCountryScreen.class, CATEGORY_COUNTRY_TYPE, Type.CATEGORY.toString(), CATEGORY_COUNTRY_KEY,category);
     }
 
     @Override
     public void onCountryClicked(String country) {
-        Toast.makeText(context, "country clicked " + country, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "country clicked " + country, Toast.LENGTH_SHORT).show();
+        Navigator.navigateWithStringExtra(context, CategoryAndCountryScreen.class, CATEGORY_COUNTRY_TYPE,Type.COUNTRY.toString(),CATEGORY_COUNTRY_KEY,country);
     }
 
 

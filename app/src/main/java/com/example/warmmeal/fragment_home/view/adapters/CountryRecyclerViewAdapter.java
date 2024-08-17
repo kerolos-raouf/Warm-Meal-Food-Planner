@@ -57,7 +57,7 @@ public class CountryRecyclerViewAdapter extends RecyclerView.Adapter<CountryRecy
         Glide.with(context).load(getFlagResId(meals.get(position).getStrArea())).placeholder(R.drawable.unknown).into(holder.countryImage);
         holder.countryTitle.setText(meals.get(position).getStrArea());
         holder.countryImage.setOnClickListener((e)->{
-            listener.onCountryClicked(meals.get(position).getStrCategory());
+            listener.onCountryClicked(meals.get(position).getStrArea());
         });
     }
 
