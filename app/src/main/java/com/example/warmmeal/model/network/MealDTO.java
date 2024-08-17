@@ -24,4 +24,18 @@ public interface MealDTO {
     @GET("list.php?a=list")
     Observable<Meals> getAllCountries();
 
+    @GET("search.php")
+    Observable<Meals> getMealByName(@Query("s") String name);
+
+    @GET("filter.php")
+    Observable<Meals> getMealByCategory(@Query("c") String category);
+
+    @GET("filter.php")
+    Observable<Meals> getMealByCountry(@Query("a") String country);
+
+    @GET("filter.php")
+    Observable<Meals> getMealByMainIngredient(@Query("i") String ingredient);
+
+
+
 }

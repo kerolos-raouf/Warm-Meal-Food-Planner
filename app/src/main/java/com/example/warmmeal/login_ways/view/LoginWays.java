@@ -94,9 +94,7 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
         alertDialog.startAlertDialog(new ISkipAlertDialog() {
             @Override
             public void onPositiveButtonClick() {
-
-                Navigator.navigate(LoginWays.this, MainScreen.class);
-
+                Navigator.navigateAndClearLast(LoginWays.this, MainScreen.class);
             }
 
             @Override
@@ -112,7 +110,9 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail().build();
 
+
         mGoogleSignInClient = GoogleSignIn.getClient(this,signInOptions);
+        mGoogleSignInClient.signOut();
 
         Intent intent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(intent,RC_SIGN);
@@ -153,7 +153,7 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
         super.onStart();
         if(presenter.getCurrentUser() != null)
         {
-            Navigator.navigate(this, MainScreen.class);
+            Navigator.navigateAndClearLast(this, MainScreen.class);
             progressBar.dismissProgressBar();
         }else
         {

@@ -1,6 +1,8 @@
 package com.example.warmmeal.model.network;
 
-import com.example.warmmeal.fragment_search.view.OnNetworkCallResponse;
+import com.example.warmmeal.fragment_home.view.DataPurpose;
+import com.example.warmmeal.fragment_home.view.OnNetworkCallResponse;
+import com.example.warmmeal.fragment_search.view.OnSearchResponse;
 import com.example.warmmeal.model.contracts.RemoteDataSource;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -37,9 +39,16 @@ public class NetworkAPI implements RemoteDataSource {
     }
 
     @Override
-    public void getMealsByFirstLetter(char letter, OnNetworkCallResponse response) {
+    public void getMealsByFirstLetter(char letter, DataPurpose dataPurpose, OnNetworkCallResponse response) {
         mealDTO.getMealsByFirstLetter(letter).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
-            response.onGetMealByCharacterSuccess(meals);
+            if(dataPurpose == DataPurpose.INSPIRATION)
+            {
+                response.onGetMealByCharacterForMoreYouLikeSuccess(meals);
+            }
+            else
+            {
+                response.onGetMealByCharacterForInspirationSuccess(meals);
+            }
         }, (throwable) -> {
             response.onFailure(throwable.getMessage());
         });
@@ -48,16 +57,12 @@ public class NetworkAPI implements RemoteDataSource {
     @Override
     public void getRandomMeal(OnNetworkCallResponse response) {
         mealDTO.getRandomMeal().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
-            response.onGetMealByCharacterSuccess(meals);
+            response.onGetMealByCharacterForMoreYouLikeSuccess(meals);
         }, (throwable) -> {
             response.onFailure(throwable.getMessage());
         });
     }
 
-    @Override
-    public void getMealByName(String name, OnNetworkCallResponse response) {
-
-    }
 
     @Override
     public void getAllCategories(OnNetworkCallResponse response) {
@@ -78,17 +83,39 @@ public class NetworkAPI implements RemoteDataSource {
     }
 
     @Override
-    public void getMealsByMainIngredient(String ingredient, OnNetworkCallResponse response) {
+    public void getMealByName(String name, OnSearchResponse response) {
+        mealDTO.getMealByName(name).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
+            response.onSuccess(meals);
+        }, (throwable) -> {
+            response.onFailure(throwable.getMessage());
+        });
+    }
 
+
+    @Override
+    public void getMealsByMainIngredient(String ingredient, OnSearchResponse response) {
+        mealDTO.getMealByMainIngredient(ingredient).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
+            response.onSuccess(meals);
+        }, (throwable) -> {
+            response.onFailure(throwable.getMessage());
+        });
     }
 
     @Override
-    public void getMealsByCategory(String category, OnNetworkCallResponse response) {
-
+    public void getMealsByCategory(String category, OnSearchResponse response) {
+        mealDTO.getMealByCategory(category).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
+            response.onSuccess(meals);
+        }, (throwable) -> {
+            response.onFailure(throwable.getMessage());
+        });
     }
 
     @Override
-    public void getMealsByCountry(String country, OnNetworkCallResponse response) {
-
+    public void getMealsByCountry(String country, OnSearchResponse response) {
+        mealDTO.getMealByCountry(country).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
+            response.onSuccess(meals);
+        }, (throwable) -> {
+            response.onFailure(throwable.getMessage());
+        });
     }
 }
