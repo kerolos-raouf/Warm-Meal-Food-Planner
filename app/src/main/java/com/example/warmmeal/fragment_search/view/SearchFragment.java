@@ -96,7 +96,7 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
         searchIcon = view.findViewById(R.id.searchIcon);
 
         ////
-        presenter = SearchPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(view.getContext()), SharedPrefHandler.getInstance()));
+        presenter = SearchPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(view.getContext()), SharedPrefHandler.getInstance(context)));
         presenter.getIngredients(this, ListPurpose.INGREDIENTS);
 
 

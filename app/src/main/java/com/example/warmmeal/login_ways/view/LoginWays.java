@@ -31,7 +31,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
-public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResponse{
+public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResponse, OnSetUserRegisterSateResponse {
 
     ImageButton gmail;
     Button signUp,skip;
@@ -56,12 +56,11 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
     void initViews()
     {
         progressBar = new CustomProgressBar(LoginWays.this);
-        progressBar.startProgressBar();
         gmail = findViewById(R.id.loginWaysGmail);
         signUp = findViewById(R.id.loginWaysSignUp);
         login = findViewById(R.id.loginWaysLogin);
         skip = findViewById(R.id.loginWaysSkip);
-        presenter = LoginWaysPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance()));;
+        presenter = LoginWaysPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance(this)));;
     }
 
     void setUp()
@@ -94,7 +93,7 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
         alertDialog.startAlertDialog(new ISkipAlertDialog() {
             @Override
             public void onPositiveButtonClick() {
-                Navigator.navigateAndClearLast(LoginWays.this, MainScreen.class);
+                presenter.setUserRegisterState(true,LoginWays.this);
             }
 
             @Override
@@ -138,7 +137,7 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
 
     @Override
     public void onLoginWithGmailSuccess() {
-        Navigator.navigate(this, MainScreen.class);
+        presenter.setUserRegisterState(true, this);
         progressBar.dismissProgressBar();
     }
 
@@ -151,14 +150,14 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
     @Override
     protected void onStart() {
         super.onStart();
-        if(presenter.getCurrentUser() != null)
+        if(presenter.isUserLoggedIn())
         {
             Navigator.navigateAndClearLast(this, MainScreen.class);
-            progressBar.dismissProgressBar();
-        }else
-        {
-            progressBar.dismissProgressBar();
         }
+    }
 
+    @Override
+    public void setUserRegisterState() {
+        Navigator.navigate(this, MainScreen.class);
     }
 }

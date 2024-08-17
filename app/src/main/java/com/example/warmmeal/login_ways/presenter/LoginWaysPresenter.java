@@ -1,6 +1,7 @@
 package com.example.warmmeal.login_ways.presenter;
 
 import com.example.warmmeal.login_ways.view.OnLoginWithGmailResponse;
+import com.example.warmmeal.login_ways.view.OnSetUserRegisterSateResponse;
 import com.example.warmmeal.model.repository.Repository;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -34,6 +35,16 @@ public class LoginWaysPresenter {
   public FirebaseUser getCurrentUser()
   {
       return repository.getCurrentUser();
+  }
+
+  public boolean isUserLoggedIn()
+  {
+      return repository.isUserLoggedIn();
+  }
+
+  public void setUserRegisterState(boolean loggedIn, OnSetUserRegisterSateResponse response)
+  {
+      repository.setUserRegisterState(loggedIn,response);
   }
 
 }

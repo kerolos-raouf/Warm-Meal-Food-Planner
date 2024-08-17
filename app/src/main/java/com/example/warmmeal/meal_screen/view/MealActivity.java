@@ -71,7 +71,7 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
         addToFavourite = findViewById(R.id.mealScreenAddToFavourite);
         backButton = findViewById(R.id.mealScreenBack);
 
-        presenter = MealScreenPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance()));
+        presenter = MealScreenPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance(this)));
 
         presenter.getMealById(mealId,this);
         //setMealData(currentMeal);

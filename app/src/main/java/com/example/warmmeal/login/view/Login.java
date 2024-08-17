@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.warmmeal.R;
 import com.example.warmmeal.login.presenter.LoginPresenter;
+import com.example.warmmeal.login_ways.view.OnSetUserRegisterSateResponse;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
 import com.example.warmmeal.model.repository.RepositoryImpl;
@@ -18,7 +19,7 @@ import com.example.warmmeal.model.util.CustomProgressBar;
 import com.example.warmmeal.model.util.Navigator;
 import com.example.warmmeal.main_screen.view.MainScreen;
 
-public class Login extends AppCompatActivity implements OnLoginResponse{
+public class Login extends AppCompatActivity implements OnLoginResponse, OnSetUserRegisterSateResponse {
 
 
     Button login,back;
@@ -44,7 +45,7 @@ public class Login extends AppCompatActivity implements OnLoginResponse{
 
         customProgressBar = new CustomProgressBar(this);
 
-        presenter = LoginPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance()));
+        presenter = LoginPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance(this)));
     }
 
     void setUp()
@@ -75,12 +76,17 @@ public class Login extends AppCompatActivity implements OnLoginResponse{
     @Override
     public void onLoginSuccess() {
         customProgressBar.dismissProgressBar();
-        Navigator.navigate(this, MainScreen.class);
+        presenter.setUserLoggedInState(true,this);
     }
 
     @Override
     public void onLoginFail(String msg) {
         customProgressBar.dismissProgressBar();
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setUserRegisterState() {
+        Navigator.navigate(this, MainScreen.class);
     }
 }

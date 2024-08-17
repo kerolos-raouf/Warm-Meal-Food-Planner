@@ -63,7 +63,7 @@ public class CategoryAndCountryScreen extends AppCompatActivity implements OnSea
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        presenter = CategoryAndCountryPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance()));
+        presenter = CategoryAndCountryPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance(this)));
 
         if(currentType.equals(Type.CATEGORY.toString()))
         {

@@ -1,6 +1,7 @@
 package com.example.warmmeal.fragment_profile.presenter;
 
 import com.example.warmmeal.fragment_profile.view.OnLogOutResponse;
+import com.example.warmmeal.login_ways.view.OnSetUserRegisterSateResponse;
 import com.example.warmmeal.model.repository.Repository;
 
 public class ProfilePresenter {
@@ -25,5 +26,8 @@ public class ProfilePresenter {
     }
 
 
+    public void setUserRegisterState(boolean loggedIn, OnSetUserRegisterSateResponse response) {
+        repository.setUserRegisterState(loggedIn, response);
+    }
 
 }
