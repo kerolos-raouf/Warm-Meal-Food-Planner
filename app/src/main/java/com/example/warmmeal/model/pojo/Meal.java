@@ -545,7 +545,7 @@ public class Meal {
     }
 
     public ArrayList<String> getMeasures() {
-        ArrayList<String> ingredients = new ArrayList<>();
+        ArrayList<String> measures = new ArrayList<>();
         Field[] fields = this.getClass().getDeclaredFields();
 
         for (Field field : fields) {
@@ -554,13 +554,13 @@ public class Meal {
                     field.setAccessible(true);
                     String value = (String) field.get(this);
                     if (value != null && !value.isEmpty()) {
-                        ingredients.add(value);
+                        measures.add(value);
                     }
                 } catch (IllegalAccessException e) {
                     Log.d("Kerolos", "getIngredients: " + e.getMessage());
                 }
             }
         }
-        return ingredients;
+        return measures;
     }
 }

@@ -25,6 +25,11 @@ public class IngredientsRecyclerViewAdapter extends RecyclerView.Adapter<Ingredi
         this.context = context;
     }
 
+    void setData(ArrayList<MealIngredientAndMeasure> mealIngredientAndMeasures){
+        this.mealIngredientAndMeasures = mealIngredientAndMeasures;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -36,7 +41,7 @@ public class IngredientsRecyclerViewAdapter extends RecyclerView.Adapter<Ingredi
         MealIngredientAndMeasure currentItem = mealIngredientAndMeasures.get(position);
         holder.ingredientName.setText(currentItem.getIngredient());
         holder.ingredientMeasure.setText(currentItem.getMeasure());
-        Glide.with(context).load(currentItem.getImageUrl()).placeholder(R.drawable.lime).into(holder.ingredientImage);
+        Glide.with(context).load("https://www.themealdb.com/images/ingredients/" + currentItem.getIngredient() + "-Small.png").placeholder(R.drawable.lime).into(holder.ingredientImage);
     }
 
     @Override

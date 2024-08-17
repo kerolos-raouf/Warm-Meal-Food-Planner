@@ -6,8 +6,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +24,10 @@ import com.example.warmmeal.model.pojo.MealIngredientAndMeasure;
 import com.example.warmmeal.model.pojo.Meals;
 import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
+import com.example.warmmeal.model.util.CustomProgressBar;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import java.util.ArrayList;
 
@@ -34,13 +38,14 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
     TextView mealCountry;
     TextView mealInstructions;
     RecyclerView ingredientsRecyclerView;
-    VideoView mealVideoViewer;
-    Button addToFavourite;
+    YouTubePlayerView mealYoutubePlayer;
+    Button addToFavourite,backButton;
 
 
     //presenter
     MealScreenPresenter presenter;
     IngredientsRecyclerViewAdapter mAdapter;
+    CustomProgressBar customProgressBar;
 
     String mealId;
 
@@ -55,14 +60,17 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
 
     void init()
     {
+        customProgressBar = new CustomProgressBar(this);
+        customProgressBar.startProgressBar();
         mealId = getIntent().getStringExtra(HomeFragment.ID_KEY);
         mealImage = findViewById(R.id.mealScreenImage);
         mealName = findViewById(R.id.mealScreenMealName);
         mealCountry = findViewById(R.id.mealScreenMealCountry);
         mealInstructions = findViewById(R.id.mealScreenMealInstructions);
         ingredientsRecyclerView = findViewById(R.id.mealScreenRecyclerView);
-        mealVideoViewer = findViewById(R.id.mealScreenVideoViewer);
+        mealYoutubePlayer = findViewById(R.id.mealScreenVideoViewer);
         addToFavourite = findViewById(R.id.mealScreenAddToFavourite);
+        backButton = findViewById(R.id.mealScreenBack);
 
         presenter = MealScreenPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance()));
 
@@ -71,19 +79,23 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
 
     void setUp()
     {
-
+        backButton.setOnClickListener((v) -> {
+            finish();
+        });
     }
 
 
     @Override
     public void onGetMealByIdSuccess(Meals meals) {
         setMealData(meals.getMeals().get(0));
+        customProgressBar.dismissProgressBar();
     }
 
     @Override
     public void onFailure(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         Log.d("Kerolos", "Meal Activity onFailure: " + message);
+        customProgressBar.dismissProgressBar();
     }
 
 
@@ -105,6 +117,36 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
         ingredientsRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new IngredientsRecyclerViewAdapter(getIngredients(meal.getIngredients(), meal.getMeasures()),this);
         ingredientsRecyclerView.setAdapter(mAdapter);
+
+        if(meal.getStrYoutube() != null && !meal.getStrYoutube().equals(""))
+        {
+            youtubePlayerSetUp(meal.getStrYoutube());
+        }
+
+    }
+
+    void youtubePlayerSetUp(String url)
+    {
+        getLifecycle().addObserver(mealYoutubePlayer);
+        mealYoutubePlayer.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+            @Override
+            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                String id = getVideoId(url);
+                youTubePlayer.loadVideo(id, 0);
+                youTubePlayer.pause();
+            }
+        });
+    }
+
+    String getVideoId(String url)
+    {
+        String videoId = "";
+        String[] parts = url.split("=");
+        if(parts.length > 1)
+        {
+            videoId = parts[1];
+        }
+        return videoId;
     }
 
     ArrayList<MealIngredientAndMeasure> getIngredients(ArrayList<String> ingredients, ArrayList<String> measures)
