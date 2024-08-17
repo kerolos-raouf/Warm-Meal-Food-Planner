@@ -28,9 +28,10 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     public SearchRecyclerViewAdapter(ArrayList<Meal> meals, OnSearchRecyclerViewItemClicked listener, Context context) {
         this.meals = meals;
         this.listener = listener;
+        this.context = context;
     }
 
-    void setMeals(ArrayList<Meal> meals)
+    public void setMeals(ArrayList<Meal> meals)
     {
         this.meals = meals;
         notifyDataSetChanged();
@@ -46,10 +47,10 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.mealName.setText(meals.get(position).getStrMeal());
-        Glide.with(context).load(meals.get(position).getStrMealThumb()).into(holder.mealImage);
+        Glide.with(context).load(meals.get(position).getStrMealThumb()).placeholder(R.drawable.login_ways).into(holder.mealImage);
 
-        holder.addToFavButton.setOnClickListener((v) -> {
-
+        holder.mealImage.setOnClickListener((v) -> {
+            listener.onMealClicked(meals.get(position));
         });
     }
 

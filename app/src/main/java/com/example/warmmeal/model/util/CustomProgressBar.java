@@ -1,11 +1,14 @@
 package com.example.warmmeal.model.util;
 
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.example.warmmeal.R;
+
+import java.util.Objects;
 
 public class CustomProgressBar {
 
@@ -25,7 +28,9 @@ public class CustomProgressBar {
         builder.setView(layoutInflater.inflate(R.layout.custom_progress_bar,null));
         builder.setCancelable(false);
 
+
         alertDialog = builder.create();
+        Objects.requireNonNull(alertDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         alertDialog.show();
     }
 

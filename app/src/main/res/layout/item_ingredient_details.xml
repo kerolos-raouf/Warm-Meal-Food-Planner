@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/dark_gray"
+    app:cardCornerRadius="25sp"
+    android:elevation="10dp"
+    android:layout_marginEnd="@dimen/normalMargin"
+    android:layout_marginStart="@dimen/normalMargin"
+    android:layout_marginTop="10dp"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/itemIngredientImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/lime"
+            android:layout_margin="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/itemIngredientName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lime"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:fontFamily="@font/roboto"
+            android:layout_marginStart="10dp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/itemIngredientImage"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/itemIngredientMeasure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/roboto"
+            android:text="0.5 KG"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

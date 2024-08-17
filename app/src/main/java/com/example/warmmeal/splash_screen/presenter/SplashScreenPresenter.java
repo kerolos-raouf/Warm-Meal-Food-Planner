@@ -6,15 +6,20 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SplashScreenPresenter {
 
     private final ISplashScreen iSplashScreen;
     private static SplashScreenPresenter presenter;
+    private Observable<Long> doAction;
+    private CompositeDisposable disposable;
 
     private SplashScreenPresenter(ISplashScreen iSplashScreen)
     {
+        disposable = new CompositeDisposable();
         this.iSplashScreen = iSplashScreen;
     }
 
@@ -30,11 +35,16 @@ public class SplashScreenPresenter {
 
     public void timer(int time)
     {
-        Observable<Long> doAction = Observable.timer(time, TimeUnit.SECONDS);
+        doAction = Observable.timer(time, TimeUnit.SECONDS);
 
-        doAction.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((i)->{
+        disposable.add(doAction.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((i)->{
             iSplashScreen.onTimerFinished();
-        });
+        }));
+
+    }
+    public void stopTimer()
+    {
+        disposable.clear();
     }
 
 }

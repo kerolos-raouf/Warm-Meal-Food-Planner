@@ -16,6 +16,7 @@ import androidx.navigation.NavAction;
 import com.example.warmmeal.R;
 import com.example.warmmeal.fragment_profile.presenter.ProfilePresenter;
 import com.example.warmmeal.login_ways.view.LoginWays;
+import com.example.warmmeal.login_ways.view.OnSetUserRegisterSateResponse;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
 import com.example.warmmeal.model.network.NetworkAPI;
@@ -25,7 +26,7 @@ import com.example.warmmeal.model.util.Navigator;
 
 import java.util.Objects;
 
-public class ProfileFragment extends Fragment implements OnLogOutResponse {
+public class ProfileFragment extends Fragment implements OnLogOutResponse , OnSetUserRegisterSateResponse {
 
 
 
@@ -54,7 +55,7 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse {
         packUpButton = view.findViewById(R.id.profilePackUp);
         logOutButton = view.findViewById(R.id.profileLogOut);
 
-        presenter = ProfilePresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(view.getContext()), SharedPrefHandler.getInstance()));
+        presenter = ProfilePresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(view.getContext()), SharedPrefHandler.getInstance(context)));
     }
     private  void setUp() {
         packUpButton.setOnClickListener((e)->{
@@ -67,12 +68,17 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse {
 
     @Override
     public void onLogOutSuccess() {
-        Navigator.navigateAndClearLast(requireActivity(), LoginWays.class);
-        Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show();
+        presenter.setUserRegisterState(false,this);
     }
 
     @Override
     public void onLogOutFail(String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setUserRegisterState() {
+        Navigator.navigateAndClearLast(requireActivity(), LoginWays.class);
+        Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show();
     }
 }

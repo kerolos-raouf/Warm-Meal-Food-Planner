@@ -48,7 +48,7 @@ public class SignUp extends AppCompatActivity implements OnCreatingAccountRespon
 
         customProgressBar = new CustomProgressBar(this);
 
-        presenter = SignUpPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance()),this);
+        presenter = SignUpPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance(this)),this);
     }
 
     void setUp()

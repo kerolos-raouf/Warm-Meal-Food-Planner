@@ -89,6 +89,9 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.circleimageview)
 
+    //youtube video viewr
+    implementation(libs.core)
+
 
 
 

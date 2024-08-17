@@ -3,9 +3,13 @@ package com.example.warmmeal.model.repository;
 import com.example.warmmeal.fragment_home.view.DataPurpose;
 import com.example.warmmeal.fragment_profile.view.OnLogOutResponse;
 import com.example.warmmeal.fragment_home.view.OnNetworkCallResponse;
+import com.example.warmmeal.fragment_search.view.ListPurpose;
+import com.example.warmmeal.fragment_search.view.OnGetListsResponse;
 import com.example.warmmeal.fragment_search.view.OnSearchResponse;
 import com.example.warmmeal.login.view.OnLoginResponse;
 import com.example.warmmeal.login_ways.view.OnLoginWithGmailResponse;
+import com.example.warmmeal.login_ways.view.OnSetUserRegisterSateResponse;
+import com.example.warmmeal.meal_screen.view.OnMealScreenResponse;
 import com.example.warmmeal.model.contracts.LocalDataSource;
 import com.example.warmmeal.model.contracts.ManagingAccountState;
 import com.example.warmmeal.model.contracts.RemoteDataSource;
@@ -104,5 +108,25 @@ public class RepositoryImpl implements Repository{
     @Override
     public void getMealsByCountry(String country, OnSearchResponse response) {
         remoteDataSource.getMealsByCountry(country, response);
+    }
+
+    @Override
+    public void getIngredients(OnGetListsResponse response, ListPurpose purpose) {
+        remoteDataSource.getIngredients(response, purpose);
+    }
+
+    @Override
+    public void getMealById(String id, OnMealScreenResponse response) {
+        remoteDataSource.getMealById(id, response);
+    }
+
+    @Override
+    public void setUserRegisterState(boolean loggedIn, OnSetUserRegisterSateResponse response) {
+        managingAccountState.setUserRegisterState(loggedIn,response);
+    }
+
+    @Override
+    public boolean isUserLoggedIn() {
+        return managingAccountState.isUserLoggedIn();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.warmmeal.login.presenter;
 
 import com.example.warmmeal.login.view.OnLoginResponse;
+import com.example.warmmeal.login_ways.view.OnSetUserRegisterSateResponse;
 import com.example.warmmeal.model.repository.Repository;
 
 public class LoginPresenter {
@@ -28,6 +29,11 @@ public class LoginPresenter {
         repository.loginWithUserNameAndPassword(userName,password,response);
     }
 
+
+    public void setUserLoggedInState(boolean loggedIn, OnSetUserRegisterSateResponse response)
+    {
+        repository.setUserRegisterState(loggedIn, response);
+    }
 
 
 

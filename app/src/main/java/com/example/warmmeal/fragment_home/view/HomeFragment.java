@@ -17,20 +17,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.warmmeal.R;
 
+import com.example.warmmeal.category_country_screen.view.CategoryAndCountryScreen;
+import com.example.warmmeal.category_country_screen.view.Type;
 import com.example.warmmeal.fragment_home.presenter.HomeFragmentPresenter;
 import com.example.warmmeal.fragment_home.view.adapters.HomeRecyclerViewAdapter;
+import com.example.warmmeal.meal_screen.view.MealActivity;
 import com.example.warmmeal.model.pojo.Categories;
 import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
 import com.example.warmmeal.model.network.NetworkAPI;
 
-import com.example.warmmeal.fragment_home.view.adapters.HomeRecyclerViewAdapter;
-
 import com.example.warmmeal.model.pojo.Meal;
 import com.example.warmmeal.model.pojo.Meals;
 import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
 import com.example.warmmeal.model.util.CustomProgressBar;
+import com.example.warmmeal.model.util.Navigator;
 
 import java.util.ArrayList;
 
@@ -38,6 +40,10 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
 
 
+    ////
+    public static final String MEAL_KEY = "MEAL_KEY";
+    public static final String CATEGORY_COUNTRY_KEY = "CATEGORY_COUNTRY_KEY";
+    public static String CATEGORY_COUNTRY_TYPE = "CATEGORY";
     ////
     HomeFragmentPresenter presenter;
 
@@ -54,7 +60,6 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     Context context;
 
 
-    Context context;
     HomeRecyclerViewAdapter mAdapter;
 
     ///for dialog
@@ -91,10 +96,10 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
         homeFragmentItems = new ArrayList<>();
         context = view.getContext();
 
-        presenter = HomeFragmentPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(context), SharedPrefHandler.getInstance()));
+        presenter = HomeFragmentPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(context), SharedPrefHandler.getInstance(context)));
 
-        presenter.getMealsByFirstLetter('a',DataPurpose.INSPIRATION,this);
-        presenter.getMealsByFirstLetter('b',DataPurpose.MORE_YOU_LIKE,this);
+        presenter.getMealsByFirstLetter('b',DataPurpose.INSPIRATION,this);
+        presenter.getMealsByFirstLetter('a',DataPurpose.MORE_YOU_LIKE,this);
         presenter.getAllCategories(this);
         presenter.getAllCountries(this);
 
@@ -135,7 +140,8 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     @Override
     public void onMealClicked(Meal meal) {
-        Toast.makeText(context, "meal clicked " + meal.getStrMeal(), Toast.LENGTH_SHORT).show();
+        customProgressBar.startProgressBar();
+        Navigator.navigateWithStringExtra(context, MealActivity.class, MEAL_KEY,meal.getIdMeal());
     }
 
     @Override
@@ -145,12 +151,14 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     @Override
     public void onCategoryClicked(String category) {
-        Toast.makeText(context, "category clicked " + category, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "category clicked " + category + " " + Type.CATEGORY.toString(), Toast.LENGTH_SHORT).show();
+        Navigator.navigateWithStringExtra(context, CategoryAndCountryScreen.class, CATEGORY_COUNTRY_TYPE, Type.CATEGORY.toString(), CATEGORY_COUNTRY_KEY,category);
     }
 
     @Override
     public void onCountryClicked(String country) {
-        Toast.makeText(context, "country clicked " + country, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "country clicked " + country, Toast.LENGTH_SHORT).show();
+        Navigator.navigateWithStringExtra(context, CategoryAndCountryScreen.class, CATEGORY_COUNTRY_TYPE,Type.COUNTRY.toString(),CATEGORY_COUNTRY_KEY,country);
     }
 
 
@@ -184,7 +192,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     @Override
     public void onFailure(String message) {
-        Log.d("Kerolos", "onFailure: " + message);
+        Log.d("Kerolos", "Home Fragment onFailure: " + message);
         customProgressBar.dismissProgressBar();
     }
 
@@ -192,23 +200,8 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
 
     @Override
-    public void onMealClicked(Meal meal) {
-        Toast.makeText(context, "meal clicked " + meal.getStrMeal(), Toast.LENGTH_SHORT).show();
+    public void onStop() {
+        super.onStop();
+        customProgressBar.dismissProgressBar();
     }
-
-    @Override
-    public void onAddToFavouriteClicked(Meal meal) {
-        Toast.makeText(context, "add to favourite clicked " + meal.getStrMeal() , Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onCategoryClicked(String category) {
-        Toast.makeText(context, "category clicked " + category, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onCountryClicked(String country) {
-        Toast.makeText(context, "category clicked " + country, Toast.LENGTH_SHORT).show();
-    }
-
 }

@@ -23,4 +23,5 @@
     <string name="search_for_meal">Search for meal…</string>
     <string name="pack_up">Pack Up</string>
     <string name="log_out">Log Out</string>
+    <string name="no_result_found">No Result Found.</string>
 </resources>

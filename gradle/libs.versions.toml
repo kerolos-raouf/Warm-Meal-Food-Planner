@@ -2,6 +2,7 @@
 agp = "8.5.1"
 androidSpinkit = "1.4.0"
 circleimageview = "3.1.0"
+core = "12.1.0"
 credentials = "1.2.2"
 firebaseBom = "33.1.2"
 glide = "4.16.0"
@@ -30,6 +31,7 @@ lifecycleViewmodelKtx = "2.6.1"
 adapter-rxjava3 = { module = "com.squareup.retrofit2:adapter-rxjava3", version.ref = "retrofit" }
 circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+core = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:core", version.ref = "core" }
 credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }

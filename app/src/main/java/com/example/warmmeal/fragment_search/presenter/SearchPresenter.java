@@ -1,5 +1,7 @@
 package com.example.warmmeal.fragment_search.presenter;
 
+import com.example.warmmeal.fragment_search.view.ListPurpose;
+import com.example.warmmeal.fragment_search.view.OnGetListsResponse;
 import com.example.warmmeal.fragment_search.view.OnSearchResponse;
 import com.example.warmmeal.model.repository.Repository;
 
@@ -33,6 +35,10 @@ public class SearchPresenter {
 
     public void getMealByMainIngredient(String ingredient, OnSearchResponse response) {
         repository.getMealsByMainIngredient(ingredient, response);
+    }
+
+    public void getIngredients(OnGetListsResponse response, ListPurpose purpose) {
+        repository.getIngredients(response, purpose);
     }
 
 }
