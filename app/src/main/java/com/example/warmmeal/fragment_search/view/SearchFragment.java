@@ -108,6 +108,8 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
             }
             return false;
         });
+
+        //searchEditText.setOnIc
     }
 
 
@@ -182,8 +184,6 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
             {
                 Toast.makeText(context, "Illegal Ingredient Name.", Toast.LENGTH_SHORT).show();
             }
-        }
-            presenter.getMealByMainIngredient(searchEditText.getText().toString(), this);
         }
     }
 
