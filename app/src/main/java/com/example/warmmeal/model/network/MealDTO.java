@@ -40,5 +40,7 @@ public interface MealDTO {
     @GET("list.php?i=list")
     Observable<Ingredients> getIngredients();
 
+    @GET("lookup.php")
+    Observable<Meals> getMealById(@Query("i") String mealId);
 
 }

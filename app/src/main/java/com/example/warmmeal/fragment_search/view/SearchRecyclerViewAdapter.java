@@ -47,7 +47,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.mealName.setText(meals.get(position).getStrMeal());
-        Glide.with(context).load(meals.get(position).getStrMealThumb()).into(holder.mealImage);
+        Glide.with(context).load(meals.get(position).getStrMealThumb()).placeholder(R.drawable.login_ways).into(holder.mealImage);
 
         holder.addToFavButton.setOnClickListener((v) -> {
 

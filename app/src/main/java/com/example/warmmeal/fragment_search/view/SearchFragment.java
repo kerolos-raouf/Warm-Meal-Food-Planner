@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
     Chip chipCountry;
     Chip chipIngredient;
     TextView noResult;
+    ImageView searchIcon;
 
     ////presenter
     SearchPresenter presenter;
@@ -83,6 +85,8 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
         chipIngredient = view.findViewById(R.id.chipIngredient);
         noResult = view.findViewById(R.id.searchNoResult);
         searchEditText = view.findViewById(R.id.searchEditText);
+        searchIcon = view.findViewById(R.id.searchIcon);
+
         ////
         presenter = SearchPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(view.getContext()), SharedPrefHandler.getInstance()));
         presenter.getIngredients(this, ListPurpose.INGREDIENTS);
@@ -100,15 +104,15 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
         searchEditText.setOnKeyListener((v, keyCode, event)->{
             if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER)
             {
-                if(!searchEditText.getText().toString().isEmpty())
-                {
-                    doActionOnSearchBegin();
-                }
+                doActionOnSearchBegin();
                 return true;
             }
             return false;
         });
 
+        searchEditText.setOnClickListener((v)->{
+            doActionOnSearchBegin();
+        });
         //searchEditText.setOnIc
     }
 
@@ -148,43 +152,47 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
 
     void doActionOnSearchBegin()
     {
-        if(chipMealName.isChecked())
+        if(!searchEditText.getText().toString().isEmpty())
         {
-            presenter.getMealByName(searchEditText.getText().toString(), this);
-        }
-        else if(chipCategory.isChecked())
-        {
-            String newCategory = parseToLegalCategoryName(searchEditText.getText().toString());
-            if(newCategory!= null)
+            if(chipMealName.isChecked())
             {
-                presenter.getMealByCategory(newCategory, this);
-            }else
+                presenter.getMealByName(searchEditText.getText().toString(), this);
+            }
+            else if(chipCategory.isChecked())
             {
-                Toast.makeText(context, "Illegal Category Name.", Toast.LENGTH_SHORT).show();
+                String newCategory = parseToLegalCategoryName(searchEditText.getText().toString());
+                if(newCategory!= null)
+                {
+                    presenter.getMealByCategory(newCategory, this);
+                }else
+                {
+                    Toast.makeText(context, "Illegal Category Name.", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else if (chipCountry.isChecked())
+            {
+                String newName = parseToLegalCountryName(searchEditText.getText().toString());
+                if(newName!= null)
+                {
+                    presenter.getMealByCountry(newName, this);
+                }else
+                {
+                    Toast.makeText(context, "Illegal Country Name.", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else if (chipIngredient.isChecked())
+            {
+                String newIngredient = parseToLegalIngredientName(searchEditText.getText().toString());
+                if(newIngredient!= null)
+                {
+                    presenter.getMealByMainIngredient(newIngredient, this);
+                }else
+                {
+                    Toast.makeText(context, "Illegal Ingredient Name.", Toast.LENGTH_SHORT).show();
+                }
             }
         }
-        else if (chipCountry.isChecked())
-        {
-            String newName = parseToLegalCountryName(searchEditText.getText().toString());
-            if(newName!= null)
-            {
-                presenter.getMealByCountry(newName, this);
-            }else
-            {
-                Toast.makeText(context, "Illegal Country Name.", Toast.LENGTH_SHORT).show();
-            }
-        }
-        else if (chipIngredient.isChecked())
-        {
-            String newIngredient = parseToLegalIngredientName(searchEditText.getText().toString());
-            if(newIngredient!= null)
-            {
-                presenter.getMealByMainIngredient(newIngredient, this);
-            }else
-            {
-                Toast.makeText(context, "Illegal Ingredient Name.", Toast.LENGTH_SHORT).show();
-            }
-        }
+
     }
 
 
@@ -272,5 +280,11 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
             }
         }
         return null;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        NetworkAPI.getInstance().clearDisposable();
     }
 }

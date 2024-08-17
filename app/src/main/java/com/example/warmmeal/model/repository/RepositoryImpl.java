@@ -8,6 +8,7 @@ import com.example.warmmeal.fragment_search.view.OnGetListsResponse;
 import com.example.warmmeal.fragment_search.view.OnSearchResponse;
 import com.example.warmmeal.login.view.OnLoginResponse;
 import com.example.warmmeal.login_ways.view.OnLoginWithGmailResponse;
+import com.example.warmmeal.meal_screen.view.OnMealScreenResponse;
 import com.example.warmmeal.model.contracts.LocalDataSource;
 import com.example.warmmeal.model.contracts.ManagingAccountState;
 import com.example.warmmeal.model.contracts.RemoteDataSource;
@@ -111,5 +112,10 @@ public class RepositoryImpl implements Repository{
     @Override
     public void getIngredients(OnGetListsResponse response, ListPurpose purpose) {
         remoteDataSource.getIngredients(response, purpose);
+    }
+
+    @Override
+    public void getMealById(String id, OnMealScreenResponse response) {
+        remoteDataSource.getMealById(id, response);
     }
 }

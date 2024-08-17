@@ -1,5 +1,10 @@
 package com.example.warmmeal.model.pojo;
 
+import android.util.Log;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+
 public class Meal {
 
     private String idMeal;
@@ -517,5 +522,45 @@ public class Meal {
 
     public void setStrMeasure20(String strMeasure20) {
         this.strMeasure20 = strMeasure20;
+    }
+
+
+    public ArrayList<String> getIngredients() {
+        ArrayList<String> ingredients = new ArrayList<>();
+        Field[] fields = this.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getName().startsWith("strIngredient")) {
+                try {
+                    field.setAccessible(true);
+                    String value = (String) field.get(this);
+                    if (value != null && !value.isEmpty()) {
+                        ingredients.add(value);
+                    }
+                } catch (IllegalAccessException e) {
+                    Log.d("Kerolos", "getIngredients Error: " + e.getMessage());
+                }
+            }
+        }
+        return ingredients;
+    }
+
+    public ArrayList<String> getMeasures() {
+        ArrayList<String> ingredients = new ArrayList<>();
+        Field[] fields = this.getClass().getDeclaredFields();
+
+        for (Field field : fields) {
+            if (field.getName().startsWith("strMeasure")) {
+                try {
+                    field.setAccessible(true);
+                    String value = (String) field.get(this);
+                    if (value != null && !value.isEmpty()) {
+                        ingredients.add(value);
+                    }
+                } catch (IllegalAccessException e) {
+                    Log.d("Kerolos", "getIngredients: " + e.getMessage());
+                }
+            }
+        }
+        return ingredients;
     }
 }

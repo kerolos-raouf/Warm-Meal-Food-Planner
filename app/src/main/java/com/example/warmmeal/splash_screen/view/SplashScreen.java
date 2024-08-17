@@ -38,11 +38,17 @@ public class SplashScreen extends AppCompatActivity implements ISplashScreen {
     protected void onResume() {
         super.onResume();
 
-        presenter.timer(3);
+        presenter.timer(4);
     }
 
     @Override
     public void onTimerFinished() {
         Navigator.navigateAndClearLast(this, LoginWays.class);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.stopTimer();
     }
 }
