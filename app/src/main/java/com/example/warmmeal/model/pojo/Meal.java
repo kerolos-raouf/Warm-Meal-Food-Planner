@@ -1,6 +1,15 @@
 package com.example.warmmeal.model.pojo;
 
-public class Meal {
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+
+public class Meal implements Parcelable {
 
     private String idMeal;
     private String strMeal;
@@ -50,8 +59,77 @@ public class Meal {
     private String strMeasure18;
     private String strMeasure19;
     private String strMeasure20;
+    String idCategory;
+    String strCategoryThumb;
+    String strCategoryDescription;
 
 
+
+    public static final Parcelable.Creator<Meal> CREATOR = new Parcelable.Creator<Meal>() {
+        @Override
+        public Meal createFromParcel(Parcel in) {
+            return new Meal(in);
+        }
+
+        @Override
+        public Meal[] newArray(int size) {
+            return new Meal[size];
+        }
+    };
+
+
+    public Meal(Parcel in) {
+
+        this.idMeal = in.readString();
+        this.strMeal = in.readString();
+        this.strCategory = in.readString();
+        this.strArea = in.readString();
+        this.strInstructions = in.readString();
+        this.strMealThumb = in.readString();
+        this.strTags = in.readString();
+        this.strYoutube = in.readString();
+        this.strIngredient1 = in.readString();
+        this.strIngredient2 = in.readString();
+        this.strIngredient3 = in.readString();
+        this.strIngredient4 = in.readString();
+        this.strIngredient5 = in.readString();
+        this.strIngredient6 = in.readString();
+        this.strIngredient8 = in.readString();
+        this.strIngredient9 = in.readString();
+        this.strIngredient10 = in.readString();
+        this.strIngredient11 = in.readString();
+        this.strIngredient12 = in.readString();
+        this.strIngredient13 = in.readString();
+        this.strIngredient14 = in.readString();
+        this.strIngredient15 = in.readString();
+        this.strIngredient16 = in.readString();
+        this.strIngredient17 = in.readString();
+        this.strIngredient18 = in.readString();
+        this.strIngredient19 = in.readString();
+        this.strIngredient20 = in.readString();
+        this.strMeasure1 = in.readString();
+        this.strMeasure2 = in.readString();
+        this.strMeasure3 = in.readString();
+        this.strMeasure4 = in.readString();
+        this.strMeasure5 = in.readString();
+        this.strMeasure6 = in.readString();
+        this.strMeasure7 = in.readString();
+        this.strMeasure8 = in.readString();
+        this.strMeasure9 = in.readString();
+        this.strMeasure10 = in.readString();
+        this.strMeasure11 = in.readString();
+        this.strMeasure13 = in.readString();
+        this.strMeasure14 = in.readString();
+        this.strMeasure15 = in.readString();
+        this.strMeasure16 = in.readString();
+        this.strMeasure17 = in.readString();
+        this.strMeasure18 = in.readString();
+        this.strMeasure19 = in.readString();
+        this.strMeasure20 = in.readString();
+        this.idCategory = in.readString();
+        this.strCategoryThumb = in.readString();
+        this.strCategoryDescription = in.readString();
+    }
 
     public Meal() {
 
@@ -102,60 +180,35 @@ public class Meal {
         this.strMeasure18 = "";
         this.strMeasure19 = "";
         this.strMeasure20 = "";
-
+        this.idCategory = "";
+        this.strCategoryThumb = "";
+        this.strCategoryDescription = "";
     }
 
-    public Meal(String idMeal, String strMeal, String strCategory, String strArea, String strInstructions, String strMealThumb, String strTags, String strYoutube, String strIngredient1, String strIngredient2, String strIngredient3, String strIngredient4, String strIngredient5, String strIngredient6, String strIngredient7, String strIngredient8, String strIngredient9, String strIngredient10, String strIngredient11, String strIngredient12, String strIngredient13, String strIngredient14, String strIngredient15, String strIngredient16, String strIngredient17, String strIngredient18, String strIngredient19, String strIngredient20, String strMeasure1, String strMeasure2, String strMeasure3, String strMeasure4, String strMeasure5, String strMeasure6, String strMeasure7, String strMeasure8, String strMeasure9, String strMeasure10, String strMeasure11, String strMeasure12, String strMeasure13, String strMeasure14, String strMeasure15, String strMeasure16, String strMeasure17, String strMeasure18, String strMeasure19, String strMeasure20) {
-        this.idMeal = idMeal;
-        this.strMeal = strMeal;
-        this.strCategory = strCategory;
-        this.strArea = strArea;
-        this.strInstructions = strInstructions;
-        this.strMealThumb = strMealThumb;
-        this.strTags = strTags;
-        this.strYoutube = strYoutube;
-        this.strIngredient1 = strIngredient1;
-        this.strIngredient2 = strIngredient2;
-        this.strIngredient3 = strIngredient3;
-        this.strIngredient4 = strIngredient4;
-        this.strIngredient5 = strIngredient5;
-        this.strIngredient6 = strIngredient6;
-        this.strIngredient7 = strIngredient7;
-        this.strIngredient8 = strIngredient8;
-        this.strIngredient9 = strIngredient9;
-        this.strIngredient10 = strIngredient10;
-        this.strIngredient11 = strIngredient11;
-        this.strIngredient12 = strIngredient12;
-        this.strIngredient13 = strIngredient13;
-        this.strIngredient14 = strIngredient14;
-        this.strIngredient15 = strIngredient15;
-        this.strIngredient16 = strIngredient16;
-        this.strIngredient17 = strIngredient17;
-        this.strIngredient18 = strIngredient18;
-        this.strIngredient19 = strIngredient19;
-        this.strIngredient20 = strIngredient20;
-        this.strMeasure1 = strMeasure1;
-        this.strMeasure2 = strMeasure2;
-        this.strMeasure3 = strMeasure3;
-        this.strMeasure4 = strMeasure4;
-        this.strMeasure5 = strMeasure5;
-        this.strMeasure6 = strMeasure6;
-        this.strMeasure7 = strMeasure7;
-        this.strMeasure8 = strMeasure8;
-        this.strMeasure9 = strMeasure9;
-        this.strMeasure10 = strMeasure10;
-        this.strMeasure11 = strMeasure11;
-        this.strMeasure12 = strMeasure12;
-        this.strMeasure13 = strMeasure13;
-        this.strMeasure14 = strMeasure14;
-        this.strMeasure15 = strMeasure15;
-        this.strMeasure16 = strMeasure16;
-        this.strMeasure17 = strMeasure17;
-        this.strMeasure18 = strMeasure18;
-        this.strMeasure19 = strMeasure19;
-        this.strMeasure20 = strMeasure20;
+
+    public String getIdCategory() {
+        return idCategory;
     }
 
+    public void setIdCategory(String idCategory) {
+        this.idCategory = idCategory;
+    }
+
+    public String getStrCategoryDescription() {
+        return strCategoryDescription;
+    }
+
+    public void setStrCategoryDescription(String strCategoryDescription) {
+        this.strCategoryDescription = strCategoryDescription;
+    }
+
+    public String getStrCategoryThumb() {
+        return strCategoryThumb;
+    }
+
+    public void setStrCategoryThumb(String strCategoryThumb) {
+        this.strCategoryThumb = strCategoryThumb;
+    }
 
     public String getIdMeal() {
         return idMeal;
@@ -539,5 +592,106 @@ public class Meal {
 
     public void setStrMeasure20(String strMeasure20) {
         this.strMeasure20 = strMeasure20;
+    }
+
+
+    public ArrayList<String> getIngredients() {
+        ArrayList<String> ingredients = new ArrayList<>();
+        Field[] fields = this.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getName().startsWith("strIngredient")) {
+                try {
+                    field.setAccessible(true);
+                    String value = (String) field.get(this);
+                    if (value != null && !value.isEmpty()) {
+                        ingredients.add(value);
+                    }
+                } catch (IllegalAccessException e) {
+                    Log.d("Kerolos", "getIngredients Error: " + e.getMessage());
+                }
+            }
+        }
+        return ingredients;
+    }
+
+    public ArrayList<String> getMeasures() {
+        ArrayList<String> measures = new ArrayList<>();
+        Field[] fields = this.getClass().getDeclaredFields();
+
+        for (Field field : fields) {
+            if (field.getName().startsWith("strMeasure")) {
+                try {
+                    field.setAccessible(true);
+                    String value = (String) field.get(this);
+                    if (value != null && !value.isEmpty()) {
+                        measures.add(value);
+                    }
+                } catch (IllegalAccessException e) {
+                    Log.d("Kerolos", "getIngredients: " + e.getMessage());
+                }
+            }
+        }
+        return measures;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(this.idMeal);
+        dest.writeString(this.strMeal);
+        dest.writeString(this.strCategory);
+        dest.writeString(this.strArea);
+        dest.writeString(this.strInstructions);
+        dest.writeString(this.strMealThumb);
+        dest.writeString(this.strTags);
+        dest.writeString(this.strYoutube);
+        dest.writeString(this.strIngredient1);
+        dest.writeString(this.strIngredient2);
+        dest.writeString(this.strIngredient3);
+        dest.writeString(this.strIngredient4);
+        dest.writeString(this.strIngredient5);
+        dest.writeString(this.strIngredient6);
+        dest.writeString(this.strIngredient7);
+        dest.writeString(this.strIngredient8);
+        dest.writeString(this.strIngredient9);
+        dest.writeString(this.strIngredient10);
+        dest.writeString(this.strIngredient11);
+        dest.writeString(this.strIngredient12);
+        dest.writeString(this.strIngredient13);
+        dest.writeString(this.strIngredient14);
+        dest.writeString(this.strIngredient15);
+        dest.writeString(this.strIngredient16);
+        dest.writeString(this.strIngredient17);
+        dest.writeString(this.strIngredient18);
+        dest.writeString(this.strIngredient19);
+        dest.writeString(this.strIngredient20);
+        dest.writeString(this.strMeasure1);
+        dest.writeString(this.strMeasure1);
+        dest.writeString(this.strMeasure2);
+        dest.writeString(this.strMeasure3);
+        dest.writeString(this.strMeasure4);
+        dest.writeString(this.strMeasure5);
+        dest.writeString(this.strMeasure6);
+        dest.writeString(this.strMeasure7);
+        dest.writeString(this.strMeasure8);
+        dest.writeString(this.strMeasure9);
+        dest.writeString(this.strMeasure10);
+        dest.writeString(this.strMeasure11);
+        dest.writeString(this.strMeasure12);
+        dest.writeString(this.strMeasure13);
+        dest.writeString(this.strMeasure14);
+        dest.writeString(this.strMeasure15);
+        dest.writeString(this.strMeasure16);
+        dest.writeString(this.strMeasure17);
+        dest.writeString(this.strMeasure18);
+        dest.writeString(this.strMeasure19);
+        dest.writeString(this.strMeasure20);
+        dest.writeString(this.strCategory);
+        dest.writeString(this.strCategoryThumb);
+        dest.writeString(this.strCategoryDescription);
     }
 }

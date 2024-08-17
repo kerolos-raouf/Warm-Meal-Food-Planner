@@ -1,7 +1,7 @@
 package com.example.warmmeal.model.network;
 
 import com.example.warmmeal.model.pojo.Categories;
-import com.example.warmmeal.model.pojo.Meal;
+import com.example.warmmeal.model.pojo.Ingredients;
 import com.example.warmmeal.model.pojo.Meals;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -23,5 +23,24 @@ public interface MealDTO {
 
     @GET("list.php?a=list")
     Observable<Meals> getAllCountries();
+
+    @GET("search.php")
+    Observable<Meals> getMealByName(@Query("s") String name);
+
+    @GET("filter.php")
+    Observable<Meals> getMealByCategory(@Query("c") String category);
+
+    @GET("filter.php")
+    Observable<Meals> getMealByCountry(@Query("a") String country);
+
+    @GET("filter.php")
+    Observable<Meals> getMealByMainIngredient(@Query("i") String ingredient);
+
+
+    @GET("list.php?i=list")
+    Observable<Ingredients> getIngredients();
+
+    @GET("lookup.php")
+    Observable<Meals> getMealById(@Query("i") String mealId);
 
 }

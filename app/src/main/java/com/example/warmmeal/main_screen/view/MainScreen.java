@@ -3,6 +3,7 @@ package com.example.warmmeal.main_screen.view;
 import android.os.Bundle;
 
 import com.example.warmmeal.R;
+import com.example.warmmeal.model.network.NetworkAPI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,6 +54,9 @@ public class MainScreen extends AppCompatActivity {
         return navController.navigateUp() || super.onSupportNavigateUp();
     }
 
-
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        NetworkAPI.getInstance().clearDisposable();
+    }
 }

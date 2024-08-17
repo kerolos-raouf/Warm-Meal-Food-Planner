@@ -83,34 +83,22 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             ((HeaderTextViewHolder) holder).header.setText(headerText);
         }
         else if(holder instanceof CategoryViewHolder) {
-            try{
-
-                ArrayList<Category> categories = (ArrayList<Category>)items.get(position).getItem();
-                LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-                ((CategoryViewHolder) holder).recyclerView.setLayoutManager(layoutManager);
-                ((CategoryViewHolder) holder).recyclerView.setAdapter(new CategoryRecyclerViewAdapter(context,  categories,listener));
-            }catch (Exception e)
-            {
-                Log.d("Kerolos", "onBindViewHolder: " + e.getMessage());
-            }
-
+            ArrayList<Meal> meals = (ArrayList<Meal>)items.get(position).getItem();
+            LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+            ((CategoryViewHolder) holder).recyclerView.setLayoutManager(layoutManager);
+            ((CategoryViewHolder) holder).recyclerView.setAdapter(new CategoryRecyclerViewAdapter(context,  meals,listener));
         }
         else if(holder instanceof CountryViewHolder) {
-            {
-                ArrayList<Meal> meals = (ArrayList<Meal>)items.get(position).getItem();
-                LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-                ((CountryViewHolder) holder).recyclerView.setLayoutManager(layoutManager);
-                ((CountryViewHolder) holder).recyclerView.setAdapter(new CountryRecyclerViewAdapter(context,  meals,listener));
-
-
+            ArrayList<Meal> meals = (ArrayList<Meal>)items.get(position).getItem();
+            LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+            ((CountryViewHolder) holder).recyclerView.setLayoutManager(layoutManager);
+            ((CountryViewHolder) holder).recyclerView.setAdapter(new CountryRecyclerViewAdapter(context,  meals,listener));
         }
         else if(holder instanceof DailyInspirationViewHolder) {
-
             ArrayList<Meal> meals = (ArrayList<Meal>)items.get(position).getItem();
             LinearLayoutManager layoutManager = new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false);
             ((DailyInspirationViewHolder) holder).recyclerView.setLayoutManager(layoutManager);
             ((DailyInspirationViewHolder) holder).recyclerView.setAdapter(new DailyInspirationRecyclerViewAdapter(context,  meals,listener));
-
         }
         else if(holder instanceof MealsYouMightLikeViewHolder)
         {

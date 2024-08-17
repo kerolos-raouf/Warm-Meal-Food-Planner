@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.warmmeal.R;
 import com.example.warmmeal.login_ways.view.LoginWays;
+import com.example.warmmeal.model.util.Navigator;
 import com.example.warmmeal.splash_screen.presenter.SplashScreenPresenter;
 
 public class SplashScreen extends AppCompatActivity implements ISplashScreen {
@@ -37,13 +38,17 @@ public class SplashScreen extends AppCompatActivity implements ISplashScreen {
     protected void onResume() {
         super.onResume();
 
-        presenter.timer(3);
+        presenter.timer(4);
     }
 
     @Override
     public void onTimerFinished() {
-        Intent intent = new Intent(this, LoginWays.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        Navigator.navigateAndClearLast(this, LoginWays.class);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.stopTimer();
     }
 }

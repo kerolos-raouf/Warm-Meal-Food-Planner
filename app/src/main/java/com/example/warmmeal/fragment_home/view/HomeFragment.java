@@ -17,22 +17,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.warmmeal.R;
 
+import com.example.warmmeal.category_country_screen.view.CategoryAndCountryScreen;
+import com.example.warmmeal.category_country_screen.view.Type;
 import com.example.warmmeal.fragment_home.presenter.HomeFragmentPresenter;
 import com.example.warmmeal.fragment_home.view.adapters.HomeRecyclerViewAdapter;
-import com.example.warmmeal.fragment_search.view.OnNetworkCallResponse;
+import com.example.warmmeal.meal_screen.view.MealActivity;
 import com.example.warmmeal.model.pojo.Categories;
-import com.example.warmmeal.model.pojo.Category;
 import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
 import com.example.warmmeal.model.network.NetworkAPI;
 
-import com.example.warmmeal.fragment_home.view.adapters.HomeRecyclerViewAdapter;
-
 import com.example.warmmeal.model.pojo.Meal;
 import com.example.warmmeal.model.pojo.Meals;
 import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
 import com.example.warmmeal.model.util.CustomProgressBar;
+import com.example.warmmeal.model.util.Navigator;
 
 import java.util.ArrayList;
 
@@ -40,6 +40,10 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
 
 
+    ////
+    public static final String MEAL_KEY = "MEAL_KEY";
+    public static final String CATEGORY_COUNTRY_KEY = "CATEGORY_COUNTRY_KEY";
+    public static String CATEGORY_COUNTRY_TYPE = "CATEGORY";
     ////
     HomeFragmentPresenter presenter;
 
@@ -49,20 +53,18 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     ///lists
     ArrayList<Meal> dailyInspirationMeals;
-    ArrayList<Category> categories;
+    ArrayList<Meal> categories;
     ArrayList<Meal> countries;
     ArrayList<Meal> mealsYouMightLike;
     ArrayList<HomeFragmentItem<Object>> homeFragmentItems;
     Context context;
 
 
-    Context context;
     HomeRecyclerViewAdapter mAdapter;
 
     ///for dialog
     CustomProgressBar customProgressBar;
-    int numberOfCalls = 3;
-    int counter = 0;
+    boolean putInDailyInspiration = false;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -94,9 +96,10 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
         homeFragmentItems = new ArrayList<>();
         context = view.getContext();
 
-        presenter = HomeFragmentPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(context), SharedPrefHandler.getInstance()));
+        presenter = HomeFragmentPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(context), SharedPrefHandler.getInstance(context)));
 
-        presenter.getMealsByFirstLetter('b',this);
+        presenter.getMealsByFirstLetter('b',DataPurpose.INSPIRATION,this);
+        presenter.getMealsByFirstLetter('a',DataPurpose.MORE_YOU_LIKE,this);
         presenter.getAllCategories(this);
         presenter.getAllCountries(this);
 
@@ -105,27 +108,6 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     void setUp()
     {
 
-
-
-        Meal meal = new Meal();
-        meal.setStrMeal("Kepda");
-        meal.setStrArea("Egypt");
-        meal.setStrMealThumb("https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg");
-        meal.setStrCategory("Dessert");
-
-
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Daily Inspiration :"));
-
-        dailyInspirationMeals.add(meal);
-        dailyInspirationMeals.add(meal);
-        dailyInspirationMeals.add(meal);
-        dailyInspirationMeals.add(meal);
-        dailyInspirationMeals.add(meal);
-        dailyInspirationMeals.add(meal);
-        dailyInspirationMeals.add(meal);
-        dailyInspirationMeals.add(meal);
-
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.DAILY_INSPIRATION,dailyInspirationMeals));
 
     }
 
@@ -158,7 +140,8 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     @Override
     public void onMealClicked(Meal meal) {
-        Toast.makeText(context, "meal clicked " + meal.getStrMeal(), Toast.LENGTH_SHORT).show();
+        customProgressBar.startProgressBar();
+        Navigator.navigateWithStringExtra(context, MealActivity.class, MEAL_KEY,meal.getIdMeal());
     }
 
     @Override
@@ -168,43 +151,48 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     @Override
     public void onCategoryClicked(String category) {
-        Toast.makeText(context, "category clicked " + category, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "category clicked " + category + " " + Type.CATEGORY.toString(), Toast.LENGTH_SHORT).show();
+        Navigator.navigateWithStringExtra(context, CategoryAndCountryScreen.class, CATEGORY_COUNTRY_TYPE, Type.CATEGORY.toString(), CATEGORY_COUNTRY_KEY,category);
     }
 
     @Override
     public void onCountryClicked(String country) {
-        Toast.makeText(context, "country clicked " + country, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "country clicked " + country, Toast.LENGTH_SHORT).show();
+        Navigator.navigateWithStringExtra(context, CategoryAndCountryScreen.class, CATEGORY_COUNTRY_TYPE,Type.COUNTRY.toString(),CATEGORY_COUNTRY_KEY,country);
     }
 
 
 ///////onNetworkCallResponse
     @Override
-    public void onGetMealByCharacterSuccess(Meals meals) {
+    public void onGetMealByCharacterForMoreYouLikeSuccess(Meals meals) {
         mealsYouMightLike = (ArrayList<Meal>) meals.getMeals();
         setUpRecyclerViewWithLists();
         customProgressBar.dismissProgressBar();
     }
 
+    @Override
+    public void onGetMealByCharacterForInspirationSuccess(Meals meals) {
+        dailyInspirationMeals = (ArrayList<Meal>) meals.getMeals();
+        setUpRecyclerViewWithLists();
+        customProgressBar.dismissProgressBar();
+    }
 
 
     @Override
     public void onGetCategorySuccess(Categories categories) {
-        this.categories = (ArrayList<Category>) categories.getCategories();
-        //setUpRecyclerViewWithLists();
+        this.categories = (ArrayList<Meal>) categories.getCategories();
         customProgressBar.dismissProgressBar();
     }
 
     @Override
     public void onGetAllCountriesSuccess(Meals meals) {
         this.countries = (ArrayList<Meal>) meals.getMeals();
-        //setUpRecyclerViewWithLists();
         customProgressBar.dismissProgressBar();
     }
 
     @Override
     public void onFailure(String message) {
-        Log.d("Kerolos", "onFailure: " + message);
-        //Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        Log.d("Kerolos", "Home Fragment onFailure: " + message);
         customProgressBar.dismissProgressBar();
     }
 
@@ -212,23 +200,8 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
 
     @Override
-    public void onMealClicked(Meal meal) {
-        Toast.makeText(context, "meal clicked " + meal.getStrMeal(), Toast.LENGTH_SHORT).show();
+    public void onStop() {
+        super.onStop();
+        customProgressBar.dismissProgressBar();
     }
-
-    @Override
-    public void onAddToFavouriteClicked(Meal meal) {
-        Toast.makeText(context, "add to favourite clicked " + meal.getStrMeal() , Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onCategoryClicked(String category) {
-        Toast.makeText(context, "category clicked " + category, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onCountryClicked(String country) {
-        Toast.makeText(context, "category clicked " + country, Toast.LENGTH_SHORT).show();
-    }
-
 }
