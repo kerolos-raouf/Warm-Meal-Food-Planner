@@ -1,11 +1,9 @@
 package com.example.warmmeal.fragment_home.view.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,8 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.warmmeal.R;
 import com.example.warmmeal.fragment_home.view.HomeFragmentItem;
-import com.example.warmmeal.fragment_home.view.OnNestedRecyclerViewItemClickedListener;
-import com.example.warmmeal.model.pojo.Category;
+import com.example.warmmeal.fragment_home.view.contracts.OnNestedRecyclerViewItemClickedListener;
 
 import com.example.warmmeal.model.pojo.Meal;
 

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.warmmeal.R;
-import com.example.warmmeal.fragment_home.view.OnNestedRecyclerViewItemClickedListener;
+import com.example.warmmeal.fragment_home.view.contracts.OnNestedRecyclerViewItemClickedListener;
 import com.example.warmmeal.model.pojo.Meal;
 
 import java.util.ArrayList;

@@ -19,10 +19,14 @@ import com.example.warmmeal.R;
 
 import com.example.warmmeal.category_country_screen.view.CategoryAndCountryScreen;
 import com.example.warmmeal.category_country_screen.view.Type;
+import com.example.warmmeal.fragment_favourite.view.OnAddToFavouriteResponse;
 import com.example.warmmeal.fragment_home.presenter.HomeFragmentPresenter;
 import com.example.warmmeal.fragment_home.view.adapters.HomeRecyclerViewAdapter;
+import com.example.warmmeal.fragment_home.view.contracts.OnNestedRecyclerViewItemClickedListener;
+import com.example.warmmeal.fragment_home.view.contracts.OnNetworkCallResponse;
 import com.example.warmmeal.meal_screen.view.MealActivity;
 import com.example.warmmeal.model.pojo.Categories;
+import com.example.warmmeal.model.pojo.FavouriteMeal;
 import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
@@ -33,10 +37,11 @@ import com.example.warmmeal.model.pojo.Meals;
 import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
 import com.example.warmmeal.model.util.CustomProgressBar;
 import com.example.warmmeal.model.util.Navigator;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemClickedListener, OnNetworkCallResponse {
+public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemClickedListener, OnNetworkCallResponse, OnAddToFavouriteResponse {
 
 
 
@@ -146,7 +151,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     @Override
     public void onAddToFavouriteClicked(Meal meal) {
-        Toast.makeText(context, "add to favourite clicked " + meal.getStrMeal() , Toast.LENGTH_SHORT).show();
+        presenter.addFavouriteMeal(new FavouriteMeal(FirebaseHandler.getInstance().getCurrentUser().getUid(),meal),this);
     }
 
     @Override
@@ -205,5 +210,16 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     public void onStop() {
         super.onStop();
         customProgressBar.dismissProgressBar();
+    }
+
+    @Override
+    public void onAddToFavouriteSuccess() {
+        //Toast.makeText(context, "Meal was added to favourites" , Toast.LENGTH_SHORT).show();
+        Snackbar.make(recyclerView,"Meal was added to favourites", Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onAddToFavouriteFailure(String message) {
+
     }
 }

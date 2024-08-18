@@ -23,6 +23,7 @@ import java.util.Objects;
 public class FirebaseHandler implements ManagingAccount {
 
 
+    public static String CURRENT_USER_ID;
     private final FirebaseAuth mAuth;
 
 
