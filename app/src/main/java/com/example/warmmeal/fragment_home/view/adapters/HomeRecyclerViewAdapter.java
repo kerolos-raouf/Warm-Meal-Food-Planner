@@ -178,7 +178,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     class MealsYouMightLikeViewHolder extends BaseViewHolder {
 
         ImageView mealImage;
-        Button addToFavouriteButton;
+        ImageView addToFavouriteButton;
         TextView mealName;
 
 

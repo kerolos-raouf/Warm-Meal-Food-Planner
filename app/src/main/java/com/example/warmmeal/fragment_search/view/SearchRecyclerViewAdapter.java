@@ -61,7 +61,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
-        Button addToFavButton;
+        ImageView addToFavButton;
         TextView mealName;
         ImageView mealImage;
 

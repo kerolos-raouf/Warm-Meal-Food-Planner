@@ -40,7 +40,7 @@ public class DailyInspirationRecyclerViewAdapter extends RecyclerView.Adapter<Da
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView dailyMealImage;
         TextView dailyMealName;
-        Button dailyAdd;
+        ImageView dailyAdd;
 
         ViewHolder(View view) {
             super(view);

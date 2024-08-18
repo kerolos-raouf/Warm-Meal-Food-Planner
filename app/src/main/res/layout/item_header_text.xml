@@ -11,7 +11,7 @@
         android:layout_margin="10dp"
         android:fontFamily="@font/roboto_normal"
         android:text="This is header :"
-        android:textColor="@color/white"
+        android:textColor="@color/dark_gray"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

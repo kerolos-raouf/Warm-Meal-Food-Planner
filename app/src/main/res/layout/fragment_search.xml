@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
+    android:background="@color/light_sugar"
     tools:context=".fragment_search.view.SearchFragment">
 
     <RelativeLayout
@@ -32,8 +32,8 @@
             android:paddingStart="45dp"
             android:paddingEnd="30dp"
 
-            android:textColor="@color/light_sugar"
-            android:textColorHint="@color/dark_sugar"
+            android:textColor="@color/dark_gray"
+            android:textColorHint="@color/light_gray"
 
             android:layout_centerVertical="true"
             />
@@ -118,7 +118,7 @@
         android:fontFamily="@font/roboto_medium"
         android:gravity="center"
         android:text="@string/no_result_found"
-        android:textColor="@color/dark_gray"
+        android:textColor="@color/dark_sugar"
         android:textSize="30sp"
 
         app:layout_constraintBottom_toBottomOf="parent"

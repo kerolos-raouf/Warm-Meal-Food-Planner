@@ -115,19 +115,19 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     {
         homeFragmentItems.clear();
 
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Daily Inspiration :"));
+        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Daily Inspiration"));
 
         homeFragmentItems.add(new HomeFragmentItem<>(ItemType.DAILY_INSPIRATION,dailyInspirationMeals));
 
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Categories :"));
+        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Categories"));
 
         homeFragmentItems.add(new HomeFragmentItem<>(ItemType.CATEGORY,categories));
 
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Countries :"));
+        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Countries"));
 
         homeFragmentItems.add(new HomeFragmentItem<>(ItemType.COUNTRY,countries));
 
-        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Meals you might like :"));
+        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Meals you might like"));
 
         for(Meal meal : mealsYouMightLike)
         {
@@ -181,12 +181,14 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     @Override
     public void onGetCategorySuccess(Categories categories) {
         this.categories = (ArrayList<Meal>) categories.getCategories();
+        setUpRecyclerViewWithLists();
         customProgressBar.dismissProgressBar();
     }
 
     @Override
     public void onGetAllCountriesSuccess(Meals meals) {
         this.countries = (ArrayList<Meal>) meals.getMeals();
+        setUpRecyclerViewWithLists();
         customProgressBar.dismissProgressBar();
     }
 

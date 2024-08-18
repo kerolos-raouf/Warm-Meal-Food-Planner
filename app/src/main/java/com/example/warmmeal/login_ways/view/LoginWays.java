@@ -37,6 +37,7 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
     Button signUp,skip;
     TextView login;
 
+    //google auth
     GoogleSignInClient mGoogleSignInClient;
     private final int RC_SIGN = 20;
 
@@ -49,8 +50,6 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
         setContentView(R.layout.activity_login_ways);
         initViews();
         setUp();
-
-
     }
 
     void initViews()
@@ -78,8 +77,8 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
             showDialog();
         });
 
+        //google auth
         gmail.setOnClickListener((e)->{
-
             progressBar.startProgressBar();
             signInUsingGoogle();
         });
@@ -103,6 +102,7 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
         });
     }
 
+    //google auth
     void signInUsingGoogle()
     {
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -117,6 +117,7 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
         startActivityForResult(intent,RC_SIGN);
     }
 
+    //google auth
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -128,6 +129,7 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
                 presenter.loginWithGmail(account.getIdToken(),this);
             }catch (ApiException e)
             {
+                progressBar.dismissProgressBar();
                 Toast.makeText(this, "Error "+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
