@@ -134,13 +134,10 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
         homeFragmentItems.add(new HomeFragmentItem<>(ItemType.HEADER_TEXT,"Meals you might like"));
 
-        for(Meal meal : mealsYouMightLike)
-        {
-            homeFragmentItems.add(new HomeFragmentItem<>(ItemType.MEALS_YOU_MIGHT_LIKE, meal));
-        }
+        homeFragmentItems.add(new HomeFragmentItem<>(ItemType.MEALS_YOU_MIGHT_LIKE, mealsYouMightLike));
+
 
         mAdapter.setData(homeFragmentItems);
-
     }
 
     @Override
@@ -151,7 +148,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     @Override
     public void onAddToFavouriteClicked(Meal meal) {
-        presenter.addFavouriteMeal(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()),this);
+        presenter.addFavouriteMeal(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb(),true),this);
     }
 
     @Override

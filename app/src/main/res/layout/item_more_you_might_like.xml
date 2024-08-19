@@ -8,7 +8,7 @@
     android:layout_marginBottom="10dp"
     android:backgroundTint="@color/dark_gray"
     android:elevation="10dp"
-    app:cardCornerRadius="30dp"
+    app:cardCornerRadius="25dp"
     android:background="@color/light_gray"
     >
 
@@ -46,19 +46,20 @@
 
         <TextView
             android:id="@+id/itemYouMightLikeViewMealName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
+            android:layout_margin="5dp"
             android:fontFamily="@font/roboto_normal"
             android:gravity="center"
             android:lines="2"
             android:padding="10dp"
-            android:layout_margin="5dp"
             android:text="Meal Name"
             android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
 
+            app:layout_constraintEnd_toStartOf="@+id/itemYouMightLikeViewMealAdd"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView

@@ -2,11 +2,11 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_width="130dp"
+    android:layout_height="180dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="30dp"
-    app:cardCornerRadius="15dp"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="25dp"
     android:elevation="10dp"
     android:backgroundTint="@color/dark_gray"
     >
@@ -16,7 +16,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/stackViewMealImage"
+            android:id="@+id/itemSmallMealImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
@@ -39,11 +39,9 @@
 
 
         <TextView
-            android:id="@+id/stackViewMealName"
+            android:id="@+id/itemSmallMealName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-
-            android:layout_marginStart="20dp"
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/roboto_normal"
             android:gravity="center"
@@ -52,22 +50,21 @@
 
             android:text="Meal Name"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/stackViewMealAdd"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
 
         <ImageView
-            android:id="@+id/stackViewMealAdd"
+            android:id="@+id/itemSmallAddToFavourite"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="20dp"
             android:src="@drawable/icon_favourite_border"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-          />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

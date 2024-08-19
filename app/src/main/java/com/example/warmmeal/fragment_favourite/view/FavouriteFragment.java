@@ -81,10 +81,9 @@ public class FavouriteFragment extends Fragment implements OnGetFavouriteMealRes
             currentMeal.setIdMeal(favMeal.idMeal);
             currentMeal.setStrMeal(favMeal.strMeal);
             currentMeal.setStrMealThumb(favMeal.strMealThumb);
+            currentMeal.setFavourite(true);
             meals.add(currentMeal);
         }
-
-        Log.d("Kerolos", "onGetFavouriteMealSuccess: " + favouriteMeals.size() + " " + meals.size());
 
         mAdapter.setMeals(meals);
     }
@@ -96,13 +95,12 @@ public class FavouriteFragment extends Fragment implements OnGetFavouriteMealRes
 
     @Override
     public void onMealClicked(Meal meal) {
-        //Navigator.navigateWithStringExtra(getContext(), MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal());
+        Navigator.navigateWithStringExtra(getContext(), MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal());
     }
 
     @Override
     public void onAddToFavouriteClicked(Meal meal) {
-        Toast.makeText(getContext(), "Meal was added to favourites" , Toast.LENGTH_SHORT).show();
-        presenter.deleteFavouriteMeal(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()),this);
+        presenter.deleteFavouriteMeal(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb(),meal.isFavourite()),this);
     }
 
     @Override

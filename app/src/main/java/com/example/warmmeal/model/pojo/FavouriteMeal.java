@@ -20,16 +20,19 @@ public class FavouriteMeal {
     public String strMeal;
     @NotNull
     public String strMealThumb;
+    @NotNull
+    public  boolean isFavourite;
 
 
     public FavouriteMeal() {
     }
 
 
-    public FavouriteMeal(@NotNull String userId, @NotNull String idMeal, @NotNull String strMeal, @NotNull String strMealThumb) {
+    public FavouriteMeal(@NotNull String userId, @NotNull String idMeal, @NotNull String strMeal, @NotNull String strMealThumb, @NotNull boolean isFavourite) {
         this.userId = userId;
         this.idMeal = idMeal;
         this.strMeal = strMeal;
         this.strMealThumb = strMealThumb;
+        this.isFavourite = isFavourite;
     }
 }

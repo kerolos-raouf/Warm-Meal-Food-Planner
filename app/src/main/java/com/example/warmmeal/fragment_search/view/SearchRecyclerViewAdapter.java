@@ -56,6 +56,15 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
         holder.addToFavButton.setOnClickListener((v) -> {
             listener.onAddToFavouriteClicked(meals.get(position));
         });
+
+        if(meals.get(position).isFavourite())
+        {
+            holder.addToFavButton.setImageResource(R.drawable.icon_favourite_item);
+        }
+        else
+        {
+            holder.addToFavButton.setImageResource(R.drawable.icon_favourite_border);
+        }
     }
 
     @Override
