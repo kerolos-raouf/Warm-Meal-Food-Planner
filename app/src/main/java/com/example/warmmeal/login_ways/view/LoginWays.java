@@ -92,6 +92,7 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
         alertDialog.startAlertDialog(new ISkipAlertDialog() {
             @Override
             public void onPositiveButtonClick() {
+                FirebaseHandler.CURRENT_USER_ID = null;
                 presenter.setUserRegisterState(true,LoginWays.this);
             }
 
@@ -140,6 +141,7 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
     @Override
     public void onLoginWithGmailSuccess() {
         presenter.setUserRegisterState(true, this);
+        FirebaseHandler.CURRENT_USER_ID = FirebaseHandler.getInstance().getCurrentUser().getUid();
         progressBar.dismissProgressBar();
     }
 
@@ -154,6 +156,10 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
         super.onStart();
         if(presenter.isUserLoggedIn())
         {
+            if(FirebaseHandler.getInstance().getCurrentUser() != null)
+            {
+                FirebaseHandler.CURRENT_USER_ID = FirebaseHandler.getInstance().getCurrentUser().getUid();
+            }
             Navigator.navigateAndClearLast(this, MainScreen.class);
         }
     }

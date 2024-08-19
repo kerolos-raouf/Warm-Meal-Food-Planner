@@ -52,6 +52,10 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
         holder.mealImage.setOnClickListener((v) -> {
             listener.onMealClicked(meals.get(position));
         });
+
+        holder.addToFavButton.setOnClickListener((v) -> {
+            listener.onAddToFavouriteClicked(meals.get(position));
+        });
     }
 
     @Override

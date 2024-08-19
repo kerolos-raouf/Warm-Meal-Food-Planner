@@ -1,34 +1,32 @@
 package com.example.warmmeal.model.pojo;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.example.warmmeal.model.util.Day;
 
-@Entity
+import org.jetbrains.annotations.NotNull;
+
+@Entity(primaryKeys = {"userId","day","meal"})
 public class CalenderMeal {
 
-    @PrimaryKey(autoGenerate = true)
-    public int id;
-    String userId;
-    Day day;
-    Meal meal;
+
+
+    @NotNull
+    public String userId;
+    @NotNull
+    public Day day;
+    @NotNull
+    public Meal meal;
 
     public CalenderMeal() {
     }
 
-    public CalenderMeal(String userId, Day day, Meal meal) {
+    public CalenderMeal(@NonNull String userId, @NonNull Day day, @NonNull Meal meal) {
         this.userId = userId;
         this.day = day;
         this.meal = meal;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUserId() {

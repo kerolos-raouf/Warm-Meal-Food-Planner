@@ -31,6 +31,7 @@ public class FirebaseHandler implements ManagingAccount {
 
     private FirebaseHandler()
     {
+        CURRENT_USER_ID = null;
         mAuth = FirebaseAuth.getInstance();
     }
 

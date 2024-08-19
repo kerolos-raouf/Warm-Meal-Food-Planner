@@ -151,7 +151,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     @Override
     public void onAddToFavouriteClicked(Meal meal) {
-        presenter.addFavouriteMeal(new FavouriteMeal(FirebaseHandler.getInstance().getCurrentUser().getUid(),meal),this);
+        presenter.addFavouriteMeal(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()),this);
     }
 
     @Override
@@ -207,8 +207,8 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         customProgressBar.dismissProgressBar();
     }
 
@@ -220,6 +220,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     @Override
     public void onAddToFavouriteFailure(String message) {
-
+        //Toast.makeText(context, "Meal was not added to favourites" , Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 }
