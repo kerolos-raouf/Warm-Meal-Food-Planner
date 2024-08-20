@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.warmmeal.R;
+import com.example.warmmeal.fragment_favourite.view.OnAddToFavouriteResponse;
+import com.example.warmmeal.fragment_favourite.view.OnDeleteFromFavouriteResponse;
 import com.example.warmmeal.fragment_favourite.view.OnGetFavouriteMealResponse;
 import com.example.warmmeal.fragment_home.view.HomeFragment;
 import com.example.warmmeal.meal_screen.presenter.MealScreenPresenter;
@@ -26,6 +28,7 @@ import com.example.warmmeal.model.pojo.Meals;
 import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
 import com.example.warmmeal.model.util.CustomProgressBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -33,7 +36,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import java.util.ArrayList;
 import java.util.List;
 
-public class MealActivity extends AppCompatActivity implements OnMealScreenResponse, OnGetFavouriteMealResponse {
+public class MealActivity extends AppCompatActivity implements OnMealScreenResponse, OnAddToFavouriteResponse, OnDeleteFromFavouriteResponse {
 
     ImageView mealImage;
     TextView mealName;
@@ -49,9 +52,9 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
     IngredientsRecyclerViewAdapter mAdapter;
     CustomProgressBar customProgressBar;
 
+    ///intent extras
     String mealId;
-
-    private static boolean isFavouriteMealsFetched = false;
+    boolean isFavourite;
 
     Meal currentMeal;
 
@@ -66,9 +69,9 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
 
     void init()
     {
-        isFavouriteMealsFetched = false;
         //currentMeal = getIntent().getParcelableExtra(HomeFragment.MEAL_KEY);
         mealId = getIntent().getStringExtra(HomeFragment.MEAL_KEY);
+        isFavourite = getIntent().getBooleanExtra(HomeFragment.IS_FAVOURITE_KEY,false);
 
         mealImage = findViewById(R.id.mealScreenImage);
         mealName = findViewById(R.id.mealScreenMealName);
@@ -87,6 +90,22 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
 
     void setUp()
     {
+        if(isFavourite)
+        {
+            addToFavourite.setText("Remove from favourites");
+        }
+
+        addToFavourite.setOnClickListener((e)->{
+            HomeFragment.isFavouriteMealsFetched = false;
+            if(isFavourite)
+            {
+                presenter.deleteFromFavourite(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,mealId,mealName.getText().toString(),mealImage.toString(),true), this);
+            }else {
+                presenter.addFavouriteMeal(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,mealId,mealName.getText().toString(),mealImage.toString(),true), this);
+            }
+            isFavourite = !isFavourite;
+        });
+
         backButton.setOnClickListener((v) -> {
             finish();
         });
@@ -165,13 +184,26 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
         Log.d("Kerolos", "onFailure: " + message);
     }
 
-    @Override
-    public void onGetFavouriteMealSuccess(List<FavouriteMeal> favouriteMeals) {
 
+    @Override
+    public void onAddToFavouriteSuccess() {
+        addToFavourite.setText("Remove from favourites");
+        Snackbar.make(findViewById(android.R.id.content), "Meal Added to favourites", Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onGetFavouriteMealFailure(String message) {
-        Log.d("Kerolos", "onGetFavouriteMealFailure: " + message);
+    public void onAddToFavouriteFailure(String message) {
+        Log.d("Kerolos", "onAddToFavouriteFailure: " + message);
+    }
+
+    @Override
+    public void onDeleteFromFavouriteSuccess() {
+        addToFavourite.setText("Add to favourites");
+        Snackbar.make(findViewById(android.R.id.content), "Meal Removed from favourites", Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDeleteFromFavouriteFailure(String message) {
+        Log.d("Kerolos", "onDeleteFromFavouriteFailure: " + message);
     }
 }

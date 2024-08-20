@@ -74,7 +74,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     ///for dialog
     CustomProgressBar customProgressBar;
-    private static boolean isFavouriteMealsFetched = false;
+    public static boolean isFavouriteMealsFetched = false;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,

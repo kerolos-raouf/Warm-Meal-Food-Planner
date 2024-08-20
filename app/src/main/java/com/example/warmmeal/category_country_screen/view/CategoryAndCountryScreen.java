@@ -80,13 +80,13 @@ public class CategoryAndCountryScreen extends AppCompatActivity implements OnSea
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new SearchRecyclerViewAdapter(new ArrayList<>(), this, this);
+        mAdapter = new SearchRecyclerViewAdapter(new ArrayList<>(), this, this,false);
         recyclerView.setAdapter(mAdapter);
     }
 
     @Override
     public void onMealClicked(Meal meal) {
-        Navigator.navigateWithExtra(this, MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal());
+        Navigator.navigateWithExtra(this, MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal(),HomeFragment.IS_FAVOURITE_KEY,meal.isFavourite());
     }
 
     @Override

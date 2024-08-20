@@ -2,6 +2,8 @@ package com.example.warmmeal.fragment_search.view;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -37,6 +39,12 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SearchFragment extends Fragment implements OnSearchResponse ,OnSearchRecyclerViewItemClicked,OnGetListsResponse{
 
@@ -64,6 +72,8 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
     //progressBar
     CustomProgressBar customProgressBar;
 
+    CompositeDisposable compositeDisposable;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -82,6 +92,7 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
 
     void init(View view)
     {
+        compositeDisposable = new CompositeDisposable();
         customProgressBar = new CustomProgressBar(getActivity());
         ingredients = new ArrayList<>();
         context = view.getContext();
@@ -103,13 +114,13 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        mAdapter = new SearchRecyclerViewAdapter(new ArrayList<>(), this, getContext());
+        mAdapter = new SearchRecyclerViewAdapter(new ArrayList<>(), this, getContext(),false);
         recyclerView.setAdapter(mAdapter);
     }
 
     void setUp()
     {
-        searchEditText.setOnKeyListener((v, keyCode, event)->{
+        /*searchEditText.setOnKeyListener((v, keyCode, event)->{
             if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER)
             {
                 doActionOnSearchBegin();
@@ -120,8 +131,30 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
 
         searchEditText.setOnClickListener((v)->{
             doActionOnSearchBegin();
-        });
-        //searchEditText.setOnIc
+        });*/
+
+        compositeDisposable.add(Observable.create(emitter -> {
+            searchEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    emitter.onNext(s.toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+        }).subscribeOn(Schedulers.io())
+                .debounce(1000, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(searchText -> {doActionOnSearchBegin((String) searchText);}));
+
     }
 
 
@@ -158,17 +191,17 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
     }
 
 
-    void doActionOnSearchBegin()
+    void doActionOnSearchBegin(String searchText)
     {
-        if(!searchEditText.getText().toString().isEmpty())
+        if(searchEditText != null && !searchText.isEmpty())
         {
             if(chipMealName.isChecked())
             {
-                presenter.getMealByName(searchEditText.getText().toString(), this);
+                presenter.getMealByName(searchText, this);
             }
             else if(chipCategory.isChecked())
             {
-                String newCategory = parseToLegalCategoryName(searchEditText.getText().toString());
+                String newCategory = parseToLegalCategoryName(searchText);
                 if(newCategory!= null)
                 {
                     presenter.getMealByCategory(newCategory, this);
@@ -179,7 +212,7 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
             }
             else if (chipCountry.isChecked())
             {
-                String newName = parseToLegalCountryName(searchEditText.getText().toString());
+                String newName = parseToLegalCountryName(searchText);
                 if(newName!= null)
                 {
                     presenter.getMealByCountry(newName, this);
@@ -190,7 +223,7 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
             }
             else if (chipIngredient.isChecked())
             {
-                String newIngredient = parseToLegalIngredientName(searchEditText.getText().toString());
+                String newIngredient = parseToLegalIngredientName(searchText);
                 if(newIngredient!= null)
                 {
                     presenter.getMealByMainIngredient(newIngredient, this);
@@ -296,7 +329,7 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
     public void onMealClicked(Meal meal) {
 
         customProgressBar.startProgressBar();
-        Navigator.navigateWithExtra(context, MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal());
+        Navigator.navigateWithExtra(context, MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal(),HomeFragment.IS_FAVOURITE_KEY,meal.isFavourite());
     }
 
     @Override
@@ -308,6 +341,7 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
     public void onStop() {
         super.onStop();
         NetworkAPI.getInstance().clearDisposable();
+        compositeDisposable.clear();
     }
 
     @Override
@@ -316,4 +350,5 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
         if(customProgressBar.isShowing())
             customProgressBar.dismissProgressBar();
     }
+
 }

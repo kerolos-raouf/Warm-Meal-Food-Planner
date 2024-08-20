@@ -24,11 +24,13 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     ArrayList<Meal> meals;
     OnSearchRecyclerViewItemClicked listener;
     Context context;
+    boolean showFavButton;
 
-    public SearchRecyclerViewAdapter(ArrayList<Meal> meals, OnSearchRecyclerViewItemClicked listener, Context context) {
+    public SearchRecyclerViewAdapter(ArrayList<Meal> meals, OnSearchRecyclerViewItemClicked listener, Context context,boolean showFavButton ) {
         this.meals = meals;
         this.listener = listener;
         this.context = context;
+        this.showFavButton = showFavButton;
     }
 
     public void setMeals(ArrayList<Meal> meals)
@@ -52,6 +54,11 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
         holder.mealImage.setOnClickListener((v) -> {
             listener.onMealClicked(meals.get(position));
         });
+
+        if(!showFavButton)
+        {
+            holder.addToFavButton.setVisibility(View.GONE);
+        }
 
         holder.addToFavButton.setOnClickListener((v) -> {
             if(meals.get(position).isFavourite())

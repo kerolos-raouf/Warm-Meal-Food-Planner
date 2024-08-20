@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.warmmeal.R;
@@ -37,6 +38,7 @@ public class FavouriteFragment extends Fragment implements OnGetFavouriteMealRes
 
 
     RecyclerView recyclerView;
+    TextView noResult;
 
     FavouritePresenter presenter;
     SearchRecyclerViewAdapter mAdapter;
@@ -58,6 +60,8 @@ public class FavouriteFragment extends Fragment implements OnGetFavouriteMealRes
     void init(View view)
     {
         recyclerView = view.findViewById(R.id.favouriteRecyclerView);
+        noResult = view.findViewById(R.id.favouriteNoResult);
+
         presenter = FavouritePresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(view.getContext()), SharedPrefHandler.getInstance(view.getContext())));
     }
 
@@ -65,7 +69,7 @@ public class FavouriteFragment extends Fragment implements OnGetFavouriteMealRes
     {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new SearchRecyclerViewAdapter(new ArrayList<>(),this,getContext());
+        mAdapter = new SearchRecyclerViewAdapter(new ArrayList<>(),this,getContext(),true);
         recyclerView.setAdapter(mAdapter);
 
         presenter.getAllFavouriteMeals(FirebaseHandler.CURRENT_USER_ID,this);
@@ -73,18 +77,28 @@ public class FavouriteFragment extends Fragment implements OnGetFavouriteMealRes
 
     @Override
     public void onGetFavouriteMealSuccess(List<FavouriteMeal> favouriteMeals) {
-        ArrayList<Meal> meals = new ArrayList<>();
-        for(FavouriteMeal favMeal : favouriteMeals)
+        if(favouriteMeals.isEmpty())
         {
-            Meal currentMeal = new Meal();
-            currentMeal.setIdMeal(favMeal.idMeal);
-            currentMeal.setStrMeal(favMeal.strMeal);
-            currentMeal.setStrMealThumb(favMeal.strMealThumb);
-            currentMeal.setFavourite(true);
-            meals.add(currentMeal);
+            noResult.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
         }
+        else
+        {
+            noResult.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            ArrayList<Meal> meals = new ArrayList<>();
+            for(FavouriteMeal favMeal : favouriteMeals)
+            {
+                Meal currentMeal = new Meal();
+                currentMeal.setIdMeal(favMeal.idMeal);
+                currentMeal.setStrMeal(favMeal.strMeal);
+                currentMeal.setStrMealThumb(favMeal.strMealThumb);
+                currentMeal.setFavourite(true);
+                meals.add(currentMeal);
+            }
 
-        mAdapter.setMeals(meals);
+            mAdapter.setMeals(meals);
+        }
     }
 
     @Override
@@ -94,7 +108,7 @@ public class FavouriteFragment extends Fragment implements OnGetFavouriteMealRes
 
     @Override
     public void onMealClicked(Meal meal) {
-        Navigator.navigateWithExtra(getContext(), MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal());
+        Navigator.navigateWithExtra(getContext(), MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal(),HomeFragment.IS_FAVOURITE_KEY,meal.isFavourite());
     }
 
     @Override

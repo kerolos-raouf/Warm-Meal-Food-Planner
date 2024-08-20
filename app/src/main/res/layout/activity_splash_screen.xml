@@ -9,8 +9,8 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/splashScreen"
-        android:layout_width="500dp"
-        android:layout_height="1000dp"
+        android:layout_width="700dp"
+        android:layout_height="1200dp"
         app:lottie_loop="true"
         app:lottie_autoPlay="true"
         app:lottie_rawRes="@raw/splash_screen_json"
