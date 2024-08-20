@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.warmmeal.R;
-import com.example.warmmeal.fragment_home.view.OnNestedRecyclerViewItemClickedListener;
+import com.example.warmmeal.fragment_home.view.contracts.OnNestedRecyclerViewItemClickedListener;
 import com.example.warmmeal.model.pojo.Meal;
 
 import java.util.ArrayList;

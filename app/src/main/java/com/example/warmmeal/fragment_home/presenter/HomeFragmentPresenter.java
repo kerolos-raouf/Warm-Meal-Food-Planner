@@ -1,7 +1,9 @@
 package com.example.warmmeal.fragment_home.presenter;
 
+import com.example.warmmeal.fragment_favourite.view.OnAddToFavouriteResponse;
 import com.example.warmmeal.fragment_home.view.DataPurpose;
-import com.example.warmmeal.fragment_home.view.OnNetworkCallResponse;
+import com.example.warmmeal.fragment_home.view.contracts.OnNetworkCallResponse;
+import com.example.warmmeal.model.pojo.FavouriteMeal;
 import com.example.warmmeal.model.repository.Repository;
 
 public class HomeFragmentPresenter {
@@ -42,6 +44,11 @@ public class HomeFragmentPresenter {
     public void getAllCountries(OnNetworkCallResponse response)
     {
         repository.getAllCountries(response);
+    }
+
+    public void addFavouriteMeal(FavouriteMeal meal, OnAddToFavouriteResponse response)
+    {
+        repository.insertFavouriteMeal(meal,response);
     }
 
 }

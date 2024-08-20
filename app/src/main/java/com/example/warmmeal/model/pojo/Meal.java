@@ -19,6 +19,7 @@ public class Meal implements Parcelable {
     private String strMealThumb;
     private String strTags;
     private String strYoutube;
+    private boolean isFavourite;
     private String strIngredient1;
     private String strIngredient2;
     private String strIngredient3;
@@ -183,8 +184,16 @@ public class Meal implements Parcelable {
         this.idCategory = "";
         this.strCategoryThumb = "";
         this.strCategoryDescription = "";
+        this.isFavourite = false;
     }
 
+    public boolean isFavourite() {
+        return isFavourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        isFavourite = favourite;
+    }
 
     public String getIdCategory() {
         return idCategory;

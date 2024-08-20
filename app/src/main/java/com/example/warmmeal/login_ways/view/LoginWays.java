@@ -37,6 +37,7 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
     Button signUp,skip;
     TextView login;
 
+    //google auth
     GoogleSignInClient mGoogleSignInClient;
     private final int RC_SIGN = 20;
 
@@ -49,8 +50,6 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
         setContentView(R.layout.activity_login_ways);
         initViews();
         setUp();
-
-
     }
 
     void initViews()
@@ -78,8 +77,8 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
             showDialog();
         });
 
+        //google auth
         gmail.setOnClickListener((e)->{
-
             progressBar.startProgressBar();
             signInUsingGoogle();
         });
@@ -93,6 +92,7 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
         alertDialog.startAlertDialog(new ISkipAlertDialog() {
             @Override
             public void onPositiveButtonClick() {
+                FirebaseHandler.CURRENT_USER_ID = null;
                 presenter.setUserRegisterState(true,LoginWays.this);
             }
 
@@ -103,6 +103,7 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
         });
     }
 
+    //google auth
     void signInUsingGoogle()
     {
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -117,6 +118,7 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
         startActivityForResult(intent,RC_SIGN);
     }
 
+    //google auth
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -128,6 +130,7 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
                 presenter.loginWithGmail(account.getIdToken(),this);
             }catch (ApiException e)
             {
+                progressBar.dismissProgressBar();
                 Toast.makeText(this, "Error "+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
@@ -138,6 +141,7 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
     @Override
     public void onLoginWithGmailSuccess() {
         presenter.setUserRegisterState(true, this);
+        FirebaseHandler.CURRENT_USER_ID = FirebaseHandler.getInstance().getCurrentUser().getUid();
         progressBar.dismissProgressBar();
     }
 
@@ -152,6 +156,10 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
         super.onStart();
         if(presenter.isUserLoggedIn())
         {
+            if(FirebaseHandler.getInstance().getCurrentUser() != null)
+            {
+                FirebaseHandler.CURRENT_USER_ID = FirebaseHandler.getInstance().getCurrentUser().getUid();
+            }
             Navigator.navigateAndClearLast(this, MainScreen.class);
         }
     }

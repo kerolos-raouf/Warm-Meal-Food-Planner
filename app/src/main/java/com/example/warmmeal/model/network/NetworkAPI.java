@@ -1,9 +1,7 @@
 package com.example.warmmeal.model.network;
 
-import android.util.Log;
-
 import com.example.warmmeal.fragment_home.view.DataPurpose;
-import com.example.warmmeal.fragment_home.view.OnNetworkCallResponse;
+import com.example.warmmeal.fragment_home.view.contracts.OnNetworkCallResponse;
 import com.example.warmmeal.fragment_search.view.ListPurpose;
 import com.example.warmmeal.fragment_search.view.OnGetListsResponse;
 import com.example.warmmeal.fragment_search.view.OnSearchResponse;
@@ -66,9 +64,8 @@ public class NetworkAPI implements RemoteDataSource {
 
     @Override
     public void getRandomMeal(OnNetworkCallResponse response) {
-        disposable.add(mealDTO.getRandomMeal().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
-            response.onGetMealByCharacterForMoreYouLikeSuccess(meals);
-        }, (throwable) -> {
+        disposable.add(mealDTO.getRandomMeal().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                response::onGetMealByCharacterForMoreYouLikeSuccess, (throwable) -> {
             response.onFailure("get Random Meal: "+throwable.getMessage());
         }));
     }

@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment_favourite.view.FavouriteFragment"
-    android:background="@color/light_gray"
+    android:background="@color/light_sugar"
     >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favouriteRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

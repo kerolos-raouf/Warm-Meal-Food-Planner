@@ -8,7 +8,7 @@
     android:layout_marginBottom="10dp"
     android:backgroundTint="@color/dark_gray"
     android:elevation="10dp"
-    app:cardCornerRadius="30dp"
+    app:cardCornerRadius="25dp"
     android:background="@color/light_gray"
     >
 
@@ -22,18 +22,34 @@
         <ImageView
             android:id="@+id/itemYouMightLikeViewMealImage"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:src="@drawable/login_ways"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+        <ImageView
+            android:id="@+id/itemYouMightLikeViewMealImageBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gredient_background"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
         <TextView
             android:id="@+id/itemYouMightLikeViewMealName"
-            android:layout_width="170dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
+            android:layout_margin="5dp"
             android:fontFamily="@font/roboto_normal"
             android:gravity="center"
             android:lines="2"
@@ -41,26 +57,21 @@
             android:text="Meal Name"
             android:textColor="@color/white"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/itemYouMightLikeViewMealAdd"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemYouMightLikeViewMealImage" />
+            app:layout_constraintBottom_toBottomOf="parent"
 
-        <Button
+            app:layout_constraintEnd_toStartOf="@+id/itemYouMightLikeViewMealAdd"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
             android:id="@+id/itemYouMightLikeViewMealAdd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_margin="10dp"
-            android:background="@drawable/cutom_button"
-            android:fontFamily="@font/roboto"
-            android:text="+FAVOURITE"
-            android:textColor="@color/dark_gray"
-            android:textSize="18sp"
-            app:backgroundTint="@color/light_sugar"
+            android:src="@drawable/icon_favourite_border"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+  />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
