@@ -20,6 +20,8 @@ import com.example.warmmeal.R;
 import com.example.warmmeal.category_country_screen.view.CategoryAndCountryScreen;
 import com.example.warmmeal.category_country_screen.view.Type;
 import com.example.warmmeal.fragment_favourite.view.OnAddToFavouriteResponse;
+import com.example.warmmeal.fragment_favourite.view.OnDeleteFromFavouriteResponse;
+import com.example.warmmeal.fragment_favourite.view.OnGetFavouriteMealResponse;
 import com.example.warmmeal.fragment_home.presenter.HomeFragmentPresenter;
 import com.example.warmmeal.fragment_home.view.adapters.HomeRecyclerViewAdapter;
 import com.example.warmmeal.fragment_home.view.contracts.OnNestedRecyclerViewItemClickedListener;
@@ -40,8 +42,9 @@ import com.example.warmmeal.model.util.Navigator;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemClickedListener, OnNetworkCallResponse, OnAddToFavouriteResponse {
+public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemClickedListener, OnNetworkCallResponse, OnAddToFavouriteResponse, OnGetFavouriteMealResponse , OnDeleteFromFavouriteResponse {
 
 
 
@@ -61,6 +64,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     ArrayList<Meal> categories;
     ArrayList<Meal> countries;
     ArrayList<Meal> mealsYouMightLike;
+    ArrayList<FavouriteMeal> favouriteMeals;
     ArrayList<HomeFragmentItem<Object>> homeFragmentItems;
     Context context;
 
@@ -99,6 +103,8 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
         categories = new ArrayList<>();
         countries = new ArrayList<>();
         homeFragmentItems = new ArrayList<>();
+        mealsYouMightLike = new ArrayList<>();
+        favouriteMeals = new ArrayList<>();
         context = view.getContext();
 
         presenter = HomeFragmentPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(context), SharedPrefHandler.getInstance(context)));
@@ -148,7 +154,13 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     @Override
     public void onAddToFavouriteClicked(Meal meal) {
-        presenter.addFavouriteMeal(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb(),true),this);
+        if (!meal.isFavourite())
+        {
+            presenter.deleteFromFavourite(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb(),true),this);
+        }else
+        {
+            presenter.addFavouriteMeal(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb(),true),this);
+        }
     }
 
     @Override
@@ -168,15 +180,14 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     @Override
     public void onGetMealByCharacterForMoreYouLikeSuccess(Meals meals) {
         mealsYouMightLike = (ArrayList<Meal>) meals.getMeals();
-        setUpRecyclerViewWithLists();
-        customProgressBar.dismissProgressBar();
+        presenter.getAllFavouriteMeals(FirebaseHandler.CURRENT_USER_ID,this);
+
     }
 
     @Override
     public void onGetMealByCharacterForInspirationSuccess(Meals meals) {
         dailyInspirationMeals = (ArrayList<Meal>) meals.getMeals();
         setUpRecyclerViewWithLists();
-        customProgressBar.dismissProgressBar();
     }
 
 
@@ -219,5 +230,29 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     public void onAddToFavouriteFailure(String message) {
         //Toast.makeText(context, "Meal was not added to favourites" , Toast.LENGTH_SHORT).show();
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onGetFavouriteMealSuccess(List<FavouriteMeal> favouriteMeals) {
+        Log.d("Kerolos", "onGetFavouriteMealSuccess: " + favouriteMeals.size());
+        FavouriteMeal.getFavouriteMealsList((ArrayList<FavouriteMeal>) favouriteMeals, dailyInspirationMeals);
+        FavouriteMeal.getFavouriteMealsList((ArrayList<FavouriteMeal>) favouriteMeals, mealsYouMightLike);
+        setUpRecyclerViewWithLists();
+        customProgressBar.dismissProgressBar();
+    }
+
+    @Override
+    public void onGetFavouriteMealFailure(String message) {
+        Log.d("Kerolos", "onGetFavouriteMealFailure: " + message);
+    }
+
+    @Override
+    public void onDeleteFromFavouriteSuccess() {
+        Snackbar.make(recyclerView,"Meal was removed from favourites", Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDeleteFromFavouriteFailure(String message) {
+        Log.d("Kerolos", "onDeleteFromFavouriteFailure: " + message);
     }
 }

@@ -1,6 +1,8 @@
 package com.example.warmmeal.fragment_home.presenter;
 
 import com.example.warmmeal.fragment_favourite.view.OnAddToFavouriteResponse;
+import com.example.warmmeal.fragment_favourite.view.OnDeleteFromFavouriteResponse;
+import com.example.warmmeal.fragment_favourite.view.OnGetFavouriteMealResponse;
 import com.example.warmmeal.fragment_home.view.DataPurpose;
 import com.example.warmmeal.fragment_home.view.contracts.OnNetworkCallResponse;
 import com.example.warmmeal.model.pojo.FavouriteMeal;
@@ -49,6 +51,16 @@ public class HomeFragmentPresenter {
     public void addFavouriteMeal(FavouriteMeal meal, OnAddToFavouriteResponse response)
     {
         repository.insertFavouriteMeal(meal,response);
+    }
+
+    public void deleteFromFavourite(FavouriteMeal meal, OnDeleteFromFavouriteResponse response)
+    {
+        repository.deleteFavouriteMeal(meal,response);
+    }
+
+    public void getAllFavouriteMeals(String userId, OnGetFavouriteMealResponse response)
+    {
+        repository.getAllFavouriteMeals(userId,response);
     }
 
 }
