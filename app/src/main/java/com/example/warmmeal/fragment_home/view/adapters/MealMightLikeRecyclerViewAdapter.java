@@ -17,14 +17,14 @@ import com.example.warmmeal.model.pojo.Meal;
 
 import java.util.ArrayList;
 
-public class DailyInspirationRecyclerViewAdapter extends RecyclerView.Adapter<DailyInspirationRecyclerViewAdapter.ViewHolder> {
+public class MealMightLikeRecyclerViewAdapter extends RecyclerView.Adapter<MealMightLikeRecyclerViewAdapter.ViewHolder> {
 
     ArrayList<Meal> meals;
     Context context;
     OnNestedRecyclerViewItemClickedListener listener;
 
 
-    DailyInspirationRecyclerViewAdapter(Context context, ArrayList<Meal> objects, OnNestedRecyclerViewItemClickedListener listener) {
+    MealMightLikeRecyclerViewAdapter(Context context, ArrayList<Meal> objects, OnNestedRecyclerViewItemClickedListener listener) {
         this.meals = objects;
         this.context = context;
         this.listener = listener;
@@ -37,34 +37,34 @@ public class DailyInspirationRecyclerViewAdapter extends RecyclerView.Adapter<Da
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView dailyMealImage;
-        TextView dailyMealName;
-        ImageView dailyAdd;
+        ImageView mealImage;
+        TextView mealName;
+        ImageView addToFavourite;
 
         ViewHolder(View view) {
             super(view);
-            dailyMealImage = view.findViewById(R.id.stackViewMealImage);
-            dailyMealName = view.findViewById(R.id.stackViewMealName);
-            dailyAdd = view.findViewById(R.id.stackViewMealAdd);
+            mealImage = view.findViewById(R.id.itemSmallMealImage);
+            mealName = view.findViewById(R.id.itemSmallMealName);
+            addToFavourite = view.findViewById(R.id.itemSmallAddToFavourite);
         }
     }
 
     @Override
-    public DailyInspirationRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_stack_view, parent, false);
-        return new ViewHolder(view);
+    public MealMightLikeRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_small_might_you_like, parent, false);
+        return new MealMightLikeRecyclerViewAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DailyInspirationRecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MealMightLikeRecyclerViewAdapter.ViewHolder holder, int position) {
 
-        Glide.with(context).load(meals.get(position).getStrMealThumb()).into(holder.dailyMealImage);
+        Glide.with(context).load(meals.get(position).getStrMealThumb()).into(holder.mealImage);
 
-        holder.dailyMealName.setText(meals.get(position).getStrMeal());
-        holder.dailyAdd.setOnClickListener((e)->{
+        holder.mealName.setText(meals.get(position).getStrMeal());
+        holder.addToFavourite.setOnClickListener((e)->{
             listener.onAddToFavouriteClicked(meals.get(position));
         });
-        holder.dailyMealImage.setOnClickListener((e)->{
+        holder.mealImage.setOnClickListener((e)->{
             listener.onMealClicked(meals.get(position));
         });
         //holder.dailyAdd.setText(meals.get(position).get());

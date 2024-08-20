@@ -76,6 +76,7 @@ public class Login extends AppCompatActivity implements OnLoginResponse, OnSetUs
     @Override
     public void onLoginSuccess() {
         customProgressBar.dismissProgressBar();
+        FirebaseHandler.CURRENT_USER_ID = FirebaseHandler.getInstance().getCurrentUser().getUid();
         presenter.setUserLoggedInState(true,this);
     }
 

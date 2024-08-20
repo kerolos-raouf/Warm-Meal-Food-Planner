@@ -1,4 +1,4 @@
-package com.example.warmmeal.fragment_home.view;
+package com.example.warmmeal.fragment_home.view.contracts;
 
 import com.example.warmmeal.model.pojo.Meal;
 

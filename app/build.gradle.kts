@@ -85,11 +85,11 @@ dependencies {
     implementation(libs.credentials.play.services.auth)
     implementation(libs.googleid)
 
-    ///glide and circlar Image
+    ///glide and circular Image
     implementation(libs.glide)
     implementation(libs.circleimageview)
 
-    //youtube video viewr
+    //youtube video viewer
     implementation(libs.core)
 
 

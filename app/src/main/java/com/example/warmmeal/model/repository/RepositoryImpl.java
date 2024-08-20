@@ -1,8 +1,14 @@
 package com.example.warmmeal.model.repository;
 
+import com.example.warmmeal.fragment_calender.view.OnAddCalendarMealResponse;
+import com.example.warmmeal.fragment_calender.view.OnDeleteCalendarMealResponse;
+import com.example.warmmeal.fragment_calender.view.OnGetCalendarMealsResponse;
+import com.example.warmmeal.fragment_favourite.view.OnAddToFavouriteResponse;
+import com.example.warmmeal.fragment_favourite.view.OnDeleteFromFavouriteResponse;
+import com.example.warmmeal.fragment_favourite.view.OnGetFavouriteMealResponse;
 import com.example.warmmeal.fragment_home.view.DataPurpose;
 import com.example.warmmeal.fragment_profile.view.OnLogOutResponse;
-import com.example.warmmeal.fragment_home.view.OnNetworkCallResponse;
+import com.example.warmmeal.fragment_home.view.contracts.OnNetworkCallResponse;
 import com.example.warmmeal.fragment_search.view.ListPurpose;
 import com.example.warmmeal.fragment_search.view.OnGetListsResponse;
 import com.example.warmmeal.fragment_search.view.OnSearchResponse;
@@ -13,6 +19,8 @@ import com.example.warmmeal.meal_screen.view.OnMealScreenResponse;
 import com.example.warmmeal.model.contracts.LocalDataSource;
 import com.example.warmmeal.model.contracts.ManagingAccountState;
 import com.example.warmmeal.model.contracts.RemoteDataSource;
+import com.example.warmmeal.model.pojo.CalenderMeal;
+import com.example.warmmeal.model.pojo.FavouriteMeal;
 import com.example.warmmeal.signup.view.OnCreatingAccountResponse;
 import com.example.warmmeal.model.contracts.ManagingAccount;
 import com.google.firebase.auth.FirebaseUser;
@@ -128,5 +136,35 @@ public class RepositoryImpl implements Repository{
     @Override
     public boolean isUserLoggedIn() {
         return managingAccountState.isUserLoggedIn();
+    }
+
+    @Override
+    public void insertFavouriteMeal(FavouriteMeal meal, OnAddToFavouriteResponse response) {
+        localDataSource.insertFavouriteMeal(meal,response);
+    }
+
+    @Override
+    public void getAllFavouriteMeals(String userId, OnGetFavouriteMealResponse response) {
+        localDataSource.getAllFavouriteMeals(userId,response);
+    }
+
+    @Override
+    public void deleteFavouriteMeal(FavouriteMeal meal, OnDeleteFromFavouriteResponse response) {
+        localDataSource.deleteFavouriteMeal(meal,response);
+    }
+
+    @Override
+    public void insertCalenderMeal(CalenderMeal meal, OnAddCalendarMealResponse response) {
+        localDataSource.insertCalenderMeal(meal,response);
+    }
+
+    @Override
+    public void getAllCalenderMeals(String userId, OnGetCalendarMealsResponse response) {
+        localDataSource.getAllCalenderMeals(userId,response);
+    }
+
+    @Override
+    public void deleteCalenderMeal(CalenderMeal meal, OnDeleteCalendarMealResponse response) {
+        localDataSource.deleteCalenderMeal(meal,response);
     }
 }
