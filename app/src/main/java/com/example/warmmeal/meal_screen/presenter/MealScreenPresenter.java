@@ -1,5 +1,6 @@
 package com.example.warmmeal.meal_screen.presenter;
 
+import com.example.warmmeal.fragment_favourite.view.OnGetFavouriteMealResponse;
 import com.example.warmmeal.meal_screen.view.OnMealScreenResponse;
 import com.example.warmmeal.model.repository.Repository;
 
@@ -22,6 +23,10 @@ public class MealScreenPresenter {
 
     public void getMealById(String mealId, OnMealScreenResponse response) {
         repository.getMealById(mealId, response);
+    }
+
+    public void getAllFavouriteMeals(String userId, OnGetFavouriteMealResponse response) {
+        repository.getAllFavouriteMeals(userId,response);
     }
 
 

@@ -86,7 +86,7 @@ public class CategoryAndCountryScreen extends AppCompatActivity implements OnSea
 
     @Override
     public void onMealClicked(Meal meal) {
-        Navigator.navigateWithStringExtra(this, MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal());
+        Navigator.navigateWithExtra(this, MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal());
     }
 
     @Override

@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,7 +94,7 @@ public class FavouriteFragment extends Fragment implements OnGetFavouriteMealRes
 
     @Override
     public void onMealClicked(Meal meal) {
-        Navigator.navigateWithStringExtra(getContext(), MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal());
+        Navigator.navigateWithExtra(getContext(), MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal());
     }
 
     @Override

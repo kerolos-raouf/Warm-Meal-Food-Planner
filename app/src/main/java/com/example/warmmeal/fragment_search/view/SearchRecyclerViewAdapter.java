@@ -54,6 +54,16 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
         });
 
         holder.addToFavButton.setOnClickListener((v) -> {
+            if(meals.get(position).isFavourite())
+            {
+                holder.addToFavButton.setImageResource(R.drawable.icon_favourite_border);
+                meals.get(position).setFavourite(false);
+            }
+            else
+            {
+                holder.addToFavButton.setImageResource(R.drawable.icon_favourite_item);
+                meals.get(position).setFavourite(true);
+            }
             listener.onAddToFavouriteClicked(meals.get(position));
         });
 

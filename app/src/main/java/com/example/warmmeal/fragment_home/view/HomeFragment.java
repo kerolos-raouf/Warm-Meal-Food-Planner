@@ -50,6 +50,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     ////
     public static final String MEAL_KEY = "MEAL_KEY";
+    public static final String IS_FAVOURITE_KEY = "IS_FAVOURITE_KEY";
     public static final String CATEGORY_COUNTRY_KEY = "CATEGORY_COUNTRY_KEY";
     public static String CATEGORY_COUNTRY_TYPE = "CATEGORY";
     ////
@@ -73,7 +74,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     ///for dialog
     CustomProgressBar customProgressBar;
-    boolean putInDailyInspiration = false;
+    private static boolean isFavouriteMealsFetched = false;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -96,6 +97,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     void init(View view)
     {
+        isFavouriteMealsFetched = false;
         customProgressBar = new CustomProgressBar(getActivity());
         customProgressBar.startProgressBar();
         recyclerView = view.findViewById(R.id.homeRecyclerView);
@@ -149,7 +151,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     @Override
     public void onMealClicked(Meal meal) {
         customProgressBar.startProgressBar();
-        Navigator.navigateWithStringExtra(context, MealActivity.class, MEAL_KEY,meal.getIdMeal());
+        Navigator.navigateWithExtra(context, MealActivity.class, MEAL_KEY,meal.getIdMeal(),IS_FAVOURITE_KEY,meal.isFavourite());
     }
 
     @Override
@@ -166,13 +168,13 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     @Override
     public void onCategoryClicked(String category) {
         //Toast.makeText(context, "category clicked " + category + " " + Type.CATEGORY.toString(), Toast.LENGTH_SHORT).show();
-        Navigator.navigateWithStringExtra(context, CategoryAndCountryScreen.class, CATEGORY_COUNTRY_TYPE, Type.CATEGORY.toString(), CATEGORY_COUNTRY_KEY,category);
+        Navigator.navigateWithExtra(context, CategoryAndCountryScreen.class, CATEGORY_COUNTRY_TYPE, Type.CATEGORY.toString(), CATEGORY_COUNTRY_KEY,category);
     }
 
     @Override
     public void onCountryClicked(String country) {
         //Toast.makeText(context, "country clicked " + country, Toast.LENGTH_SHORT).show();
-        Navigator.navigateWithStringExtra(context, CategoryAndCountryScreen.class, CATEGORY_COUNTRY_TYPE,Type.COUNTRY.toString(),CATEGORY_COUNTRY_KEY,country);
+        Navigator.navigateWithExtra(context, CategoryAndCountryScreen.class, CATEGORY_COUNTRY_TYPE,Type.COUNTRY.toString(),CATEGORY_COUNTRY_KEY,country);
     }
 
 
@@ -234,11 +236,15 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     @Override
     public void onGetFavouriteMealSuccess(List<FavouriteMeal> favouriteMeals) {
-        Log.d("Kerolos", "onGetFavouriteMealSuccess: " + favouriteMeals.size());
-        FavouriteMeal.getFavouriteMealsList((ArrayList<FavouriteMeal>) favouriteMeals, dailyInspirationMeals);
-        FavouriteMeal.getFavouriteMealsList((ArrayList<FavouriteMeal>) favouriteMeals, mealsYouMightLike);
-        setUpRecyclerViewWithLists();
-        customProgressBar.dismissProgressBar();
+        if(!isFavouriteMealsFetched)
+        {
+            Log.d("Kerolos", "onGetFavouriteMealSuccess: " + favouriteMeals.size());
+            FavouriteMeal.getFavouriteMealsList((ArrayList<FavouriteMeal>) favouriteMeals, dailyInspirationMeals);
+            FavouriteMeal.getFavouriteMealsList((ArrayList<FavouriteMeal>) favouriteMeals, mealsYouMightLike);
+            setUpRecyclerViewWithLists();
+            customProgressBar.dismissProgressBar();
+            isFavouriteMealsFetched = true;
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.warmmeal.meal_screen.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,11 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.warmmeal.R;
+import com.example.warmmeal.fragment_favourite.view.OnGetFavouriteMealResponse;
 import com.example.warmmeal.fragment_home.view.HomeFragment;
 import com.example.warmmeal.meal_screen.presenter.MealScreenPresenter;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
 import com.example.warmmeal.model.network.NetworkAPI;
+import com.example.warmmeal.model.pojo.FavouriteMeal;
 import com.example.warmmeal.model.pojo.Meal;
 import com.example.warmmeal.model.pojo.MealIngredientAndMeasure;
 import com.example.warmmeal.model.pojo.Meals;
@@ -28,8 +31,9 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class MealActivity extends AppCompatActivity implements OnMealScreenResponse{
+public class MealActivity extends AppCompatActivity implements OnMealScreenResponse, OnGetFavouriteMealResponse {
 
     ImageView mealImage;
     TextView mealName;
@@ -47,6 +51,8 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
 
     String mealId;
 
+    private static boolean isFavouriteMealsFetched = false;
+
     Meal currentMeal;
 
     @Override
@@ -60,8 +66,10 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
 
     void init()
     {
+        isFavouriteMealsFetched = false;
         //currentMeal = getIntent().getParcelableExtra(HomeFragment.MEAL_KEY);
         mealId = getIntent().getStringExtra(HomeFragment.MEAL_KEY);
+
         mealImage = findViewById(R.id.mealScreenImage);
         mealName = findViewById(R.id.mealScreenMealName);
         mealCountry = findViewById(R.id.mealScreenMealCountry);
@@ -154,6 +162,16 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
 
     @Override
     public void onFailure(String message) {
+        Log.d("Kerolos", "onFailure: " + message);
+    }
 
+    @Override
+    public void onGetFavouriteMealSuccess(List<FavouriteMeal> favouriteMeals) {
+
+    }
+
+    @Override
+    public void onGetFavouriteMealFailure(String message) {
+        Log.d("Kerolos", "onGetFavouriteMealFailure: " + message);
     }
 }

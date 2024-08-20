@@ -294,7 +294,9 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
 
     @Override
     public void onMealClicked(Meal meal) {
-        Navigator.navigateWithStringExtra(context, MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal());
+
+        customProgressBar.startProgressBar();
+        Navigator.navigateWithExtra(context, MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal());
     }
 
     @Override
@@ -308,5 +310,10 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
         NetworkAPI.getInstance().clearDisposable();
     }
 
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(customProgressBar.isShowing())
+            customProgressBar.dismissProgressBar();
+    }
 }
