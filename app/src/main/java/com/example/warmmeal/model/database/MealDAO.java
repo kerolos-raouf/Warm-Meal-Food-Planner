@@ -13,6 +13,7 @@ import com.example.warmmeal.model.pojo.FavouriteMeal;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 
 @Dao
@@ -22,13 +23,13 @@ public interface MealDAO {
     Completable insertMeal(FavouriteMeal meal);
 
     @Query("SELECT * FROM FavouriteMeal WHERE userId = :userId")
-    Observable<List<FavouriteMeal>> getAllMeals(String userId);
+    Flowable<List<FavouriteMeal>> getAllMeals(String userId);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     Completable insertCalenderMeal(CalenderMeal meal);
 
     @Query("SELECT * FROM CalenderMeal WHERE userId = :userId")
-    Observable<List<CalenderMeal>> getAllCalenderMeals(String userId);
+    Flowable<List<CalenderMeal>> getAllCalenderMeals(String userId);
 
     @Delete
     Completable deleteFavouriteMeal(FavouriteMeal meal);

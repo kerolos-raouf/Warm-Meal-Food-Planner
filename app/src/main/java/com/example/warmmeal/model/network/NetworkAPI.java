@@ -7,10 +7,14 @@ import com.example.warmmeal.fragment_search.view.OnGetListsResponse;
 import com.example.warmmeal.fragment_search.view.OnSearchResponse;
 import com.example.warmmeal.meal_screen.view.OnMealScreenResponse;
 import com.example.warmmeal.model.contracts.RemoteDataSource;
+import com.example.warmmeal.model.pojo.Categories;
+import com.example.warmmeal.model.pojo.Ingredients;
+import com.example.warmmeal.model.pojo.Meals;
 
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.Retrofit;
@@ -50,102 +54,55 @@ public class NetworkAPI implements RemoteDataSource {
     }
 
     @Override
-    public void getMealsByFirstLetter(char letter, DataPurpose dataPurpose, OnNetworkCallResponse response) {
-        disposable.add(mealDTO.getMealsByFirstLetter(letter).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
-            if(dataPurpose == DataPurpose.INSPIRATION)
-            {
-                response.onGetMealByCharacterForMoreYouLikeSuccess(meals);
-            }
-            else
-            {
-                response.onGetMealByCharacterForInspirationSuccess(meals);
-            }
-        }, (throwable) -> {
-            response.onFailure("get Meal By First Letter : " + dataPurpose.toString() +throwable.getMessage());
-        }));
+    public Flowable<Meals> getMealsByFirstLetter(char letter) {
+        return mealDTO.getMealsByFirstLetter(letter);
     }
 
     @Override
-    public void getRandomMeal(OnNetworkCallResponse response) {
-        disposable.add(mealDTO.getRandomMeal().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                response::onGetMealByCharacterForMoreYouLikeSuccess, (throwable) -> {
-            response.onFailure("get Random Meal: "+throwable.getMessage());
-        }));
+    public Flowable<Meals> getRandomMeal() {
+        return mealDTO.getRandomMeal();
     }
 
 
     @Override
-    public void getAllCategories(OnNetworkCallResponse response) {
-        disposable.add(mealDTO.getAllCategories().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((categories) -> {
-            response.onGetCategorySuccess(categories);
-        }, (throwable) -> {
-            response.onFailure("get Meal all Categories: "+throwable.getMessage());
-        }));
+    public Flowable<Categories> getAllCategories() {
+        return mealDTO.getAllCategories();
     }
 
     @Override
-    public void getAllCountries(OnNetworkCallResponse response) {
-        disposable.add(mealDTO.getAllCountries().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
-            response.onGetAllCountriesSuccess(meals);
-        }, (throwable) -> {
-            response.onFailure("get Meal all Countries: "+throwable.getMessage());
-        }));
+    public Flowable<Meals> getAllCountries() {
+        return mealDTO.getAllCountries();
     }
 
     @Override
-    public void getMealByName(String name, OnSearchResponse response) {
-        disposable.add(mealDTO.getMealByName(name).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
-            response.onSuccess(meals);
-        }, (throwable) -> {
-            response.onFailure(throwable.getMessage());
-        }));
+    public Flowable<Meals> getMealByName(String name) {
+        return mealDTO.getMealByName(name);
     }
 
 
     @Override
-    public void getMealsByMainIngredient(String ingredient, OnSearchResponse response) {
-        disposable.add(mealDTO.getMealByMainIngredient(ingredient).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
-            response.onSuccess(meals);
-        }, (throwable) -> {
-            response.onFailure(throwable.getMessage());
-        }));
+    public Flowable<Meals> getMealsByMainIngredient(String ingredient) {
+        return mealDTO.getMealByMainIngredient(ingredient);
     }
 
     @Override
-    public void getMealsByCategory(String category, OnSearchResponse response) {
-        disposable.add(mealDTO.getMealByCategory(category).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
-            response.onSuccess(meals);
-        }, (throwable) -> {
-            response.onFailure(throwable.getMessage());
-        }));
+    public Flowable<Meals> getMealsByCategory(String category) {
+        return mealDTO.getMealByCategory(category);
     }
 
     @Override
-    public void getMealsByCountry(String country, OnSearchResponse response) {
-        disposable.add(mealDTO.getMealByCountry(country).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((meals) -> {
-            response.onSuccess(meals);
-        }, (throwable) -> {
-            response.onFailure(throwable.getMessage());
-        }));
+    public Flowable<Meals> getMealsByCountry(String country) {
+        return mealDTO.getMealByCountry(country);
     }
 
     @Override
-    public void getIngredients(OnGetListsResponse response, ListPurpose purpose) {
-        disposable.add(mealDTO.getIngredients().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((ingredients) -> {
-            if(purpose == ListPurpose.INGREDIENTS)
-            {
-                response.onGetIngredientsSuccess(ingredients);
-            }
-        }, (throwable) -> {
-            response.onFailure(throwable.getMessage());
-        }));
+    public Flowable<Ingredients> getIngredients() {
+        return  mealDTO.getIngredients();
     }
 
     @Override
-    public void getMealById(String id, OnMealScreenResponse response) {
-        disposable.add(mealDTO.getMealById(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(response::onGetMealByIdSuccess, (throwable) -> {
-            response.onFailure(throwable.getMessage());
-        }));
+    public Flowable<Meals> getMealById(String id) {
+        return mealDTO.getMealById(id);
     }
 
     public void clearDisposable()

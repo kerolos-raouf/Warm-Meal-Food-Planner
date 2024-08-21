@@ -20,10 +20,18 @@ import com.example.warmmeal.model.contracts.LocalDataSource;
 import com.example.warmmeal.model.contracts.ManagingAccountState;
 import com.example.warmmeal.model.contracts.RemoteDataSource;
 import com.example.warmmeal.model.pojo.CalenderMeal;
+import com.example.warmmeal.model.pojo.Categories;
 import com.example.warmmeal.model.pojo.FavouriteMeal;
+import com.example.warmmeal.model.pojo.Ingredients;
+import com.example.warmmeal.model.pojo.Meals;
 import com.example.warmmeal.signup.view.OnCreatingAccountResponse;
 import com.example.warmmeal.model.contracts.ManagingAccount;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.List;
+
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
 
 public class RepositoryImpl implements Repository{
 
@@ -79,53 +87,53 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
-    public void getMealsByFirstLetter(char letter, DataPurpose dataPurpose, OnNetworkCallResponse response) {
-        remoteDataSource.getMealsByFirstLetter(letter, dataPurpose,response);
+    public Flowable<Meals> getMealsByFirstLetter(char letter) {
+        return remoteDataSource.getMealsByFirstLetter(letter);
     }
 
     @Override
-    public void getRandomMeal(OnNetworkCallResponse response) {
-        remoteDataSource.getRandomMeal(response);
+    public Flowable<Meals> getRandomMeal() {
+        return remoteDataSource.getRandomMeal();
     }
 
     @Override
-    public void getMealByName(String name, OnSearchResponse response) {
-        remoteDataSource.getMealByName(name, response);
+    public Flowable<Meals> getMealByName(String name) {
+        return remoteDataSource.getMealByName(name);
     }
 
     @Override
-    public void getAllCategories(OnNetworkCallResponse response) {
-        remoteDataSource.getAllCategories(response);
+    public Flowable<Categories> getAllCategories() {
+         return remoteDataSource.getAllCategories();
     }
 
     @Override
-    public void getAllCountries(OnNetworkCallResponse response) {
-        remoteDataSource.getAllCountries(response);
+    public Flowable<Meals> getAllCountries() {
+        return remoteDataSource.getAllCountries();
     }
 
     @Override
-    public void getMealsByMainIngredient(String ingredient, OnSearchResponse response) {
-        remoteDataSource.getMealsByMainIngredient(ingredient, response);
+    public Flowable<Meals> getMealsByMainIngredient(String ingredient) {
+        return remoteDataSource.getMealsByMainIngredient(ingredient);
     }
 
     @Override
-    public void getMealsByCategory(String category, OnSearchResponse response) {
-        remoteDataSource.getMealsByCategory(category, response);
+    public Flowable<Meals> getMealsByCategory(String category ) {
+        return remoteDataSource.getMealsByCategory(category);
     }
 
     @Override
-    public void getMealsByCountry(String country, OnSearchResponse response) {
-        remoteDataSource.getMealsByCountry(country, response);
+    public Flowable<Meals> getMealsByCountry(String country ) {
+        return remoteDataSource.getMealsByCountry(country);
     }
 
     @Override
-    public void getIngredients(OnGetListsResponse response, ListPurpose purpose) {
-        remoteDataSource.getIngredients(response, purpose);
+    public Flowable<Ingredients> getIngredients() {
+        return remoteDataSource.getIngredients();
     }
 
     @Override
-    public void getMealById(String id, OnMealScreenResponse response) {
-        remoteDataSource.getMealById(id, response);
+    public Flowable<Meals> getMealById(String id) {
+        return remoteDataSource.getMealById(id);
     }
 
     @Override
@@ -139,32 +147,32 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
-    public void insertFavouriteMeal(FavouriteMeal meal, OnAddToFavouriteResponse response) {
-        localDataSource.insertFavouriteMeal(meal,response);
+    public Completable insertFavouriteMeal(FavouriteMeal meal) {
+        return localDataSource.insertFavouriteMeal(meal);
     }
 
     @Override
-    public void getAllFavouriteMeals(String userId, OnGetFavouriteMealResponse response) {
-        localDataSource.getAllFavouriteMeals(userId,response);
+    public Flowable<List<FavouriteMeal>> getAllFavouriteMeals(String userId) {
+        return localDataSource.getAllFavouriteMeals(userId);
     }
 
     @Override
-    public void deleteFavouriteMeal(FavouriteMeal meal, OnDeleteFromFavouriteResponse response) {
-        localDataSource.deleteFavouriteMeal(meal,response);
+    public Completable deleteFavouriteMeal(FavouriteMeal meal) {
+        return localDataSource.deleteFavouriteMeal(meal);
     }
 
     @Override
-    public void insertCalenderMeal(CalenderMeal meal, OnAddCalendarMealResponse response) {
-        localDataSource.insertCalenderMeal(meal,response);
+    public Completable insertCalenderMeal(CalenderMeal meal) {
+        return localDataSource.insertCalenderMeal(meal);
     }
 
     @Override
-    public void getAllCalenderMeals(String userId, OnGetCalendarMealsResponse response) {
-        localDataSource.getAllCalenderMeals(userId,response);
+    public Flowable<List<CalenderMeal>> getAllCalenderMeals(String userId) {
+        return localDataSource.getAllCalenderMeals(userId);
     }
 
     @Override
-    public void deleteCalenderMeal(CalenderMeal meal, OnDeleteCalendarMealResponse response) {
-        localDataSource.deleteCalenderMeal(meal,response);
+    public Completable deleteCalenderMeal(CalenderMeal meal) {
+        return localDataSource.deleteCalenderMeal(meal);
     }
 }

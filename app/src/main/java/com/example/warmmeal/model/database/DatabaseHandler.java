@@ -14,7 +14,11 @@ import com.example.warmmeal.model.firebase.FirebaseHandler;
 import com.example.warmmeal.model.pojo.CalenderMeal;
 import com.example.warmmeal.model.pojo.FavouriteMeal;
 
+import java.util.List;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -24,13 +28,9 @@ public class DatabaseHandler implements LocalDataSource {
     private static DatabaseHandler databaseHandler;
     private MealDAO mealDAO;
 
-
-    private final CompositeDisposable disposable;
-
     private DatabaseHandler(Context context) {
         this.context = context;
         mealDAO = MealDatabase.getInstance(context).mealDAO();
-         disposable= new CompositeDisposable();
     }
 
     public static DatabaseHandler getInstance(Context context) {
@@ -42,92 +42,35 @@ public class DatabaseHandler implements LocalDataSource {
 
 
     @Override
-    public void insertFavouriteMeal(FavouriteMeal meal, OnAddToFavouriteResponse response) {
-        if(FirebaseHandler.CURRENT_USER_ID != null)
-        {
-            disposable.add(mealDAO.insertMeal(meal).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                    response::onAddToFavouriteSuccess,
-                    throwable -> response.onAddToFavouriteFailure(throwable.getMessage())
-            ));
-        }else{
-            response.onAddToFavouriteFailure("You are a guest please login with account first.");
-        }
-
+    public Completable insertFavouriteMeal(FavouriteMeal meal) {
+        return mealDAO.insertMeal(meal);
     }
 
     @Override
-    public void getAllFavouriteMeals(String userId, OnGetFavouriteMealResponse response) {
+    public Flowable<List<FavouriteMeal>> getAllFavouriteMeals(String userId) {
 
-        if(FirebaseHandler.CURRENT_USER_ID!= null)
-        {
-            disposable.add(mealDAO.getAllMeals(userId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                    response::onGetFavouriteMealSuccess,
-                    throwable -> response.onGetFavouriteMealFailure(throwable.getMessage())
-            ));
-        }else {
-            response.onGetFavouriteMealFailure("You are a guest please login with account first.");
-        }
+        return mealDAO.getAllMeals(userId);
     }
 
     @Override
-    public void deleteFavouriteMeal(FavouriteMeal meal, OnDeleteFromFavouriteResponse response) {
-        if(FirebaseHandler.CURRENT_USER_ID != null)
-        {
-            disposable.add(mealDAO.deleteFavouriteMeal(meal).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                    response::onDeleteFromFavouriteSuccess,
-                    throwable -> response.onDeleteFromFavouriteFailure(throwable.getMessage())
-            ));
-        }else {
-            response.onDeleteFromFavouriteFailure("You are a guest please login with account first.");
-        }
-
+    public Completable deleteFavouriteMeal(FavouriteMeal meal) {
+        return mealDAO.deleteFavouriteMeal(meal);
     }
 
     @Override
-    public void insertCalenderMeal(CalenderMeal meal, OnAddCalendarMealResponse response) {
-        if(FirebaseHandler.CURRENT_USER_ID != null)
-        {
-            disposable.add(mealDAO.insertCalenderMeal(meal).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                    response::onAddCalendarMealSuccess,
-                    throwable -> response.onAddCalendarMealFailure(throwable.getMessage())
-            ));
-        }else {
-            response.onAddCalendarMealFailure("You are a guest please login with account first.");
-        }
-
+    public Completable insertCalenderMeal(CalenderMeal meal) {
+        return mealDAO.insertCalenderMeal(meal);
     }
 
     @Override
-    public void getAllCalenderMeals(String userId, OnGetCalendarMealsResponse response) {
-        if(FirebaseHandler.CURRENT_USER_ID != null)
-        {
-            disposable.add(mealDAO.getAllCalenderMeals(userId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                    response::onGetCalendarMealsSuccess,
-                    throwable -> response.onGetCalendarMealsFailure(throwable.getMessage())
-            ));
-        }else {
-            response.onGetCalendarMealsFailure("You are a guest please login with account first.");
-        }
-
+    public Flowable<List<CalenderMeal>> getAllCalenderMeals(String userId) {
+        return mealDAO.getAllCalenderMeals(userId);
     }
 
     @Override
-    public void deleteCalenderMeal(CalenderMeal meal, OnDeleteCalendarMealResponse response) {
-        if(FirebaseHandler.CURRENT_USER_ID != null)
-        {
-            disposable.add(mealDAO.deleteCalenderMeal(meal).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                    response::onDeleteCalendarMealSuccess,
-                    throwable -> response.onDeleteCalendarMealFailure(throwable.getMessage())
-            ));
-        }else
-        {
-            response.onDeleteCalendarMealFailure("You are a guest please login with account first.");
-        }
+    public Completable deleteCalenderMeal(CalenderMeal meal) {
+        return mealDAO.deleteCalenderMeal(meal);
 
     }
 
-    public void clearDisposable()
-    {
-        disposable.clear();
-    }
 }
