@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,7 +37,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import java.util.ArrayList;
 import java.util.List;
 
-public class MealActivity extends AppCompatActivity implements OnMealScreenResponse, OnAddToFavouriteResponse, OnDeleteFromFavouriteResponse {
+public class MealActivity extends AppCompatActivity implements OnMealScreenResponse, OnAddToFavouriteResponse, OnDeleteFromFavouriteResponse,DayChooserItemOnClickListener {
 
     ImageView mealImage;
     TextView mealName;
@@ -44,7 +45,7 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
     TextView mealInstructions;
     RecyclerView ingredientsRecyclerView;
     YouTubePlayerView mealYoutubePlayer;
-    Button addToFavourite,backButton;
+    Button addToFavourite,backButton,addToPlan;
 
 
     //presenter
@@ -58,6 +59,9 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
 
     Meal currentMeal;
 
+    ///day chooer
+    DayChooser dayChooser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +73,8 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
 
     void init()
     {
+        //day chooser
+        dayChooser = new DayChooser(this);
         //currentMeal = getIntent().getParcelableExtra(HomeFragment.MEAL_KEY);
         mealId = getIntent().getStringExtra(HomeFragment.MEAL_KEY);
         isFavourite = getIntent().getBooleanExtra(HomeFragment.IS_FAVOURITE_KEY,false);
@@ -81,6 +87,7 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
         mealYoutubePlayer = findViewById(R.id.mealScreenVideoViewer);
         addToFavourite = findViewById(R.id.mealScreenAddToFavourite);
         backButton = findViewById(R.id.mealScreenBack);
+        addToPlan = findViewById(R.id.mealScreenAddToCalendar);
 
         presenter = MealScreenPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance(this)));
 
@@ -109,6 +116,11 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
             {
                 Log.d("Kerolos", "setUp: " + ex.getMessage());
             }
+        });
+
+
+        addToPlan.setOnClickListener((v) -> {
+            dayChooser.startDayChooser(this);
         });
 
         backButton.setOnClickListener((v) -> {
@@ -210,5 +222,43 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
     @Override
     public void onDeleteFromFavouriteFailure(String message) {
         Log.d("Kerolos", "onDeleteFromFavouriteFailure: " + message);
+    }
+
+
+    /////////day chooser item onclick
+    @Override
+    public void onMondayClicked() {
+        Toast.makeText(this, "monday clicked", Toast.LENGTH_SHORT).show();
+        dayChooser.dismiss();
+    }
+
+    @Override
+    public void onTuesdayClicked() {
+        dayChooser.dismiss();
+    }
+
+    @Override
+    public void onWednesdayClicked() {
+        dayChooser.dismiss();
+    }
+
+    @Override
+    public void onThursdayClicked() {
+        dayChooser.dismiss();
+    }
+
+    @Override
+    public void onFridayClicked() {
+        dayChooser.dismiss();
+    }
+
+    @Override
+    public void onSaturdayClicked() {
+        dayChooser.dismiss();
+    }
+
+    @Override
+    public void onSundayClicked() {
+        dayChooser.dismiss();
     }
 }

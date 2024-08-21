@@ -158,6 +158,20 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
+            android:id="@+id/mealScreenAddToCalendar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="Add To Plan"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto"
+            app:backgroundTint="@color/dark_gray"
+            android:background="@drawable/cutom_button"
+            app:layout_constraintTop_toBottomOf="@id/mealScreenAddToFavourite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
             android:id="@+id/mealScreenBack"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -167,7 +181,7 @@
             android:fontFamily="@font/roboto"
             app:backgroundTint="@color/dark_gray"
             android:background="@drawable/cutom_button"
-            app:layout_constraintTop_toBottomOf="@id/mealScreenAddToFavourite"
+            app:layout_constraintTop_toBottomOf="@id/mealScreenAddToCalendar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

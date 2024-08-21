@@ -111,7 +111,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
         presenter = HomeFragmentPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(context), SharedPrefHandler.getInstance(context)));
 
-        presenter.getMealsByFirstLetter('b',DataPurpose.INSPIRATION,this);
+        presenter.getMealsByFirstLetter('a',DataPurpose.INSPIRATION,this);
         presenter.getAllCategories(this);
         presenter.getAllCountries(this);
 
@@ -127,7 +127,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     @Override
     public void onStart() {
         super.onStart();
-        presenter.getMealsByFirstLetter('a',DataPurpose.MORE_YOU_LIKE,this);
+        presenter.getMealsByFirstLetter('b',DataPurpose.MORE_YOU_LIKE,this);
     }
 
     void setUpRecyclerViewWithLists()

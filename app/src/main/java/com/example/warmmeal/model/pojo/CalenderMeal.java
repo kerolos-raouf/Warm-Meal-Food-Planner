@@ -8,11 +8,14 @@ import com.example.warmmeal.model.util.Day;
 
 import org.jetbrains.annotations.NotNull;
 
-@Entity(primaryKeys = {"userId","day","meal"})
+@Entity(primaryKeys = {"userId", "id"})
 public class CalenderMeal {
 
 
 
+    @NotNull
+    @PrimaryKey(autoGenerate = true)
+    public int id = 0;
     @NotNull
     public String userId;
     @NotNull

@@ -38,8 +38,11 @@ public class CustomProgressBar {
 
     public void dismissProgressBar()
     {
-        alertDialog.dismiss();
-        isShowing = false;
+        if(isShowing)
+        {
+            alertDialog.dismiss();
+            isShowing = false;
+        }
     }
 
     public boolean isShowing()
