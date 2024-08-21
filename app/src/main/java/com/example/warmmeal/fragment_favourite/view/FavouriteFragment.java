@@ -72,6 +72,12 @@ public class FavouriteFragment extends Fragment implements OnGetFavouriteMealRes
         mAdapter = new SearchRecyclerViewAdapter(new ArrayList<>(),this,getContext(),true);
         recyclerView.setAdapter(mAdapter);
 
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         presenter.getAllFavouriteMeals(FirebaseHandler.CURRENT_USER_ID,this);
     }
 

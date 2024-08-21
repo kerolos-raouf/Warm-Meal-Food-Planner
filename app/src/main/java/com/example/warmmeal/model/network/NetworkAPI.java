@@ -8,6 +8,8 @@ import com.example.warmmeal.fragment_search.view.OnSearchResponse;
 import com.example.warmmeal.meal_screen.view.OnMealScreenResponse;
 import com.example.warmmeal.model.contracts.RemoteDataSource;
 
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -21,6 +23,7 @@ public class NetworkAPI implements RemoteDataSource {
 
     CompositeDisposable disposable;
 
+    private static final int TIME_OUT_IN_MILLISECONDS = 5000;
 
     Retrofit retrofit;
     MealDTO mealDTO;

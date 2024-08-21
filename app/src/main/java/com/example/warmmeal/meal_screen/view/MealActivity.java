@@ -96,14 +96,19 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
         }
 
         addToFavourite.setOnClickListener((e)->{
-            HomeFragment.isFavouriteMealsFetched = false;
-            if(isFavourite)
+            try {
+
+                if(isFavourite)
+                {
+                    presenter.deleteFromFavourite(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,mealId,mealName.getText().toString(),currentMeal.getStrMealThumb(),true), this);
+                }else {
+                    presenter.addFavouriteMeal(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,mealId,mealName.getText().toString(),currentMeal.getStrMealThumb(),true), this);
+                }
+                isFavourite = !isFavourite;
+            }catch (Exception ex)
             {
-                presenter.deleteFromFavourite(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,mealId,mealName.getText().toString(),mealImage.toString(),true), this);
-            }else {
-                presenter.addFavouriteMeal(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,mealId,mealName.getText().toString(),mealImage.toString(),true), this);
+                Log.d("Kerolos", "setUp: " + ex.getMessage());
             }
-            isFavourite = !isFavourite;
         });
 
         backButton.setOnClickListener((v) -> {
@@ -175,8 +180,8 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
 
     @Override
     public void onGetMealByIdSuccess(Meals meals) {
-
-        setMealData(meals.getMeals().get(0));
+        currentMeal = meals.getMeals().get(0);
+        setMealData(currentMeal);
     }
 
     @Override
