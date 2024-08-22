@@ -152,7 +152,7 @@
             android:textColor="@color/white"
             android:fontFamily="@font/roboto"
             app:backgroundTint="@color/dark_gray"
-            android:background="@drawable/cutom_button"
+            android:background="@drawable/custom_button"
             app:layout_constraintTop_toBottomOf="@id/mealScreenCardView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -166,7 +166,7 @@
             android:textColor="@color/white"
             android:fontFamily="@font/roboto"
             app:backgroundTint="@color/dark_gray"
-            android:background="@drawable/cutom_button"
+            android:background="@drawable/custom_button"
             app:layout_constraintTop_toBottomOf="@id/mealScreenAddToFavourite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -180,7 +180,7 @@
             android:textColor="@color/white"
             android:fontFamily="@font/roboto"
             app:backgroundTint="@color/dark_gray"
-            android:background="@drawable/cutom_button"
+            android:background="@drawable/custom_button"
             app:layout_constraintTop_toBottomOf="@id/mealScreenAddToCalendar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

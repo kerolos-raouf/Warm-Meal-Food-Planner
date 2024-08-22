@@ -17,7 +17,7 @@
         android:layout_marginEnd="@dimen/normalMargin"
         android:layout_marginStart="@dimen/normalMargin"
         android:layout_marginTop="50dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="50dp"
         app:cardCornerRadius="50dp"
         android:elevation="10dp"
         >
@@ -31,8 +31,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
 
-                android:layout_marginTop="50dp"
-
+                android:layout_marginTop="@dimen/normalMargin"
 
                 android:src="@drawable/profile_image"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -69,12 +68,30 @@
                 android:textColor="@color/dark_gray"
                 app:backgroundTint="@color/white"
 
-                android:layout_marginTop="@dimen/normalMargin"
+                android:layout_marginTop="@dimen/smallMargin"
                 android:layout_marginStart="50dp"
                 android:layout_marginEnd="50dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/profileUserName" />
+
+            <Button
+                android:id="@+id/profileDownload"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+
+                android:background="@drawable/sign_up_button_background"
+                android:fontFamily="@font/roboto"
+                android:text="Download Saved Data"
+                android:textColor="@color/dark_gray"
+                app:backgroundTint="@color/white"
+
+                android:layout_marginTop="@dimen/smallMargin"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profilePackUp" />
 
             <Button
                 android:id="@+id/profileLogOut"
@@ -87,12 +104,12 @@
                 android:textColor="@color/light_sugar"
                 app:backgroundTint="@color/red"
 
-                android:layout_marginTop="@dimen/normalMargin"
+                android:layout_marginTop="@dimen/smallMargin"
                 android:layout_marginStart="50dp"
                 android:layout_marginEnd="50dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/profilePackUp" />
+                app:layout_constraintTop_toBottomOf="@+id/profileDownload" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
