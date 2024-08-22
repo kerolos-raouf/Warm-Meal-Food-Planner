@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.example.warmmeal.R;
 import com.example.warmmeal.fragment_favourite.presenter.FavouritePresenter;
 import com.example.warmmeal.fragment_home.view.HomeFragment;
-import com.example.warmmeal.fragment_search.view.OnSearchRecyclerViewItemClicked;
+import com.example.warmmeal.fragment_search.view.OnRecyclerViewItemClickedListener;
 import com.example.warmmeal.fragment_search.view.SearchRecyclerViewAdapter;
 import com.example.warmmeal.meal_screen.view.MealActivity;
 import com.example.warmmeal.model.database.DatabaseHandler;
@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class FavouriteFragment extends Fragment implements OnGetFavouriteMealResponse , OnSearchRecyclerViewItemClicked ,OnDeleteFromFavouriteResponse{
+public class FavouriteFragment extends Fragment implements OnGetFavouriteMealResponse , OnRecyclerViewItemClickedListener,OnDeleteFromFavouriteResponse{
 
 
     RecyclerView recyclerView;
@@ -67,12 +67,8 @@ public class FavouriteFragment extends Fragment implements OnGetFavouriteMealRes
 
     void setUp()
     {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
         mAdapter = new SearchRecyclerViewAdapter(new ArrayList<>(),this,getContext(),true);
         recyclerView.setAdapter(mAdapter);
-
-
     }
 
     @Override
@@ -118,7 +114,7 @@ public class FavouriteFragment extends Fragment implements OnGetFavouriteMealRes
     }
 
     @Override
-    public void onAddToFavouriteClicked(Meal meal) {
+    public void onButtonClicked(Meal meal) {
         presenter.deleteFavouriteMeal(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb(),meal.isFavourite()),this);
     }
 

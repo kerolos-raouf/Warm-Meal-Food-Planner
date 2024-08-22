@@ -8,10 +8,10 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.example.warmmeal.model.database.type_converter.MealConverter;
-import com.example.warmmeal.model.pojo.CalenderMeal;
+import com.example.warmmeal.model.pojo.PlanMeal;
 import com.example.warmmeal.model.pojo.FavouriteMeal;
 
-@Database(entities = {FavouriteMeal.class, CalenderMeal.class}, version = 1)
+@Database(entities = {FavouriteMeal.class, PlanMeal.class}, version = 1)
 @TypeConverters(MealConverter.class)
 public abstract class MealDatabase extends RoomDatabase {
 

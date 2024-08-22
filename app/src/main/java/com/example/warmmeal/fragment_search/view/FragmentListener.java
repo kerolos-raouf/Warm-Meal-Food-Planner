@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +45,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class SearchFragment extends Fragment implements OnSearchResponse ,OnSearchRecyclerViewItemClicked,OnGetListsResponse{
+public class FragmentListener extends Fragment implements OnSearchResponse , OnRecyclerViewItemClickedListener,OnGetListsResponse{
 
 
     EditText searchEditText;
@@ -333,7 +332,7 @@ public class SearchFragment extends Fragment implements OnSearchResponse ,OnSear
     }
 
     @Override
-    public void onAddToFavouriteClicked(Meal meal) {
+    public void onButtonClicked(Meal meal) {
 
     }
 

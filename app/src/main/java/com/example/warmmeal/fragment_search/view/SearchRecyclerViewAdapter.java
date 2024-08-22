@@ -1,11 +1,9 @@
 package com.example.warmmeal.fragment_search.view;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,11 +20,11 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
 
 
     ArrayList<Meal> meals;
-    OnSearchRecyclerViewItemClicked listener;
+    OnRecyclerViewItemClickedListener listener;
     Context context;
     boolean showFavButton;
 
-    public SearchRecyclerViewAdapter(ArrayList<Meal> meals, OnSearchRecyclerViewItemClicked listener, Context context,boolean showFavButton ) {
+    public SearchRecyclerViewAdapter(ArrayList<Meal> meals, OnRecyclerViewItemClickedListener listener, Context context, boolean showFavButton ) {
         this.meals = meals;
         this.listener = listener;
         this.context = context;
@@ -71,7 +69,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
                 holder.addToFavButton.setImageResource(R.drawable.icon_favourite_item);
                 meals.get(position).setFavourite(true);
             }
-            listener.onAddToFavouriteClicked(meals.get(position));
+            listener.onButtonClicked(meals.get(position));
         });
 
         if(meals.get(position).isFavourite())

@@ -5,7 +5,6 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,12 +15,12 @@ import com.bumptech.glide.Glide;
 import com.example.warmmeal.R;
 import com.example.warmmeal.fragment_favourite.view.OnAddToFavouriteResponse;
 import com.example.warmmeal.fragment_favourite.view.OnDeleteFromFavouriteResponse;
-import com.example.warmmeal.fragment_favourite.view.OnGetFavouriteMealResponse;
 import com.example.warmmeal.fragment_home.view.HomeFragment;
 import com.example.warmmeal.meal_screen.presenter.MealScreenPresenter;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
 import com.example.warmmeal.model.network.NetworkAPI;
+import com.example.warmmeal.model.pojo.PlanMeal;
 import com.example.warmmeal.model.pojo.FavouriteMeal;
 import com.example.warmmeal.model.pojo.Meal;
 import com.example.warmmeal.model.pojo.MealIngredientAndMeasure;
@@ -29,13 +28,13 @@ import com.example.warmmeal.model.pojo.Meals;
 import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
 import com.example.warmmeal.model.util.CustomProgressBar;
+import com.example.warmmeal.model.util.Day;
 import com.google.android.material.snackbar.Snackbar;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MealActivity extends AppCompatActivity implements OnMealScreenResponse, OnAddToFavouriteResponse, OnDeleteFromFavouriteResponse,DayChooserItemOnClickListener {
 
@@ -89,7 +88,7 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
         backButton = findViewById(R.id.mealScreenBack);
         addToPlan = findViewById(R.id.mealScreenAddToCalendar);
 
-        presenter = MealScreenPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance(this)));
+        presenter = MealScreenPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance(this)),this);
 
         presenter.getMealById(mealId,this);
         //setMealData(currentMeal);
@@ -197,6 +196,11 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
     }
 
     @Override
+    public void onAddMealToPlanSuccess(String day) {
+        Snackbar.make(findViewById(android.R.id.content), "Meal Added to " + day + ".", Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void onFailure(String message) {
         Log.d("Kerolos", "onFailure: " + message);
     }
@@ -228,37 +232,43 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
     /////////day chooser item onclick
     @Override
     public void onMondayClicked() {
-        Toast.makeText(this, "monday clicked", Toast.LENGTH_SHORT).show();
+        presenter.addMealToPlan(new PlanMeal(FirebaseHandler.CURRENT_USER_ID, Day.MONDAY,currentMeal.getIdMeal(),currentMeal.getStrMeal(),currentMeal.getStrMealThumb()));
         dayChooser.dismiss();
     }
 
     @Override
     public void onTuesdayClicked() {
+        presenter.addMealToPlan(new PlanMeal(FirebaseHandler.CURRENT_USER_ID, Day.TUESDAY,currentMeal.getIdMeal(),currentMeal.getStrMeal(),currentMeal.getStrMealThumb()));
         dayChooser.dismiss();
     }
 
     @Override
     public void onWednesdayClicked() {
+        presenter.addMealToPlan(new PlanMeal(FirebaseHandler.CURRENT_USER_ID, Day.WEDNESDAY,currentMeal.getIdMeal(),currentMeal.getStrMeal(),currentMeal.getStrMealThumb()));
         dayChooser.dismiss();
     }
 
     @Override
     public void onThursdayClicked() {
+        presenter.addMealToPlan(new PlanMeal(FirebaseHandler.CURRENT_USER_ID, Day.THURSDAY,currentMeal.getIdMeal(),currentMeal.getStrMeal(),currentMeal.getStrMealThumb()));
         dayChooser.dismiss();
     }
 
     @Override
     public void onFridayClicked() {
+        presenter.addMealToPlan(new PlanMeal(FirebaseHandler.CURRENT_USER_ID, Day.FRIDAY,currentMeal.getIdMeal(),currentMeal.getStrMeal(),currentMeal.getStrMealThumb()));
         dayChooser.dismiss();
     }
 
     @Override
     public void onSaturdayClicked() {
+        presenter.addMealToPlan(new PlanMeal(FirebaseHandler.CURRENT_USER_ID, Day.SATURDAY,currentMeal.getIdMeal(),currentMeal.getStrMeal(),currentMeal.getStrMealThumb()));
         dayChooser.dismiss();
     }
 
     @Override
     public void onSundayClicked() {
+        presenter.addMealToPlan(new PlanMeal(FirebaseHandler.CURRENT_USER_ID, Day.SUNDAY,currentMeal.getIdMeal(),currentMeal.getStrMeal(),currentMeal.getStrMealThumb()));
         dayChooser.dismiss();
     }
 }

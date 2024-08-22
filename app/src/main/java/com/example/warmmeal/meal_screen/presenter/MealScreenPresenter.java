@@ -2,9 +2,9 @@ package com.example.warmmeal.meal_screen.presenter;
 
 import com.example.warmmeal.fragment_favourite.view.OnAddToFavouriteResponse;
 import com.example.warmmeal.fragment_favourite.view.OnDeleteFromFavouriteResponse;
-import com.example.warmmeal.fragment_favourite.view.OnGetFavouriteMealResponse;
 import com.example.warmmeal.meal_screen.view.OnMealScreenResponse;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
+import com.example.warmmeal.model.pojo.PlanMeal;
 import com.example.warmmeal.model.pojo.FavouriteMeal;
 import com.example.warmmeal.model.repository.Repository;
 
@@ -18,16 +18,19 @@ public class MealScreenPresenter {
 
     private static MealScreenPresenter mealScreenPresenter;
 
+    private OnMealScreenResponse response;
+
     private final CompositeDisposable compositeDisposable;
 
-    private  MealScreenPresenter(Repository repository) {
+    private  MealScreenPresenter(Repository repository, OnMealScreenResponse response) {
         this.repository = repository;
         compositeDisposable = new CompositeDisposable();
+        this.response = response;
     }
 
-    public static MealScreenPresenter getInstance(Repository repository) {
+    public static MealScreenPresenter getInstance(Repository repository, OnMealScreenResponse response) {
         if(mealScreenPresenter == null) {
-            mealScreenPresenter = new MealScreenPresenter(repository);
+            mealScreenPresenter = new MealScreenPresenter(repository, response);
         }
         return mealScreenPresenter;
     }
@@ -72,6 +75,17 @@ public class MealScreenPresenter {
         }else {
             response.onDeleteFromFavouriteFailure("You are not logged in");
         }
+    }
+
+    public void addMealToPlan(PlanMeal planMeal)
+    {
+        compositeDisposable.add(repository.insertCalenderMeal(planMeal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {response.onAddMealToPlanSuccess(planMeal.day.toString());},
+                        throwable -> {response.onFailure(throwable.getMessage());}
+                ));
     }
 
     public void clearDisposable()

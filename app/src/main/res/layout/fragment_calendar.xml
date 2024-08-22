@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment_calender.view.CalendarFragment"
+    tools:context=".fragment_plan.view.PlanFragment"
     android:background="@color/light_sugar"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/calendarMonday"
@@ -36,7 +36,9 @@
             android:background="@drawable/sign_up_button_background"
             app:backgroundTint="@color/dark_gray"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="invisible"
+            />
 
         <View
             android:id="@+id/calendarMondayDivider"
@@ -52,6 +54,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            tools:listitem="@layout/item_plan_fragment"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendarMondayDivider" />
@@ -83,7 +88,9 @@
             android:text="@string/add"
             app:backgroundTint="@color/dark_gray"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/calendarMondayRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/calendarMondayRecyclerView"
+            android:visibility="invisible"
+            />
 
         <View
             android:id="@+id/calendarTuesdayDivider"
@@ -99,6 +106,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendarTuesdayDivider" />
@@ -130,7 +139,9 @@
             android:text="@string/add"
             app:backgroundTint="@color/dark_gray"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/calendarTuesdayRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/calendarTuesdayRecyclerView"
+            android:visibility="invisible"
+            />
 
         <View
             android:id="@+id/calendarWednesdayDivider"
@@ -146,6 +157,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendarWednesdayDivider" />
@@ -177,7 +190,9 @@
             android:text="@string/add"
             app:backgroundTint="@color/dark_gray"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/calendarWednesdayRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/calendarWednesdayRecyclerView"
+            android:visibility="invisible"
+            />
 
         <View
             android:id="@+id/calendarThursdayDivider"
@@ -193,6 +208,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendarThursdayDivider" />
@@ -224,7 +241,9 @@
             android:text="@string/add"
             app:backgroundTint="@color/dark_gray"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/calendarThursdayRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/calendarThursdayRecyclerView"
+            android:visibility="invisible"
+            />
 
         <View
             android:id="@+id/calendarFridayDivider"
@@ -240,6 +259,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendarFridayDivider" />
@@ -271,7 +292,9 @@
             android:text="@string/add"
             app:backgroundTint="@color/dark_gray"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/calendarFridayRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/calendarFridayRecyclerView"
+            android:visibility="invisible"
+            />
 
         <View
             android:id="@+id/calendarSaturdayDivider"
@@ -287,6 +310,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendarSaturdayDivider" />
@@ -318,7 +343,9 @@
             android:text="@string/add"
             app:backgroundTint="@color/dark_gray"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/calendarSaturdayRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/calendarSaturdayRecyclerView"
+            android:visibility="invisible"
+            />
 
         <View
             android:id="@+id/calendarSundayDivider"
@@ -334,6 +361,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendarSundayDivider" />
