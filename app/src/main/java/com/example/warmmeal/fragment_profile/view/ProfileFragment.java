@@ -26,13 +26,15 @@ import com.example.warmmeal.model.pojo.PlanMeal;
 import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
 import com.example.warmmeal.model.util.CustomAlertDialog;
+import com.example.warmmeal.model.util.CustomProgressBar;
 import com.example.warmmeal.model.util.ISkipAlertDialog;
 import com.example.warmmeal.model.util.Navigator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
-public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetUserRegisterSateResponse, ISkipAlertDialog ,IProfileFragment,OnDownloadDataResponse,OnPackUpDataResponse{
+public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetUserRegisterSateResponse ,IProfileFragment,OnDownloadDataResponse,OnPackUpDataResponse{
 
 
 
@@ -46,6 +48,8 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
 
     ArrayList<FavouriteMeal> favouriteMeals;
     ArrayList<PlanMeal> planMeals;
+
+    CustomProgressBar customProgressBar;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -68,6 +72,7 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
         downloadButton = view.findViewById(R.id.profileDownload);
         logOutButton = view.findViewById(R.id.profileLogOut);
         customAlertDialog = new CustomAlertDialog(requireActivity());
+        customProgressBar = new CustomProgressBar(requireActivity());
 
         presenter = ProfilePresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(view.getContext()), SharedPrefHandler.getInstance(context)),this);
         presenter.getFavouriteMeals();
@@ -78,6 +83,7 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
             customAlertDialog.startAlertDialog(new ISkipAlertDialog() {
                 @Override
                 public void onPositiveButtonClick() {
+                    customProgressBar.startProgressBar();
                     presenter.packUpData(favouriteMeals,planMeals,ProfileFragment.this);
                 }
 
@@ -92,6 +98,7 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
             customAlertDialog.startAlertDialog(new ISkipAlertDialog() {
                 @Override
                 public void onPositiveButtonClick() {
+                    customProgressBar.startProgressBar();
                     presenter.downloadData(ProfileFragment.this);
                 }
 
@@ -115,6 +122,8 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
                 }
             }, "Are you sure you want to log out?", "Cancel", "Log Out");
         });
+
+
     }
 
     @Override
@@ -133,15 +142,6 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
         Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onPositiveButtonClick() {
-
-    }
-
-    @Override
-    public void onNegativeButtonClick() {
-
-    }
 
     @Override
     public void onGetFavouriteMealsSuccess(ArrayList<FavouriteMeal> favouriteMeals) {
@@ -160,24 +160,56 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
 
     }
 
-    @Override
-    public void onDownloadDataSuccess(ArrayList<FavouriteMeal> favouriteMeals, ArrayList<PlanMeal> planMeals) {
+
+    /*public void onDownloadDataSuccess(ArrayList<FavouriteMeal> favouriteMeals, ArrayList<PlanMeal> planMeals) {
         Log.d("Kerolos", "onDownloadDataSuccess: " + favouriteMeals.size() + " " + planMeals.size());
+        //Log.d("Kerolos", "onDownloadDataSuccess: 2" + favouriteMeals.get(0) + " " + planMeals.size());
+
+
+
+        for (int i = 0;i < favouriteMeals.size();i++) {
+            //Log.d("Kerolos", "onDownloadDataSuccess: 2" + favouriteMeals.get(0) + " " + planMeals.size());
+            //presenter.insertFavouriteMeal(favouriteMeals.get(i));
+        }
+        for (PlanMeal planMeal : planMeals) {
+            presenter.insertPlanMeal(planMeal);
+        }
+
         Toast.makeText(context, "data downloaded", Toast.LENGTH_SHORT).show();
+        customProgressBar.dismissProgressBar();
+    }*/
+
+    @Override
+    public void onDownloadFavouritesSuccess(ArrayList<FavouriteMeal> favouriteMeals) {
+        for (FavouriteMeal favouriteMeal : favouriteMeals) {
+            presenter.insertFavouriteMeal(favouriteMeal);
+        }
+        customProgressBar.dismissProgressBar();
+    }
+
+    @Override
+    public void onDownloadPlanMealsSuccess(ArrayList<PlanMeal> planMeals) {
+        for (PlanMeal planMeal : planMeals) {
+            presenter.insertPlanMeal(planMeal);
+        }
+        customProgressBar.dismissProgressBar();
     }
 
     @Override
     public void onDownloadDataFail(String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        customProgressBar.dismissProgressBar();
     }
 
     @Override
     public void onPackUpDataSuccess() {
         Toast.makeText(context, "Successfully packed up", Toast.LENGTH_SHORT).show();
+        customProgressBar.dismissProgressBar();
     }
 
     @Override
     public void onPackUpDataFail(String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        customProgressBar.dismissProgressBar();
     }
 }

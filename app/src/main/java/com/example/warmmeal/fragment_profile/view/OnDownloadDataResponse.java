@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public interface OnDownloadDataResponse {
 
-    void onDownloadDataSuccess(ArrayList<FavouriteMeal> favouriteMeals, ArrayList<PlanMeal> planMeals);
+    void onDownloadFavouritesSuccess(ArrayList<FavouriteMeal> favouriteMeals);
+    void onDownloadPlanMealsSuccess(ArrayList<PlanMeal> planMeals);
     void onDownloadDataFail(String message);
 }

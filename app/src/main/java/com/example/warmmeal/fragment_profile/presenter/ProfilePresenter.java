@@ -97,4 +97,27 @@ public class ProfilePresenter {
         }
     }
 
+    public void insertFavouriteMeal(FavouriteMeal meal) {
+        compositeDisposable.add(repository.insertFavouriteMeal(meal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {},
+                        throwable -> iProfileFragment.onFail(throwable.getMessage())
+                )
+        );
+    }
+
+    public void insertPlanMeal(PlanMeal meal) {
+        compositeDisposable.add(repository.insertCalenderMeal(meal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {},
+                        throwable -> iProfileFragment.onFail(throwable.getMessage())
+                )
+        );
+    }
+
+
 }

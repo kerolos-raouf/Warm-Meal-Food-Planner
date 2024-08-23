@@ -14,6 +14,7 @@ import com.example.warmmeal.login.view.OnLoginResponse;
 import com.example.warmmeal.login_ways.view.OnLoginWithGmailResponse;
 import com.example.warmmeal.model.pojo.FavouriteMeal;
 import com.example.warmmeal.model.pojo.PlanMeal;
+import com.example.warmmeal.model.util.Day;
 import com.example.warmmeal.signup.view.OnCreatingAccountResponse;
 import com.example.warmmeal.model.contracts.ManagingAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,10 +27,13 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Handler;
 
 public class FirebaseHandler implements ManagingAccount {
 
@@ -118,47 +122,133 @@ public class FirebaseHandler implements ManagingAccount {
 
 
 
+    private static final String MEAL_ID = "mealId";
+    private static final String MEAL_NAME = "mealName";
+    private static final String MEAL_IMAGE = "mealImage";
+    private static final String USER_ID = "userId";
+    private static final String DAY = "day";
+
+
     @Override
     public void packUpData(ArrayList<FavouriteMeal> favouriteMeals, ArrayList<PlanMeal> planMeals, OnPackUpDataResponse response)
     {
-        Map<String, Object> allMealsMap = Map.of(FAVOURITE_MEALS_KEY, favouriteMeals, PLAN_MEALS_KEY, planMeals);
-        firestore.collection(USER_KEY).document(CURRENT_USER_ID)
-                .set(allMealsMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    response.onPackUpDataSuccess();
-                }else
-                {
-                    response.onPackUpDataFail(Objects.requireNonNull(task.getException()).toString());
-                }
-            }
-        });
+        for(FavouriteMeal meal : favouriteMeals)
+        {
+            Map<String, Object> singleMealMap = new HashMap<>();
+            singleMealMap.put(MEAL_ID, meal.idMeal);
+            singleMealMap.put(MEAL_NAME, meal.strMeal);
+            singleMealMap.put(MEAL_IMAGE, meal.strMealThumb);
+            singleMealMap.put(USER_ID, meal.userId);
+
+            firestore.collection(USER_KEY).document(CURRENT_USER_ID)
+                    .collection(FAVOURITE_MEALS_KEY)
+                    .document(meal.idMeal)
+                    .set(singleMealMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                response.onPackUpDataSuccess();
+                            }else
+                            {
+                                response.onPackUpDataFail(Objects.requireNonNull(task.getException()).toString());
+                            }
+                        }
+                    });
+        }
+        for(PlanMeal meal : planMeals)
+        {
+            Map<String, Object> singleMealMap = new HashMap<>();
+            singleMealMap.put(MEAL_ID, meal.mealId);
+            singleMealMap.put(MEAL_NAME, meal.mealName);
+            singleMealMap.put(MEAL_IMAGE, meal.mealImage);
+            singleMealMap.put(DAY, meal.day);
+            singleMealMap.put(USER_ID, meal.userId);
+
+            firestore.collection(USER_KEY).document(CURRENT_USER_ID)
+                    .collection(PLAN_MEALS_KEY)
+                    .document(meal.day + meal.mealId)
+                    .set(singleMealMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                response.onPackUpDataSuccess();
+                            }else
+                            {
+                                response.onPackUpDataFail(Objects.requireNonNull(task.getException()).toString());
+                            }
+                        }
+                    });
+        }
+
 
     }
 
     @Override
-    public void downloadData(OnDownloadDataResponse response) {
-        firestore.collection(USER_KEY).document(CURRENT_USER_ID)
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                Map<String, Object> data = document.getData();
-                                ArrayList<FavouriteMeal> favouriteMeals = (ArrayList<FavouriteMeal>) data.get(FAVOURITE_MEALS_KEY);
-                                ArrayList<PlanMeal> planMeals = (ArrayList<PlanMeal>) data.get(PLAN_MEALS_KEY);
-                                response.onDownloadDataSuccess(favouriteMeals, planMeals);
-                            }else
-                                {
-                                response.onDownloadDataFail("There is no data.");
-                            }
-                        }else
-                        {
-                            response.onDownloadDataFail(Objects.requireNonNull(task.getException()).toString());
-                        }
-                    }
-                });
+    public void downloadData(OnDownloadDataResponse response)
+    {
+        getFavouriteMeals(response);
+        getPlanMeals(response);
     }
+
+        private void getFavouriteMeals(OnDownloadDataResponse response)
+        {
+            firestore.collection(USER_KEY).document(CURRENT_USER_ID)
+                    .collection(FAVOURITE_MEALS_KEY).
+                    get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                ArrayList<FavouriteMeal> favouriteMeals = new ArrayList<>();
+                                for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+
+                                    FavouriteMeal favouriteMeal = new FavouriteMeal(
+                                            Objects.requireNonNull(document.getString(USER_ID)),
+                                            Objects.requireNonNull(document.getString(MEAL_ID)),
+                                            Objects.requireNonNull(document.getString(MEAL_NAME)),
+                                            Objects.requireNonNull(document.getString(MEAL_IMAGE)),
+
+                                            true);
+                                    favouriteMeals.add(favouriteMeal);
+                                }
+                                response.onDownloadFavouritesSuccess(favouriteMeals);
+                            }else
+                            {
+                                response.onDownloadDataFail(Objects.requireNonNull(task.getException()).toString());
+                            }
+
+                        }
+
+                    });
+        }
+
+
+        private void getPlanMeals(OnDownloadDataResponse response)
+        {
+            firestore.collection(USER_KEY).document(CURRENT_USER_ID)
+                    .collection(PLAN_MEALS_KEY)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                ArrayList<PlanMeal> planMeals = new ArrayList<>();
+                                for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+
+                                    PlanMeal planMeal = new PlanMeal(
+                                            Objects.requireNonNull(document.getString(USER_ID)),
+                                            Day.valueOf(Objects.requireNonNull(document.getString(DAY))),
+                                            Objects.requireNonNull(document.getString(MEAL_ID)),
+                                            Objects.requireNonNull(document.getString(MEAL_NAME)),
+                                            Objects.requireNonNull(document.getString(MEAL_IMAGE))
+                                    );
+                                    planMeals.add(planMeal);
+                                }
+                                response.onDownloadPlanMealsSuccess(planMeals);
+                            }
+                            else
+                            {
+                                response.onDownloadDataFail(Objects.requireNonNull(task.getException()).toString());
+                            }
+                        }
+                    });
+        }
 }
