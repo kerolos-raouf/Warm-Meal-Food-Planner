@@ -15,4 +15,6 @@
     <color name="transparent_white">#10FFFFFF</color>
     <color name="blue">#2548FF</color>
     <color name="red">#A10000</color>
+    <color name="day_choose_background">#626262</color>
+    <color name="back_less_transparent">#AB000000</color>
 </resources>

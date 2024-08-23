@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginStart="50dp"
+    android:layout_marginEnd="50dp"
+    android:backgroundTint="@color/day_choose_background"
+    android:elevation="10dp"
+    app:cardCornerRadius="50dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/dayChooserText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:lines="2"
+            android:text="Choose Day"
+            android:textColor="@color/white"
+            android:textSize="35sp" />
+
+
+        <Button
+            android:id="@+id/dayChooserMonday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/monday"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto"
+            android:textSize="30sp"
+            android:background="@drawable/custom_button"
+            app:backgroundTint="@color/dark_gray"
+            android:layout_marginTop="@dimen/smallMargin"
+            android:layout_marginStart="@dimen/smallMargin"
+            android:layout_marginEnd="@dimen/smallMargin"
+            />
+
+        <Button
+            android:id="@+id/dayChooserTuesday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tuesday"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto"
+            android:textSize="30sp"
+            android:background="@drawable/custom_button"
+            app:backgroundTint="@color/dark_gray"
+            android:layout_marginTop="@dimen/smallMargin"
+            android:layout_marginStart="@dimen/smallMargin"
+            android:layout_marginEnd="@dimen/smallMargin"
+            />
+
+        <Button
+            android:id="@+id/dayChooserWednesday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/wednesday"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto"
+            android:textSize="30sp"
+            android:background="@drawable/custom_button"
+            app:backgroundTint="@color/dark_gray"
+            android:layout_marginTop="@dimen/smallMargin"
+            android:layout_marginStart="@dimen/smallMargin"
+            android:layout_marginEnd="@dimen/smallMargin"
+            />
+
+        <Button
+            android:id="@+id/dayChooserThursday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/thursday"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto"
+            android:textSize="30sp"
+            android:background="@drawable/custom_button"
+            app:backgroundTint="@color/dark_gray"
+            android:layout_marginTop="@dimen/smallMargin"
+            android:layout_marginStart="@dimen/smallMargin"
+            android:layout_marginEnd="@dimen/smallMargin"
+            />
+
+        <Button
+            android:id="@+id/dayChooserFriday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/friday"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto"
+            android:textSize="30sp"
+            android:background="@drawable/custom_button"
+            app:backgroundTint="@color/dark_gray"
+            android:layout_marginTop="@dimen/smallMargin"
+            android:layout_marginStart="@dimen/smallMargin"
+            android:layout_marginEnd="@dimen/smallMargin"
+            />
+
+        <Button
+            android:id="@+id/dayChooserSaturday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/saturday"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto"
+            android:textSize="30sp"
+            android:background="@drawable/custom_button"
+            app:backgroundTint="@color/dark_gray"
+            android:layout_marginTop="@dimen/smallMargin"
+            android:layout_marginStart="@dimen/smallMargin"
+            android:layout_marginEnd="@dimen/smallMargin"
+            />
+
+        <Button
+            android:id="@+id/dayChooserSunday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sunday"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto"
+            android:textSize="30sp"
+            android:background="@drawable/custom_button"
+            app:backgroundTint="@color/dark_gray"
+            android:layout_marginTop="@dimen/smallMargin"
+            android:layout_marginStart="@dimen/smallMargin"
+            android:layout_marginEnd="@dimen/smallMargin"
+            android:layout_marginBottom="@dimen/smallMargin"
+            />
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

@@ -152,8 +152,22 @@
             android:textColor="@color/white"
             android:fontFamily="@font/roboto"
             app:backgroundTint="@color/dark_gray"
-            android:background="@drawable/cutom_button"
+            android:background="@drawable/custom_button"
             app:layout_constraintTop_toBottomOf="@id/mealScreenCardView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/mealScreenAddToCalendar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="Add To Plan"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto"
+            app:backgroundTint="@color/dark_gray"
+            android:background="@drawable/custom_button"
+            app:layout_constraintTop_toBottomOf="@id/mealScreenAddToFavourite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -166,8 +180,8 @@
             android:textColor="@color/white"
             android:fontFamily="@font/roboto"
             app:backgroundTint="@color/dark_gray"
-            android:background="@drawable/cutom_button"
-            app:layout_constraintTop_toBottomOf="@id/mealScreenAddToFavourite"
+            android:background="@drawable/custom_button"
+            app:layout_constraintTop_toBottomOf="@id/mealScreenAddToCalendar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

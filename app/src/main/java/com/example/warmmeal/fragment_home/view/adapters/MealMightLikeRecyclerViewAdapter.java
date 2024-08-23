@@ -1,6 +1,7 @@
 package com.example.warmmeal.fragment_home.view.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,15 +59,41 @@ public class MealMightLikeRecyclerViewAdapter extends RecyclerView.Adapter<MealM
     @Override
     public void onBindViewHolder(@NonNull MealMightLikeRecyclerViewAdapter.ViewHolder holder, int position) {
 
-        Glide.with(context).load(meals.get(position).getStrMealThumb()).into(holder.mealImage);
+        Meal currentMeal = meals.get(position);
+        if(meals.get(position).isFavourite())
+        {
+            holder.addToFavourite.setImageResource(R.drawable.icon_favourite_item);
+        }
+        else
+        {
+            holder.addToFavourite.setImageResource(R.drawable.icon_favourite_border);
+        }
 
-        holder.mealName.setText(meals.get(position).getStrMeal());
-        holder.addToFavourite.setOnClickListener((e)->{
-            listener.onAddToFavouriteClicked(meals.get(position));
-        });
+        Glide.with(context).load(currentMeal.getStrMealThumb()).into(holder.mealImage);
+        holder.mealName.setText(currentMeal.getStrMeal());
+
+
         holder.mealImage.setOnClickListener((e)->{
-            listener.onMealClicked(meals.get(position));
+            listener.onMealClicked(currentMeal);
         });
+
+
+        holder.addToFavourite.setOnClickListener((e)->{
+            Log.d("Kerolos", "onBindViewHolder: " + currentMeal.isFavourite());
+            if(currentMeal.isFavourite())
+            {
+                holder.addToFavourite.setImageResource(R.drawable.icon_favourite_border);
+                currentMeal.setFavourite(false);
+            }
+            else
+            {
+                holder.addToFavourite.setImageResource(R.drawable.icon_favourite_item);
+                currentMeal.setFavourite(true);
+            }
+            listener.onAddToFavouriteClicked(currentMeal);
+        });
+
+
         //holder.dailyAdd.setText(meals.get(position).get());
     }
 

@@ -20,21 +20,32 @@ import com.example.warmmeal.login_ways.view.OnSetUserRegisterSateResponse;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
 import com.example.warmmeal.model.network.NetworkAPI;
+import com.example.warmmeal.model.pojo.FavouriteMeal;
+import com.example.warmmeal.model.pojo.PlanMeal;
 import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
+import com.example.warmmeal.model.util.CustomAlertDialog;
+import com.example.warmmeal.model.util.ISkipAlertDialog;
 import com.example.warmmeal.model.util.Navigator;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
-public class ProfileFragment extends Fragment implements OnLogOutResponse , OnSetUserRegisterSateResponse {
+public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetUserRegisterSateResponse, ISkipAlertDialog ,IProfileFragment,OnDownloadDataResponse,OnPackUpDataResponse{
 
 
 
-    Button packUpButton,logOutButton;
+    Button packUpButton,downloadButton,logOutButton;
 
     ProfilePresenter presenter;
 
     Context context;
+
+    CustomAlertDialog customAlertDialog;
+
+    ArrayList<FavouriteMeal> favouriteMeals;
+    ArrayList<PlanMeal> planMeals;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -53,16 +64,25 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse , OnSe
     private void init(View view) {
         context  = view.getContext();
         packUpButton = view.findViewById(R.id.profilePackUp);
+        downloadButton = view.findViewById(R.id.profileDownload);
         logOutButton = view.findViewById(R.id.profileLogOut);
+        customAlertDialog = new CustomAlertDialog(requireActivity());
 
-        presenter = ProfilePresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(view.getContext()), SharedPrefHandler.getInstance(context)));
+        presenter = ProfilePresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(view.getContext()), SharedPrefHandler.getInstance(context)),this);
+        presenter.getFavouriteMeals();
+        presenter.getPlanMeals();
     }
     private  void setUp() {
         packUpButton.setOnClickListener((e)->{
 
         });
+
+        downloadButton.setOnClickListener((e)->{
+
+        });
+
         logOutButton.setOnClickListener((e)->{
-            presenter.logOut(this);
+            customAlertDialog.startAlertDialog(this,"Are you sure you want to log out?","Cancel","Log Out");
         });
     }
 
@@ -80,5 +100,52 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse , OnSe
     public void setUserRegisterState() {
         Navigator.navigateAndClearLast(requireActivity(), LoginWays.class);
         Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onPositiveButtonClick() {
+        presenter.logOut(this);
+    }
+
+    @Override
+    public void onNegativeButtonClick() {
+
+    }
+
+    @Override
+    public void onGetFavouriteMealsSuccess(ArrayList<FavouriteMeal> favouriteMeals) {
+        this.favouriteMeals = favouriteMeals;
+        Toast.makeText(context, "done fav", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onGetPlanMealsSuccess(ArrayList<PlanMeal> planMeals) {
+        this.planMeals = planMeals;
+        Toast.makeText(context, "done plan", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFail(String message) {
+
+    }
+
+    @Override
+    public void onDownloadDataSuccess() {
+
+    }
+
+    @Override
+    public void onDownloadDataFail(String message) {
+
+    }
+
+    @Override
+    public void onPackUpDataSuccess() {
+
+    }
+
+    @Override
+    public void onPackUpDataFail(String message) {
+
     }
 }

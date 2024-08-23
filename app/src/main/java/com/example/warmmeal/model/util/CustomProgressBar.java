@@ -14,6 +14,7 @@ public class CustomProgressBar {
 
     private final Activity activity;
     private AlertDialog alertDialog;
+    private boolean isShowing;
 
     public CustomProgressBar(Activity activity)
     {
@@ -32,11 +33,21 @@ public class CustomProgressBar {
         alertDialog = builder.create();
         Objects.requireNonNull(alertDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         alertDialog.show();
+        isShowing = true;
     }
 
     public void dismissProgressBar()
     {
-        alertDialog.dismiss();
+        if(isShowing)
+        {
+            alertDialog.dismiss();
+            isShowing = false;
+        }
+    }
+
+    public boolean isShowing()
+    {
+        return isShowing;
     }
 
 }

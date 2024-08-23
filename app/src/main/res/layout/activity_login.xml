@@ -67,8 +67,8 @@
         android:background="@drawable/sign_up_button_background"
         android:fontFamily="@font/roboto"
         android:text="@string/log_in"
-        android:textColor="@color/dark_gray"
-        app:backgroundTint="@color/white"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/dark_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginPasswordEditText" />
@@ -83,8 +83,8 @@
         android:background="@drawable/sign_up_button_background"
         android:fontFamily="@font/roboto"
         android:text="@string/back"
-        android:textColor="@color/dark_gray"
-        app:backgroundTint="@color/white"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/dark_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginBtn" />
