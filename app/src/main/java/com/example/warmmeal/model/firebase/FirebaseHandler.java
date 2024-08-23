@@ -1,15 +1,10 @@
 package com.example.warmmeal.model.firebase;
 
-import android.app.Activity;
-import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 
 import com.example.warmmeal.fragment_profile.view.OnDownloadDataResponse;
 import com.example.warmmeal.fragment_profile.view.OnLogOutResponse;
-import com.example.warmmeal.fragment_profile.view.OnPackUpDataResponse;
+import com.example.warmmeal.fragment_profile.view.OnbBackupDataResponse;
 import com.example.warmmeal.login.view.OnLoginResponse;
 import com.example.warmmeal.login_ways.view.OnLoginWithGmailResponse;
 import com.example.warmmeal.model.pojo.FavouriteMeal;
@@ -24,7 +19,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -33,7 +27,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Handler;
 
 public class FirebaseHandler implements ManagingAccount {
 
@@ -47,6 +40,9 @@ public class FirebaseHandler implements ManagingAccount {
     private final FirebaseFirestore firestore;
 
     private static FirebaseHandler firebaseHandler;
+
+    private static boolean isFavouriteMealsFetched = false;
+    private static boolean isPlanMealsFetched = false;
 
     private FirebaseHandler()
     {
@@ -130,7 +126,42 @@ public class FirebaseHandler implements ManagingAccount {
 
 
     @Override
-    public void packUpData(ArrayList<FavouriteMeal> favouriteMeals, ArrayList<PlanMeal> planMeals, OnPackUpDataResponse response)
+    public void backupData(ArrayList<FavouriteMeal> favouriteMeals, ArrayList<PlanMeal> planMeals, OnbBackupDataResponse response)
+    {
+        firestore.collection(USER_KEY).document(CURRENT_USER_ID)
+                .collection(FAVOURITE_MEALS_KEY).
+                get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                document.getReference().delete();
+                            }
+                            backupFavouriteMeals(favouriteMeals, response);
+                        }
+
+                    }
+                });
+
+        firestore.collection(USER_KEY).document(CURRENT_USER_ID)
+                .collection(PLAN_MEALS_KEY).
+                get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                document.getReference().delete();
+                            }
+                            backupPlanMeals(planMeals, response);
+                        }
+
+                    }
+                });
+
+    }
+
+
+    private void backupFavouriteMeals(ArrayList<FavouriteMeal> favouriteMeals, OnbBackupDataResponse response)
     {
         for(FavouriteMeal meal : favouriteMeals)
         {
@@ -147,7 +178,11 @@ public class FirebaseHandler implements ManagingAccount {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                response.onPackUpDataSuccess();
+                                if (!isFavouriteMealsFetched)
+                                {
+                                    response.onPackUpDataSuccess("Favourite Meals Baked Up Successfully.");
+                                    isFavouriteMealsFetched = true;
+                                }
                             }else
                             {
                                 response.onPackUpDataFail(Objects.requireNonNull(task.getException()).toString());
@@ -155,6 +190,12 @@ public class FirebaseHandler implements ManagingAccount {
                         }
                     });
         }
+    }
+
+
+
+    private void backupPlanMeals(ArrayList<PlanMeal> planMeals, OnbBackupDataResponse response)
+    {
         for(PlanMeal meal : planMeals)
         {
             Map<String, Object> singleMealMap = new HashMap<>();
@@ -171,7 +212,11 @@ public class FirebaseHandler implements ManagingAccount {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                response.onPackUpDataSuccess();
+                                if (!isPlanMealsFetched)
+                                {
+                                    response.onPackUpDataSuccess("Plan Meals Baked Up Successfully.");
+                                    isPlanMealsFetched = true;
+                                }
                             }else
                             {
                                 response.onPackUpDataFail(Objects.requireNonNull(task.getException()).toString());
@@ -179,8 +224,6 @@ public class FirebaseHandler implements ManagingAccount {
                         }
                     });
         }
-
-
     }
 
     @Override

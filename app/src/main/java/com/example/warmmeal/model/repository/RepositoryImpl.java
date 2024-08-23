@@ -2,7 +2,7 @@ package com.example.warmmeal.model.repository;
 
 import com.example.warmmeal.fragment_profile.view.OnDownloadDataResponse;
 import com.example.warmmeal.fragment_profile.view.OnLogOutResponse;
-import com.example.warmmeal.fragment_profile.view.OnPackUpDataResponse;
+import com.example.warmmeal.fragment_profile.view.OnbBackupDataResponse;
 import com.example.warmmeal.login.view.OnLoginResponse;
 import com.example.warmmeal.login_ways.view.OnLoginWithGmailResponse;
 import com.example.warmmeal.login_ways.view.OnSetUserRegisterSateResponse;
@@ -78,8 +78,8 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
-    public void packUpData(ArrayList<FavouriteMeal> favouriteMeals, ArrayList<PlanMeal> planMeals, OnPackUpDataResponse response) {
-        managingAccount.packUpData(favouriteMeals,planMeals,response);
+    public void backupData(ArrayList<FavouriteMeal> favouriteMeals, ArrayList<PlanMeal> planMeals, OnbBackupDataResponse response) {
+        managingAccount.backupData(favouriteMeals,planMeals,response);
     }
 
     @Override
@@ -160,6 +160,11 @@ public class RepositoryImpl implements Repository{
     @Override
     public Completable deleteFavouriteMeal(FavouriteMeal meal) {
         return localDataSource.deleteFavouriteMeal(meal);
+    }
+
+    @Override
+    public Flowable<Integer> isFavouriteMealExists(String userId, String mealId) {
+        return localDataSource.isFavouriteMealExists(userId,mealId);
     }
 
     @Override

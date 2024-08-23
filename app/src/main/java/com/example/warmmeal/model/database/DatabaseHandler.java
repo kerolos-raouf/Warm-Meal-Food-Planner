@@ -47,6 +47,11 @@ public class DatabaseHandler implements LocalDataSource {
     }
 
     @Override
+    public Flowable<Integer> isFavouriteMealExists(String userId, String mealId) {
+        return mealDAO.isFavouriteMealExists(userId,mealId);
+    }
+
+    @Override
     public Completable insertCalenderMeal(PlanMeal meal) {
         return mealDAO.insertCalenderMeal(meal);
     }

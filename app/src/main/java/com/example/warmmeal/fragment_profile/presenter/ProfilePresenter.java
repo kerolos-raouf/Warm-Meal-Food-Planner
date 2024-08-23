@@ -3,7 +3,7 @@ package com.example.warmmeal.fragment_profile.presenter;
 import com.example.warmmeal.fragment_profile.view.IProfileFragment;
 import com.example.warmmeal.fragment_profile.view.OnDownloadDataResponse;
 import com.example.warmmeal.fragment_profile.view.OnLogOutResponse;
-import com.example.warmmeal.fragment_profile.view.OnPackUpDataResponse;
+import com.example.warmmeal.fragment_profile.view.OnbBackupDataResponse;
 import com.example.warmmeal.login_ways.view.OnSetUserRegisterSateResponse;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
 import com.example.warmmeal.model.pojo.FavouriteMeal;
@@ -79,9 +79,9 @@ public class ProfilePresenter {
         }
     }
 
-    public void packUpData(ArrayList<FavouriteMeal> favouriteMeals, ArrayList<PlanMeal> planMeals, OnPackUpDataResponse response) {
+    public void packUpData(ArrayList<FavouriteMeal> favouriteMeals, ArrayList<PlanMeal> planMeals, OnbBackupDataResponse response) {
         if(FirebaseHandler.CURRENT_USER_ID != null) {
-            repository.packUpData(favouriteMeals, planMeals, response);
+            repository.backupData(favouriteMeals, planMeals, response);
         }else
         {
             response.onPackUpDataFail("User is not logged in.");

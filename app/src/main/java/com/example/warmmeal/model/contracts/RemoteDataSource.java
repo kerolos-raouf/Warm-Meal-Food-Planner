@@ -1,11 +1,5 @@
 package com.example.warmmeal.model.contracts;
 
-import com.example.warmmeal.fragment_home.view.DataPurpose;
-import com.example.warmmeal.fragment_home.view.contracts.OnNetworkCallResponse;
-import com.example.warmmeal.fragment_search.view.ListPurpose;
-import com.example.warmmeal.fragment_search.view.OnGetListsResponse;
-import com.example.warmmeal.fragment_search.view.OnSearchResponse;
-import com.example.warmmeal.meal_screen.view.OnMealScreenResponse;
 import com.example.warmmeal.model.pojo.Categories;
 import com.example.warmmeal.model.pojo.Ingredients;
 import com.example.warmmeal.model.pojo.Meals;

@@ -1,15 +1,22 @@
 package com.example.warmmeal.fragment_home.presenter;
 
+import android.util.Log;
+
 import com.example.warmmeal.fragment_favourite.view.OnAddToFavouriteResponse;
 import com.example.warmmeal.fragment_favourite.view.OnDeleteFromFavouriteResponse;
 import com.example.warmmeal.fragment_favourite.view.OnGetFavouriteMealResponse;
 import com.example.warmmeal.fragment_home.view.DataPurpose;
+import com.example.warmmeal.fragment_home.view.contracts.IHomeFragment;
 import com.example.warmmeal.fragment_home.view.contracts.OnNetworkCallResponse;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
 import com.example.warmmeal.model.pojo.FavouriteMeal;
+import com.example.warmmeal.model.pojo.Meal;
 import com.example.warmmeal.model.repository.Repository;
 
+import java.util.List;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -20,6 +27,7 @@ public class HomeFragmentPresenter {
     private static HomeFragmentPresenter presenter;
 
     private final CompositeDisposable compositeDisposable;
+    private IHomeFragment iHomeFragment;
 
     private HomeFragmentPresenter(Repository repository)
     {
@@ -27,24 +35,26 @@ public class HomeFragmentPresenter {
         compositeDisposable = new CompositeDisposable();
     }
 
-    public static HomeFragmentPresenter getInstance(Repository repository)
+    public static HomeFragmentPresenter getInstance(Repository repository,IHomeFragment iHomeFragment)
     {
         if(presenter == null)
         {
             presenter = new HomeFragmentPresenter(repository);
         }
+        presenter.iHomeFragment = iHomeFragment;
         return presenter;
     }
 
-    public void getRandomMeal(OnNetworkCallResponse response)
+    public void getRandomMeal()
     {
         compositeDisposable.add(repository.getRandomMeal()
                 .subscribeOn(Schedulers.io())
+                .repeat(5)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        response::onGetMealByCharacterForInspirationSuccess,
-                        throwable -> response.onFailure(throwable.getMessage()
-                        )
+                        iHomeFragment::onGetRandomMealSuccess,
+                        throwable -> iHomeFragment.onFailure(throwable.getMessage()),
+                        ()->iHomeFragment.onGetRandomMealComplete()
                 ));
     }
 

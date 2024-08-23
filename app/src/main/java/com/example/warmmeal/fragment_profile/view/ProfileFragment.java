@@ -2,7 +2,6 @@ package com.example.warmmeal.fragment_profile.view;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavAction;
 
 import com.example.warmmeal.R;
 import com.example.warmmeal.fragment_profile.presenter.ProfilePresenter;
@@ -31,10 +29,8 @@ import com.example.warmmeal.model.util.ISkipAlertDialog;
 import com.example.warmmeal.model.util.Navigator;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
 
-public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetUserRegisterSateResponse ,IProfileFragment,OnDownloadDataResponse,OnPackUpDataResponse{
+public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetUserRegisterSateResponse ,IProfileFragment,OnDownloadDataResponse, OnbBackupDataResponse {
 
 
 
@@ -91,7 +87,7 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
                 public void onNegativeButtonClick() {
 
                 }
-            }, "Pack up your data?", "Cancel", "Pack Up");
+            }, "Backup your data?", "Cancel", "Backup");
         });
 
         downloadButton.setOnClickListener((e)->{
@@ -161,24 +157,6 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
     }
 
 
-    /*public void onDownloadDataSuccess(ArrayList<FavouriteMeal> favouriteMeals, ArrayList<PlanMeal> planMeals) {
-        Log.d("Kerolos", "onDownloadDataSuccess: " + favouriteMeals.size() + " " + planMeals.size());
-        //Log.d("Kerolos", "onDownloadDataSuccess: 2" + favouriteMeals.get(0) + " " + planMeals.size());
-
-
-
-        for (int i = 0;i < favouriteMeals.size();i++) {
-            //Log.d("Kerolos", "onDownloadDataSuccess: 2" + favouriteMeals.get(0) + " " + planMeals.size());
-            //presenter.insertFavouriteMeal(favouriteMeals.get(i));
-        }
-        for (PlanMeal planMeal : planMeals) {
-            presenter.insertPlanMeal(planMeal);
-        }
-
-        Toast.makeText(context, "data downloaded", Toast.LENGTH_SHORT).show();
-        customProgressBar.dismissProgressBar();
-    }*/
-
     @Override
     public void onDownloadFavouritesSuccess(ArrayList<FavouriteMeal> favouriteMeals) {
         for (FavouriteMeal favouriteMeal : favouriteMeals) {
@@ -192,6 +170,7 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
         for (PlanMeal planMeal : planMeals) {
             presenter.insertPlanMeal(planMeal);
         }
+        Toast.makeText(context, "Data was downloaded successfully.", Toast.LENGTH_SHORT).show();
         customProgressBar.dismissProgressBar();
     }
 
@@ -202,8 +181,8 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
     }
 
     @Override
-    public void onPackUpDataSuccess() {
-        Toast.makeText(context, "Successfully packed up", Toast.LENGTH_SHORT).show();
+    public void onPackUpDataSuccess(String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
         customProgressBar.dismissProgressBar();
     }
 

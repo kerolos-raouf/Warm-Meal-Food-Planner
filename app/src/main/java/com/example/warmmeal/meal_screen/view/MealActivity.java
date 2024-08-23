@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import com.example.warmmeal.fragment_home.view.HomeFragment;
 import com.example.warmmeal.meal_screen.presenter.MealScreenPresenter;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
+import com.example.warmmeal.model.internet_connection.ConnectivityObserver;
 import com.example.warmmeal.model.network.NetworkAPI;
 import com.example.warmmeal.model.pojo.PlanMeal;
 import com.example.warmmeal.model.pojo.FavouriteMeal;
@@ -36,7 +38,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 import java.util.ArrayList;
 
-public class MealActivity extends AppCompatActivity implements OnMealScreenResponse, OnAddToFavouriteResponse, OnDeleteFromFavouriteResponse,DayChooserItemOnClickListener {
+public class MealActivity extends AppCompatActivity implements IMealScreen, OnAddToFavouriteResponse, OnDeleteFromFavouriteResponse,DayChooserItemOnClickListener {
 
     ImageView mealImage;
     TextView mealName;
@@ -45,6 +47,8 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
     RecyclerView ingredientsRecyclerView;
     YouTubePlayerView mealYoutubePlayer;
     Button addToFavourite,backButton,addToPlan;
+
+    ConnectivityObserver connectivityObserver;
 
 
     //presenter
@@ -67,11 +71,13 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
         setContentView(R.layout.activity_meal);
         init();
         setUp();
-
     }
 
     void init()
     {
+        ///connectivity observer
+        connectivityObserver = new ConnectivityObserver(this);
+
         //day chooser
         dayChooser = new DayChooser(this);
         //currentMeal = getIntent().getParcelableExtra(HomeFragment.MEAL_KEY);
@@ -88,9 +94,17 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
         backButton = findViewById(R.id.mealScreenBack);
         addToPlan = findViewById(R.id.mealScreenAddToCalendar);
 
-        presenter = MealScreenPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance(this)),this);
+        presenter = MealScreenPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance(this)),this,connectivityObserver);
 
-        presenter.getMealById(mealId,this);
+        presenter.checkInternetStatus();
+
+        if(ConnectivityObserver.InternetStatus == ConnectivityObserver.Status.Available)
+        {
+            presenter.getMealById(mealId,this);
+        }else
+        {
+            Toast.makeText(this, "Check your internet connection.", Toast.LENGTH_SHORT).show();
+        }
         //setMealData(currentMeal);
     }
 
@@ -102,18 +116,26 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
         }
 
         addToFavourite.setOnClickListener((e)->{
-            try {
-
-                if(isFavourite)
-                {
-                    presenter.deleteFromFavourite(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,mealId,mealName.getText().toString(),currentMeal.getStrMealThumb(),true), this);
-                }else {
-                    presenter.addFavouriteMeal(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,mealId,mealName.getText().toString(),currentMeal.getStrMealThumb(),true), this);
-                }
-                isFavourite = !isFavourite;
-            }catch (Exception ex)
+            if(FirebaseHandler.CURRENT_USER_ID != null)
             {
-                Log.d("Kerolos", "setUp: " + ex.getMessage());
+                if(currentMeal != null)
+                {
+                    if(isFavourite)
+                    {
+                        presenter.deleteFromFavourite(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,mealId,mealName.getText().toString(),currentMeal.getStrMealThumb(),true), this);
+                    }else {
+                        presenter.addFavouriteMeal(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,mealId,mealName.getText().toString(),currentMeal.getStrMealThumb(),true), this);
+                    }
+                    isFavourite = !isFavourite;
+                }
+                else
+                {
+                    Toast.makeText(this, "Poor network connection.", Toast.LENGTH_SHORT).show();
+                }
+                
+            }else
+            {
+                Toast.makeText(this, "Please login first.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -132,7 +154,7 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
     @Override
     public void onStop() {
         super.onStop();
-        NetworkAPI.getInstance().clearDisposable();
+        presenter.clearDisposable();
     }
 
 
@@ -187,6 +209,16 @@ public class MealActivity extends AppCompatActivity implements OnMealScreenRespo
             mealIngredients.add(new MealIngredientAndMeasure(ingredients.get(i), measures.get(i)));
         }
         return mealIngredients;
+    }
+
+    @Override
+    public void onNetworkCallResponse(ConnectivityObserver.Status status, String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFail(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

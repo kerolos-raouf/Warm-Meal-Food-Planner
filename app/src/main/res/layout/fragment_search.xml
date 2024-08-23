@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_sugar"
-    tools:context=".fragment_search.view.FragmentListener">
+    tools:context=".fragment_search.view.SearchFragment">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
