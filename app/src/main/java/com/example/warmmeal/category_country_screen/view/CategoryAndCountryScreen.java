@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.warmmeal.R;
 import com.example.warmmeal.category_country_screen.presenter.CategoryAndCountryPresenter;
 import com.example.warmmeal.fragment_home.view.HomeFragment;
-import com.example.warmmeal.fragment_search.view.OnSearchRecyclerViewItemClicked;
+import com.example.warmmeal.fragment_search.view.OnRecyclerViewItemClickedListener;
 import com.example.warmmeal.fragment_search.view.OnSearchResponse;
 import com.example.warmmeal.fragment_search.view.SearchRecyclerViewAdapter;
 import com.example.warmmeal.meal_screen.view.MealActivity;
@@ -28,7 +28,7 @@ import com.example.warmmeal.model.util.Navigator;
 
 import java.util.ArrayList;
 
-public class CategoryAndCountryScreen extends AppCompatActivity implements OnSearchRecyclerViewItemClicked, OnSearchResponse {
+public class CategoryAndCountryScreen extends AppCompatActivity implements OnRecyclerViewItemClickedListener, OnSearchResponse {
 
     RecyclerView recyclerView;
     TextView categoryAndCountryScreenText;
@@ -80,17 +80,17 @@ public class CategoryAndCountryScreen extends AppCompatActivity implements OnSea
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new SearchRecyclerViewAdapter(new ArrayList<>(), this, this);
+        mAdapter = new SearchRecyclerViewAdapter(new ArrayList<>(), this, this,false);
         recyclerView.setAdapter(mAdapter);
     }
 
     @Override
     public void onMealClicked(Meal meal) {
-        Navigator.navigateWithStringExtra(this, MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal());
+        Navigator.navigateWithExtra(this, MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal(),HomeFragment.IS_FAVOURITE_KEY,meal.isFavourite());
     }
 
     @Override
-    public void onAddToFavouriteClicked(Meal meal) {
+    public void onButtonClicked(Meal meal) {
 
     }
 

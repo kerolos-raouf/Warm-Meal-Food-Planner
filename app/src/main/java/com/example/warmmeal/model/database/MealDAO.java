@@ -7,13 +7,13 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.example.warmmeal.model.pojo.CalenderMeal;
+import com.example.warmmeal.model.pojo.PlanMeal;
 import com.example.warmmeal.model.pojo.FavouriteMeal;
 
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Flowable;
 
 @Dao
 public interface MealDAO {
@@ -22,18 +22,18 @@ public interface MealDAO {
     Completable insertMeal(FavouriteMeal meal);
 
     @Query("SELECT * FROM FavouriteMeal WHERE userId = :userId")
-    Observable<List<FavouriteMeal>> getAllMeals(String userId);
+    Flowable<List<FavouriteMeal>> getAllMeals(String userId);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    Completable insertCalenderMeal(CalenderMeal meal);
+    Completable insertCalenderMeal(PlanMeal meal);
 
-    @Query("SELECT * FROM CalenderMeal WHERE userId = :userId")
-    Observable<List<CalenderMeal>> getAllCalenderMeals(String userId);
+    @Query("SELECT * FROM PlanMeal WHERE userId = :userId")
+    Flowable<List<PlanMeal>> getAllCalenderMeals(String userId);
 
     @Delete
     Completable deleteFavouriteMeal(FavouriteMeal meal);
 
     @Delete
-    Completable deleteCalenderMeal(CalenderMeal meal);
+    Completable deleteCalenderMeal(PlanMeal meal);
 
 }

@@ -8,16 +8,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.warmmeal.R;
 import com.example.warmmeal.fragment_favourite.presenter.FavouritePresenter;
 import com.example.warmmeal.fragment_home.view.HomeFragment;
-import com.example.warmmeal.fragment_search.view.OnSearchRecyclerViewItemClicked;
+import com.example.warmmeal.fragment_search.view.OnRecyclerViewItemClickedListener;
 import com.example.warmmeal.fragment_search.view.SearchRecyclerViewAdapter;
 import com.example.warmmeal.meal_screen.view.MealActivity;
 import com.example.warmmeal.model.database.DatabaseHandler;
@@ -34,10 +34,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class FavouriteFragment extends Fragment implements OnGetFavouriteMealResponse , OnSearchRecyclerViewItemClicked ,OnDeleteFromFavouriteResponse{
+public class FavouriteFragment extends Fragment implements OnGetFavouriteMealResponse , OnRecyclerViewItemClickedListener,OnDeleteFromFavouriteResponse{
 
 
     RecyclerView recyclerView;
+    TextView noResult;
 
     FavouritePresenter presenter;
     SearchRecyclerViewAdapter mAdapter;
@@ -59,33 +60,47 @@ public class FavouriteFragment extends Fragment implements OnGetFavouriteMealRes
     void init(View view)
     {
         recyclerView = view.findViewById(R.id.favouriteRecyclerView);
+        noResult = view.findViewById(R.id.favouriteNoResult);
+
         presenter = FavouritePresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(view.getContext()), SharedPrefHandler.getInstance(view.getContext())));
     }
 
     void setUp()
     {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new SearchRecyclerViewAdapter(new ArrayList<>(),this,getContext());
+        mAdapter = new SearchRecyclerViewAdapter(new ArrayList<>(),this,getContext(),true);
         recyclerView.setAdapter(mAdapter);
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
         presenter.getAllFavouriteMeals(FirebaseHandler.CURRENT_USER_ID,this);
     }
 
     @Override
     public void onGetFavouriteMealSuccess(List<FavouriteMeal> favouriteMeals) {
-        ArrayList<Meal> meals = new ArrayList<>();
-        for(FavouriteMeal favMeal : favouriteMeals)
+        if(favouriteMeals.isEmpty())
         {
-            Meal currentMeal = new Meal();
-            currentMeal.setIdMeal(favMeal.idMeal);
-            currentMeal.setStrMeal(favMeal.strMeal);
-            currentMeal.setStrMealThumb(favMeal.strMealThumb);
-            currentMeal.setFavourite(true);
-            meals.add(currentMeal);
+            noResult.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
         }
+        else
+        {
+            noResult.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            ArrayList<Meal> meals = new ArrayList<>();
+            for(FavouriteMeal favMeal : favouriteMeals)
+            {
+                Meal currentMeal = new Meal();
+                currentMeal.setIdMeal(favMeal.idMeal);
+                currentMeal.setStrMeal(favMeal.strMeal);
+                currentMeal.setStrMealThumb(favMeal.strMealThumb);
+                currentMeal.setFavourite(true);
+                meals.add(currentMeal);
+            }
 
-        mAdapter.setMeals(meals);
+            mAdapter.setMeals(meals);
+        }
     }
 
     @Override
@@ -95,11 +110,11 @@ public class FavouriteFragment extends Fragment implements OnGetFavouriteMealRes
 
     @Override
     public void onMealClicked(Meal meal) {
-        Navigator.navigateWithStringExtra(getContext(), MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal());
+        Navigator.navigateWithExtra(getContext(), MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal(),HomeFragment.IS_FAVOURITE_KEY,meal.isFavourite());
     }
 
     @Override
-    public void onAddToFavouriteClicked(Meal meal) {
+    public void onButtonClicked(Meal meal) {
         presenter.deleteFavouriteMeal(new FavouriteMeal(FirebaseHandler.CURRENT_USER_ID,meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb(),meal.isFavourite()),this);
     }
 

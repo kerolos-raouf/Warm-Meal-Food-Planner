@@ -8,11 +8,33 @@
     android:background="@color/light_sugar"
     >
 
+    <TextView
+        android:id="@+id/favouriteNoResult"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:fontFamily="@font/roboto"
+        android:gravity="center"
+        android:text="There Are No Meals Go and Add Some."
+        android:textColor="@color/dark_sugar"
+        android:textSize="30sp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favouriteRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -58,15 +58,36 @@ public class DailyInspirationRecyclerViewAdapter extends RecyclerView.Adapter<Da
     @Override
     public void onBindViewHolder(@NonNull DailyInspirationRecyclerViewAdapter.ViewHolder holder, int position) {
 
+        if(meals.get(position).isFavourite())
+        {
+            holder.dailyAdd.setImageResource(R.drawable.icon_favourite_item);
+        }
+        else
+        {
+            holder.dailyAdd.setImageResource(R.drawable.icon_favourite_border);
+        }
+
         Glide.with(context).load(meals.get(position).getStrMealThumb()).into(holder.dailyMealImage);
 
         holder.dailyMealName.setText(meals.get(position).getStrMeal());
         holder.dailyAdd.setOnClickListener((e)->{
+            if(meals.get(position).isFavourite())
+            {
+                holder.dailyAdd.setImageResource(R.drawable.icon_favourite_border);
+                meals.get(position).setFavourite(false);
+            }
+            else
+            {
+                holder.dailyAdd.setImageResource(R.drawable.icon_favourite_item);
+                meals.get(position).setFavourite(true);
+            }
             listener.onAddToFavouriteClicked(meals.get(position));
         });
         holder.dailyMealImage.setOnClickListener((e)->{
             listener.onMealClicked(meals.get(position));
         });
+
+
         //holder.dailyAdd.setText(meals.get(position).get());
     }
 

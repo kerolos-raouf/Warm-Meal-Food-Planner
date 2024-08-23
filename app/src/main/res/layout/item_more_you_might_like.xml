@@ -63,6 +63,14 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/item_cancel_button_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+        <ImageView
             android:id="@+id/itemYouMightLikeViewMealAdd"
             android:layout_width="40dp"
             android:layout_height="40dp"

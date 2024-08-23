@@ -1,12 +1,11 @@
 package com.example.warmmeal.model.pojo;
 
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 @Entity(primaryKeys = {"userId","idMeal"})
 public class FavouriteMeal {
@@ -34,5 +33,21 @@ public class FavouriteMeal {
         this.strMeal = strMeal;
         this.strMealThumb = strMealThumb;
         this.isFavourite = isFavourite;
+    }
+
+
+    public static void getFavouriteMealsList(ArrayList<FavouriteMeal> favouriteMeals, ArrayList<Meal> allMeals)
+    {
+
+        for(FavouriteMeal favouriteMeal : favouriteMeals)
+        {
+            for(Meal meal : allMeals)
+            {
+                if(favouriteMeal.idMeal.equals(meal.getIdMeal()))
+                {
+                    meal.setFavourite(true);
+                }
+            }
+        }
     }
 }
