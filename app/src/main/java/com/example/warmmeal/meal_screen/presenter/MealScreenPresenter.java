@@ -85,13 +85,15 @@ public class MealScreenPresenter {
 
     public void addMealToPlan(PlanMeal planMeal)
     {
-        compositeDisposable.add(repository.insertCalenderMeal(planMeal)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        () -> {iMealScreen.onAddMealToPlanSuccess(planMeal.day.toString());},
-                        throwable -> {iMealScreen.onFailure(throwable.getMessage());}
-                ));
+        if (FirebaseHandler.CURRENT_USER_ID != null) {
+            compositeDisposable.add(repository.insertCalenderMeal(planMeal)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            () -> {iMealScreen.onAddMealToPlanSuccess(planMeal.day.toString());},
+                            throwable -> {iMealScreen.onFailure(throwable.getMessage());}
+                    ));
+        }
     }
 
     public void checkInternetStatus() {

@@ -14,6 +14,7 @@ import com.example.warmmeal.model.pojo.Meal;
 import com.example.warmmeal.model.repository.Repository;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
@@ -50,6 +51,7 @@ public class HomeFragmentPresenter {
         compositeDisposable.add(repository.getRandomMeal()
                 .subscribeOn(Schedulers.io())
                 .repeat(5)
+                .timeout(10000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         iHomeFragment::onGetRandomMealSuccess,
@@ -62,6 +64,7 @@ public class HomeFragmentPresenter {
     {
         compositeDisposable.add(repository.getMealsByFirstLetter(letter)
                 .subscribeOn(Schedulers.io())
+                .timeout(10000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
 
@@ -83,6 +86,7 @@ public class HomeFragmentPresenter {
     {
         compositeDisposable.add(repository.getAllCategories()
                 .subscribeOn(Schedulers.io())
+                .timeout(10000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         response::onGetCategorySuccess,
@@ -95,6 +99,7 @@ public class HomeFragmentPresenter {
     {
         compositeDisposable.add(repository.getAllCountries()
                 .subscribeOn(Schedulers.io())
+                .timeout(10000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         response::onGetAllCountriesSuccess,
@@ -109,6 +114,7 @@ public class HomeFragmentPresenter {
         {
             compositeDisposable.add(repository.insertFavouriteMeal(favouriteMeal)
                     .subscribeOn(Schedulers.io())
+                    .timeout(10000, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             response::onAddToFavouriteSuccess,
@@ -125,6 +131,7 @@ public class HomeFragmentPresenter {
         {
             compositeDisposable.add(repository.deleteFavouriteMeal(meal)
                     .subscribeOn(Schedulers.io())
+                    .timeout(10000, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             response::onDeleteFromFavouriteSuccess,
@@ -141,6 +148,7 @@ public class HomeFragmentPresenter {
         {
             compositeDisposable.add(repository.getAllFavouriteMeals(userId)
                     .subscribeOn(Schedulers.io())
+                    .timeout(10000, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             response::onGetFavouriteMealSuccess,

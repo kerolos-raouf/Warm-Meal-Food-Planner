@@ -59,12 +59,14 @@ public class MainScreen extends AppCompatActivity implements IMainScreen {
 
     void setUp()
     {
-        presenter.checkInternetStatus();
+
     }
 
-
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.checkInternetStatus();
+    }
 
     @Override
     public boolean onSupportNavigateUp() {

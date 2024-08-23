@@ -141,7 +141,12 @@ public class MealActivity extends AppCompatActivity implements IMealScreen, OnAd
 
 
         addToPlan.setOnClickListener((v) -> {
-            dayChooser.startDayChooser(this);
+            if(FirebaseHandler.CURRENT_USER_ID != null)
+            {
+                dayChooser.startDayChooser(this);
+            }else {
+                Toast.makeText(this, "Please login first.", Toast.LENGTH_SHORT).show();
+            }
         });
 
         backButton.setOnClickListener((v) -> {
