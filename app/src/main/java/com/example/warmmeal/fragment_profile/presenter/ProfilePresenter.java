@@ -1,6 +1,7 @@
 package com.example.warmmeal.fragment_profile.presenter;
 
 import com.example.warmmeal.fragment_profile.view.IProfileFragment;
+import com.example.warmmeal.fragment_profile.view.OnDownloadDataResponse;
 import com.example.warmmeal.fragment_profile.view.OnLogOutResponse;
 import com.example.warmmeal.fragment_profile.view.OnPackUpDataResponse;
 import com.example.warmmeal.login_ways.view.OnSetUserRegisterSateResponse;
@@ -78,12 +79,21 @@ public class ProfilePresenter {
         }
     }
 
-    public void packUpData(OnPackUpDataResponse response) {
+    public void packUpData(ArrayList<FavouriteMeal> favouriteMeals, ArrayList<PlanMeal> planMeals, OnPackUpDataResponse response) {
         if(FirebaseHandler.CURRENT_USER_ID != null) {
-
+            repository.packUpData(favouriteMeals, planMeals, response);
         }else
         {
             response.onPackUpDataFail("User is not logged in.");
+        }
+    }
+
+    public void downloadData(OnDownloadDataResponse response) {
+        if(FirebaseHandler.CURRENT_USER_ID != null) {
+            repository.downloadData(response);
+        }else
+        {
+            response.onDownloadDataFail("User is not logged in.");
         }
     }
 

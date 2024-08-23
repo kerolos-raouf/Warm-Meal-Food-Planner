@@ -2,6 +2,7 @@ package com.example.warmmeal.fragment_profile.view;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,15 +75,45 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
     }
     private  void setUp() {
         packUpButton.setOnClickListener((e)->{
+            customAlertDialog.startAlertDialog(new ISkipAlertDialog() {
+                @Override
+                public void onPositiveButtonClick() {
+                    presenter.packUpData(favouriteMeals,planMeals,ProfileFragment.this);
+                }
 
+                @Override
+                public void onNegativeButtonClick() {
+
+                }
+            }, "Pack up your data?", "Cancel", "Pack Up");
         });
 
         downloadButton.setOnClickListener((e)->{
+            customAlertDialog.startAlertDialog(new ISkipAlertDialog() {
+                @Override
+                public void onPositiveButtonClick() {
+                    presenter.downloadData(ProfileFragment.this);
+                }
 
+                @Override
+                public void onNegativeButtonClick() {
+
+                }
+            }, "Download your saved data?", "Cancel", "Download");
         });
 
         logOutButton.setOnClickListener((e)->{
-            customAlertDialog.startAlertDialog(this,"Are you sure you want to log out?","Cancel","Log Out");
+            customAlertDialog.startAlertDialog(new ISkipAlertDialog() {
+                @Override
+                public void onPositiveButtonClick() {
+                    presenter.logOut(ProfileFragment.this);
+                }
+
+                @Override
+                public void onNegativeButtonClick() {
+
+                }
+            }, "Are you sure you want to log out?", "Cancel", "Log Out");
         });
     }
 
@@ -104,7 +135,7 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
 
     @Override
     public void onPositiveButtonClick() {
-        presenter.logOut(this);
+
     }
 
     @Override
@@ -115,13 +146,13 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
     @Override
     public void onGetFavouriteMealsSuccess(ArrayList<FavouriteMeal> favouriteMeals) {
         this.favouriteMeals = favouriteMeals;
-        Toast.makeText(context, "done fav", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "done fav", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onGetPlanMealsSuccess(ArrayList<PlanMeal> planMeals) {
         this.planMeals = planMeals;
-        Toast.makeText(context, "done plan", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "done plan", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -130,22 +161,23 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
     }
 
     @Override
-    public void onDownloadDataSuccess() {
-
+    public void onDownloadDataSuccess(ArrayList<FavouriteMeal> favouriteMeals, ArrayList<PlanMeal> planMeals) {
+        Log.d("Kerolos", "onDownloadDataSuccess: " + favouriteMeals.size() + " " + planMeals.size());
+        Toast.makeText(context, "data downloaded", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onDownloadDataFail(String message) {
-
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onPackUpDataSuccess() {
-
+        Toast.makeText(context, "Successfully packed up", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onPackUpDataFail(String message) {
-
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 }

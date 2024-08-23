@@ -1,6 +1,8 @@
 package com.example.warmmeal.model.repository;
 
+import com.example.warmmeal.fragment_profile.view.OnDownloadDataResponse;
 import com.example.warmmeal.fragment_profile.view.OnLogOutResponse;
+import com.example.warmmeal.fragment_profile.view.OnPackUpDataResponse;
 import com.example.warmmeal.login.view.OnLoginResponse;
 import com.example.warmmeal.login_ways.view.OnLoginWithGmailResponse;
 import com.example.warmmeal.login_ways.view.OnSetUserRegisterSateResponse;
@@ -16,6 +18,7 @@ import com.example.warmmeal.signup.view.OnCreatingAccountResponse;
 import com.example.warmmeal.model.contracts.ManagingAccount;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
@@ -72,6 +75,16 @@ public class RepositoryImpl implements Repository{
     @Override
     public void signOutUser(OnLogOutResponse response) {
         managingAccount.signOutUser(response);
+    }
+
+    @Override
+    public void packUpData(ArrayList<FavouriteMeal> favouriteMeals, ArrayList<PlanMeal> planMeals, OnPackUpDataResponse response) {
+        managingAccount.packUpData(favouriteMeals,planMeals,response);
+    }
+
+    @Override
+    public void downloadData(OnDownloadDataResponse response) {
+        managingAccount.downloadData(response);
     }
 
     @Override
