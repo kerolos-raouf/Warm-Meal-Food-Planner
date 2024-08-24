@@ -5,7 +5,7 @@ import com.example.warmmeal.model.pojo.Meals;
 
 public interface IMealScreen {
 
-    void onNetworkCallResponse(ConnectivityObserver.Status status, String message);
+    void onNetworkStateResponse(ConnectivityObserver.Status status, String message);
     void onFail(String message);
     void onGetMealByIdSuccess(Meals meals);
     void onAddMealToPlanSuccess(String day);

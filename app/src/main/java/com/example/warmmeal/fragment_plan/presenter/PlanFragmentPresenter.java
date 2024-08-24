@@ -3,6 +3,7 @@ package com.example.warmmeal.fragment_plan.presenter;
 import android.util.Log;
 
 import com.example.warmmeal.fragment_plan.view.IPlanFragmentView;
+import com.example.warmmeal.model.firebase.FirebaseHandler;
 import com.example.warmmeal.model.pojo.PlanMeal;
 import com.example.warmmeal.model.repository.Repository;
 
@@ -64,6 +65,20 @@ public class PlanFragmentPresenter {
                         (e)-> iPlanFragmentView.onFailure(e.getMessage())
                 ));
     }
+
+
+    public void isFavourite(String mealId)
+    {
+        compositeDisposable.add(repository.isFavouriteMealExists(FirebaseHandler.CURRENT_USER_ID,mealId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        (isFavourite)-> iPlanFragmentView.onGetIsFavouriteSuccess(isFavourite != 0),
+                        (e)-> iPlanFragmentView.onFailure(e.getMessage())
+                ));
+    }
+
+
 
     public void clearCompositeDisposable()
     {

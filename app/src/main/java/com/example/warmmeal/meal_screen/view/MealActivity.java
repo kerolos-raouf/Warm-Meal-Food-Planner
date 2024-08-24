@@ -1,6 +1,8 @@
 package com.example.warmmeal.meal_screen.view;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -38,9 +40,9 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 import java.util.ArrayList;
 
-public class MealActivity extends AppCompatActivity implements IMealScreen, OnAddToFavouriteResponse, OnDeleteFromFavouriteResponse,DayChooserItemOnClickListener {
+public class MealActivity extends AppCompatActivity implements IMealScreen, OnAddToFavouriteResponse, OnDeleteFromFavouriteResponse,DayChooserItemOnClickListener ,CalendarItemClickedListener{
 
-    ImageView mealImage;
+    ImageView mealImage,addToPhoneCalendar;
     TextView mealName;
     TextView mealCountry;
     TextView mealInstructions;
@@ -65,6 +67,11 @@ public class MealActivity extends AppCompatActivity implements IMealScreen, OnAd
     ///day chooer
     DayChooser dayChooser;
 
+    ///calendar chooser
+    CalendarChooser calendarChooser;
+
+    long dateTimeInMilliSeconds;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +82,13 @@ public class MealActivity extends AppCompatActivity implements IMealScreen, OnAd
 
     void init()
     {
+        ///time and calendar chooser
+        calendarChooser = new CalendarChooser(this);
+        dateTimeInMilliSeconds = System.currentTimeMillis();
+
+        ////progress bar
+        customProgressBar = new CustomProgressBar(this);
+
         ///connectivity observer
         connectivityObserver = new ConnectivityObserver(this);
 
@@ -93,6 +107,7 @@ public class MealActivity extends AppCompatActivity implements IMealScreen, OnAd
         addToFavourite = findViewById(R.id.mealScreenAddToFavourite);
         backButton = findViewById(R.id.mealScreenBack);
         addToPlan = findViewById(R.id.mealScreenAddToCalendar);
+        addToPhoneCalendar = findViewById(R.id.addPhoneCalendar);
 
         presenter = MealScreenPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance(this)),this,connectivityObserver);
 
@@ -100,6 +115,7 @@ public class MealActivity extends AppCompatActivity implements IMealScreen, OnAd
 
         if(ConnectivityObserver.InternetStatus == ConnectivityObserver.Status.Available)
         {
+            customProgressBar.startProgressBar();
             presenter.getMealById(mealId,this);
         }else
         {
@@ -151,6 +167,14 @@ public class MealActivity extends AppCompatActivity implements IMealScreen, OnAd
 
         backButton.setOnClickListener((v) -> {
             finish();
+        });
+
+
+        addToPhoneCalendar.setOnClickListener((v) -> {
+            if(currentMeal != null)
+            {
+                calendarChooser.startCalendarChooser(this);
+            }
         });
     }
 
@@ -217,19 +241,26 @@ public class MealActivity extends AppCompatActivity implements IMealScreen, OnAd
     }
 
     @Override
-    public void onNetworkCallResponse(ConnectivityObserver.Status status, String message) {
+    public void onNetworkStateResponse(ConnectivityObserver.Status status, String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        if(status != ConnectivityObserver.Status.Available)
+        {
+            customProgressBar.dismissProgressBar();
+            Toast.makeText(this, "Poor network connection.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onFail(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        customProgressBar.dismissProgressBar();
     }
 
     @Override
     public void onGetMealByIdSuccess(Meals meals) {
         currentMeal = meals.getMeals().get(0);
         setMealData(currentMeal);
+        customProgressBar.dismissProgressBar();
     }
 
     @Override
@@ -307,5 +338,23 @@ public class MealActivity extends AppCompatActivity implements IMealScreen, OnAd
     public void onSundayClicked() {
         presenter.addMealToPlan(new PlanMeal(FirebaseHandler.CURRENT_USER_ID, Day.SUNDAY,currentMeal.getIdMeal(),currentMeal.getStrMeal(),currentMeal.getStrMealThumb()));
         dayChooser.dismiss();
+    }
+
+    /////////set meal item onclick
+    @Override
+    public void onSetMealClicked() {
+        Intent intent = new Intent(Intent.ACTION_INSERT)
+                .setData(CalendarContract.Events.CONTENT_URI)
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, dateTimeInMilliSeconds)
+                .putExtra(CalendarContract.Events.TITLE, currentMeal.getStrMeal())
+                .putExtra(CalendarContract.Events.DESCRIPTION, "Group class")
+                .putExtra(CalendarContract.Events.EVENT_LOCATION, "Eating Time")
+                .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onDateChanged(long currentTime) {
+        dateTimeInMilliSeconds = currentTime;
     }
 }

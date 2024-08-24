@@ -9,6 +9,8 @@ import com.example.warmmeal.model.pojo.PlanMeal;
 import com.example.warmmeal.model.pojo.FavouriteMeal;
 import com.example.warmmeal.model.repository.Repository;
 
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -44,6 +46,7 @@ public class MealScreenPresenter {
     public void getMealById(String mealId, IMealScreen response) {
         compositeDisposable.add(repository.getMealById(mealId)
                 .subscribeOn(Schedulers.io())
+                .timeout(10000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         response::onGetMealByIdSuccess,
@@ -58,6 +61,7 @@ public class MealScreenPresenter {
         {
             compositeDisposable.add(repository.insertFavouriteMeal(favouriteMeal)
                     .subscribeOn(Schedulers.io())
+                    .timeout(10000, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             response::onAddToFavouriteSuccess,
@@ -73,6 +77,7 @@ public class MealScreenPresenter {
         {
             compositeDisposable.add(repository.deleteFavouriteMeal(favouriteMeal)
                     .subscribeOn(Schedulers.io())
+                    .timeout(10000, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             response::onDeleteFromFavouriteSuccess,
@@ -88,6 +93,7 @@ public class MealScreenPresenter {
         if (FirebaseHandler.CURRENT_USER_ID != null) {
             compositeDisposable.add(repository.insertCalenderMeal(planMeal)
                     .subscribeOn(Schedulers.io())
+                    .timeout(10000, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             () -> {iMealScreen.onAddMealToPlanSuccess(planMeal.day.toString());},
@@ -106,19 +112,19 @@ public class MealScreenPresenter {
                             {
                                 case Available:
                                     ConnectivityObserver.InternetStatus = ConnectivityObserver.Status.Available;
-                                    iMealScreen.onNetworkCallResponse(ConnectivityObserver.Status.Available, "Connected");
+                                    iMealScreen.onNetworkStateResponse(ConnectivityObserver.Status.Available, "Connected");
                                     break;
                                 case Unavailable:
                                     ConnectivityObserver.InternetStatus = ConnectivityObserver.Status.Unavailable;
-                                    iMealScreen.onNetworkCallResponse(ConnectivityObserver.Status.Unavailable, "Disconnected");
+                                    iMealScreen.onNetworkStateResponse(ConnectivityObserver.Status.Unavailable, "Disconnected");
                                     break;
                                 case Losing:
                                     ConnectivityObserver.InternetStatus = ConnectivityObserver.Status.Losing;
-                                    iMealScreen.onNetworkCallResponse(ConnectivityObserver.Status.Losing, "Losing Connection");
+                                    iMealScreen.onNetworkStateResponse(ConnectivityObserver.Status.Losing, "Losing Connection");
                                     break;
                                 case Lost:
                                     ConnectivityObserver.InternetStatus = ConnectivityObserver.Status.Lost;
-                                    iMealScreen.onNetworkCallResponse(ConnectivityObserver.Status.Lost, "Connection Lost");
+                                    iMealScreen.onNetworkStateResponse(ConnectivityObserver.Status.Lost, "Connection Lost");
                                     break;
                             }
                         },
