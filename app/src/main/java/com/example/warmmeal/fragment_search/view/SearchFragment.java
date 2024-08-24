@@ -25,6 +25,7 @@ import com.example.warmmeal.fragment_search.presenter.SearchPresenter;
 import com.example.warmmeal.meal_screen.view.MealActivity;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
+import com.example.warmmeal.model.internet_connection.ConnectivityObserver;
 import com.example.warmmeal.model.network.NetworkAPI;
 import com.example.warmmeal.model.pojo.Ingredient;
 import com.example.warmmeal.model.pojo.Ingredients;
@@ -119,19 +120,6 @@ public class SearchFragment extends Fragment implements OnSearchResponse , OnRec
 
     void setUp()
     {
-        /*searchEditText.setOnKeyListener((v, keyCode, event)->{
-            if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER)
-            {
-                doActionOnSearchBegin();
-                return true;
-            }
-            return false;
-        });
-
-        searchEditText.setOnClickListener((v)->{
-            doActionOnSearchBegin();
-        });*/
-
         compositeDisposable.add(Observable.create(emitter -> {
             searchEditText.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -154,6 +142,22 @@ public class SearchFragment extends Fragment implements OnSearchResponse , OnRec
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(searchText -> {doActionOnSearchBegin((String) searchText);}));
+
+        chipMealName.setOnCheckedChangeListener((buttonView, isChecked) -> {
+           doActionOnSearchBegin(searchEditText.getText().toString());
+        });
+
+        chipCategory.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            doActionOnSearchBegin(searchEditText.getText().toString());
+        });
+
+        chipCountry.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            doActionOnSearchBegin(searchEditText.getText().toString());
+        });
+
+        chipIngredient.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            doActionOnSearchBegin(searchEditText.getText().toString());
+        });
 
     }
 
@@ -193,7 +197,7 @@ public class SearchFragment extends Fragment implements OnSearchResponse , OnRec
 
     void doActionOnSearchBegin(String searchText)
     {
-        if(searchEditText != null && !searchText.isEmpty())
+        if(searchEditText != null && !searchText.trim().isEmpty())
         {
             if(chipMealName.isChecked())
             {
@@ -328,8 +332,14 @@ public class SearchFragment extends Fragment implements OnSearchResponse , OnRec
     @Override
     public void onMealClicked(Meal meal) {
 
-        customProgressBar.startProgressBar();
-        Navigator.navigateWithExtra(context, MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal(),HomeFragment.IS_FAVOURITE_KEY,meal.isFavourite());
+        if(ConnectivityObserver.InternetStatus == ConnectivityObserver.Status.Available)
+        {
+            customProgressBar.startProgressBar();
+            Navigator.navigateWithExtra(context, MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal(),HomeFragment.IS_FAVOURITE_KEY,meal.isFavourite());
+        }else
+        {
+            Toast.makeText(context, "Check your internet connection", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -347,8 +357,7 @@ public class SearchFragment extends Fragment implements OnSearchResponse , OnRec
     @Override
     public void onPause() {
         super.onPause();
-        if(customProgressBar.isShowing())
-            customProgressBar.dismissProgressBar();
+        customProgressBar.dismissProgressBar();
     }
 
 }

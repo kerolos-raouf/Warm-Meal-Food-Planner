@@ -16,15 +16,19 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.warmmeal.R;
+import com.example.warmmeal.fragment_home.view.HomeFragment;
 import com.example.warmmeal.fragment_plan.presenter.PlanFragmentPresenter;
+import com.example.warmmeal.meal_screen.view.MealActivity;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
+import com.example.warmmeal.model.internet_connection.ConnectivityObserver;
 import com.example.warmmeal.model.network.NetworkAPI;
 import com.example.warmmeal.model.pojo.PlanMeal;
 import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
 import com.example.warmmeal.model.util.CustomProgressBar;
 import com.example.warmmeal.model.util.Day;
+import com.example.warmmeal.model.util.Navigator;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -178,6 +182,8 @@ public class PlanFragment extends Fragment implements IPlanFragmentView,OnPlanFr
     }
 
 
+
+
     @Override
     public void onGetAllMealsSuccess(List<PlanMeal> meals) {
 
@@ -225,13 +231,40 @@ public class PlanFragment extends Fragment implements IPlanFragmentView,OnPlanFr
         //customProgressBar.dismissProgressBar();
     }
 
+    PlanMeal currentPlanMeal;
     @Override
     public void onMealClicked(PlanMeal meal) {
-        Toast.makeText(getContext(), "meal clicked.", Toast.LENGTH_SHORT).show();
+        if(ConnectivityObserver.InternetStatus == ConnectivityObserver.Status.Available)
+        {
+            customProgressBar.startProgressBar();
+            currentPlanMeal = meal;
+            presenter.isFavourite(meal.mealId);
+        }else
+        {
+            Toast.makeText(getContext(), "Check your internet connection", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onGetIsFavouriteSuccess(boolean isFavourite) {
+
+        Navigator.navigateWithExtra(getContext(), MealActivity.class, HomeFragment.MEAL_KEY,currentPlanMeal.mealId,HomeFragment.IS_FAVOURITE_KEY,isFavourite);
     }
 
     @Override
     public void onDeleteButtonClicked(PlanMeal meal) {
         presenter.deleteMealFromPlan(meal);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        customProgressBar.dismissProgressBar();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenter.clearCompositeDisposable();
     }
 }

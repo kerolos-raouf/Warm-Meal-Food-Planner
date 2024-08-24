@@ -22,11 +22,13 @@ import com.example.warmmeal.fragment_search.view.SearchRecyclerViewAdapter;
 import com.example.warmmeal.meal_screen.view.MealActivity;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
+import com.example.warmmeal.model.internet_connection.ConnectivityObserver;
 import com.example.warmmeal.model.network.NetworkAPI;
 import com.example.warmmeal.model.pojo.FavouriteMeal;
 import com.example.warmmeal.model.pojo.Meal;
 import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
+import com.example.warmmeal.model.util.CustomProgressBar;
 import com.example.warmmeal.model.util.Navigator;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -42,6 +44,8 @@ public class FavouriteFragment extends Fragment implements OnGetFavouriteMealRes
 
     FavouritePresenter presenter;
     SearchRecyclerViewAdapter mAdapter;
+
+    CustomProgressBar customProgressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,6 +63,7 @@ public class FavouriteFragment extends Fragment implements OnGetFavouriteMealRes
 
     void init(View view)
     {
+        customProgressBar = new CustomProgressBar(getActivity());
         recyclerView = view.findViewById(R.id.favouriteRecyclerView);
         noResult = view.findViewById(R.id.favouriteNoResult);
 
@@ -110,7 +115,14 @@ public class FavouriteFragment extends Fragment implements OnGetFavouriteMealRes
 
     @Override
     public void onMealClicked(Meal meal) {
-        Navigator.navigateWithExtra(getContext(), MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal(),HomeFragment.IS_FAVOURITE_KEY,meal.isFavourite());
+        if(ConnectivityObserver.InternetStatus == ConnectivityObserver.Status.Available)
+        {
+            customProgressBar.startProgressBar();
+            Navigator.navigateWithExtra(getContext(), MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal(),HomeFragment.IS_FAVOURITE_KEY,meal.isFavourite());
+        }else
+        {
+            Toast.makeText(getContext(), "Check your internet connection.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -126,5 +138,11 @@ public class FavouriteFragment extends Fragment implements OnGetFavouriteMealRes
     @Override
     public void onDeleteFromFavouriteFailure(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        customProgressBar.dismissProgressBar();
     }
 }

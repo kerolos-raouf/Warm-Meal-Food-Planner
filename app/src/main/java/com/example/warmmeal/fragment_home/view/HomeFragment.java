@@ -216,7 +216,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     public void onGetMealByCharacterForMoreYouLikeSuccess(Meals meals) {
         mealsYouMightLike = (ArrayList<Meal>) meals.getMeals();
         setUpRecyclerViewWithLists();
-        presenter.getAllFavouriteMeals(FirebaseHandler.CURRENT_USER_ID,this);
+        //presenter.getAllFavouriteMeals(FirebaseHandler.CURRENT_USER_ID,this);
 
     }
 
@@ -286,17 +286,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     @Override
     public void onGetFavouriteMealSuccess(List<FavouriteMeal> favouriteMeals) {
-        if(!isFavouriteMealsFetched && FirebaseHandler.CURRENT_USER_ID != null)
-        {
-            FavouriteMeal.getFavouriteMealsList((ArrayList<FavouriteMeal>) favouriteMeals, dailyInspirationMeals);
-            FavouriteMeal.getFavouriteMealsList((ArrayList<FavouriteMeal>) favouriteMeals, mealsYouMightLike);
-            setUpRecyclerViewWithLists();
-            customProgressBar.dismissProgressBar();
-            isFavouriteMealsFetched = true;
-        }
-        else {
-            customProgressBar.dismissProgressBar();
-        }
+        customProgressBar.dismissProgressBar();
     }
 
     @Override

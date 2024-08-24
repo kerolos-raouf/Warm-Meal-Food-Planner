@@ -23,6 +23,9 @@ public class CustomProgressBar {
 
     public void startProgressBar()
     {
+        if(isShowing)
+            return;
+
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         LayoutInflater layoutInflater = activity.getLayoutInflater();

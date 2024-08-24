@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,11 +31,13 @@ import com.example.warmmeal.model.util.ISkipAlertDialog;
 import com.example.warmmeal.model.util.Navigator;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetUserRegisterSateResponse ,IProfileFragment,OnDownloadDataResponse, OnbBackupDataResponse {
 
 
 
+    TextView userName;
     Button packUpButton,downloadButton,logOutButton;
 
     ProfilePresenter presenter;
@@ -68,8 +71,24 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
         packUpButton = view.findViewById(R.id.profilePackUp);
         downloadButton = view.findViewById(R.id.profileDownload);
         logOutButton = view.findViewById(R.id.profileLogOut);
+        userName = view.findViewById(R.id.profileUserName);
         customAlertDialog = new CustomAlertDialog(requireActivity());
         customProgressBar = new CustomProgressBar(requireActivity());
+
+        ///
+        if(FirebaseHandler.getInstance().getCurrentUser() != null)
+        {
+            String[] email = Objects.requireNonNull(FirebaseHandler.getInstance().getCurrentUser().getEmail()).split("@");
+            if(email.length > 0)
+            {
+                userName.setText(email[0]);
+            }
+            else{
+                userName.setText(FirebaseHandler.getInstance().getCurrentUser().getEmail());
+            }
+        }
+
+
 
         presenter = ProfilePresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(view.getContext()), SharedPrefHandler.getInstance(context)),this);
         presenter.getFavouriteMeals();

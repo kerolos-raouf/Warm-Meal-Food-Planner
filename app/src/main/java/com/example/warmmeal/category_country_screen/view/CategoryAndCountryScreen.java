@@ -19,11 +19,13 @@ import com.example.warmmeal.fragment_search.view.SearchRecyclerViewAdapter;
 import com.example.warmmeal.meal_screen.view.MealActivity;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
+import com.example.warmmeal.model.internet_connection.ConnectivityObserver;
 import com.example.warmmeal.model.network.NetworkAPI;
 import com.example.warmmeal.model.pojo.Meal;
 import com.example.warmmeal.model.pojo.Meals;
 import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
+import com.example.warmmeal.model.util.CustomProgressBar;
 import com.example.warmmeal.model.util.Navigator;
 
 import java.util.ArrayList;
@@ -37,6 +39,8 @@ public class CategoryAndCountryScreen extends AppCompatActivity implements OnRec
     //presenter
     CategoryAndCountryPresenter presenter;
     SearchRecyclerViewAdapter mAdapter;
+    ConnectivityObserver connectivityObserver;
+    CustomProgressBar customProgressBar;
 
     String currentText;
     String currentType;
@@ -52,6 +56,8 @@ public class CategoryAndCountryScreen extends AppCompatActivity implements OnRec
     void init()
     {
 
+        connectivityObserver = new ConnectivityObserver(this);
+        customProgressBar = new CustomProgressBar(this);
 
         currentText = getIntent().getStringExtra(HomeFragment.CATEGORY_COUNTRY_KEY);
         currentType = getIntent().getStringExtra(HomeFragment.CATEGORY_COUNTRY_TYPE);
@@ -63,7 +69,7 @@ public class CategoryAndCountryScreen extends AppCompatActivity implements OnRec
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        presenter = CategoryAndCountryPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance(this)));
+        presenter = CategoryAndCountryPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance(this)),connectivityObserver);
 
         if(currentType.equals(Type.CATEGORY.toString()))
         {
@@ -71,6 +77,12 @@ public class CategoryAndCountryScreen extends AppCompatActivity implements OnRec
         }else {
             presenter.getMealsByCountry(currentText,this);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.checkInternetStatus();
     }
 
     void setUp()
@@ -86,7 +98,13 @@ public class CategoryAndCountryScreen extends AppCompatActivity implements OnRec
 
     @Override
     public void onMealClicked(Meal meal) {
-        Navigator.navigateWithExtra(this, MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal(),HomeFragment.IS_FAVOURITE_KEY,meal.isFavourite());
+        if (ConnectivityObserver.InternetStatus == ConnectivityObserver.Status.Available) {
+            customProgressBar.startProgressBar();
+            Navigator.navigateWithExtra(this, MealActivity.class, HomeFragment.MEAL_KEY,meal.getIdMeal(),HomeFragment.IS_FAVOURITE_KEY,meal.isFavourite());
+        }else
+        {
+            Toast.makeText(this, "Check your internet connection", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -103,5 +121,11 @@ public class CategoryAndCountryScreen extends AppCompatActivity implements OnRec
     @Override
     public void onFailure(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        customProgressBar.dismissProgressBar();
     }
 }
