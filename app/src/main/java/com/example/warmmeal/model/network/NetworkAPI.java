@@ -1,22 +1,12 @@
 package com.example.warmmeal.model.network;
 
-import com.example.warmmeal.fragment_home.view.DataPurpose;
-import com.example.warmmeal.fragment_home.view.contracts.OnNetworkCallResponse;
-import com.example.warmmeal.fragment_search.view.ListPurpose;
-import com.example.warmmeal.fragment_search.view.OnGetListsResponse;
-import com.example.warmmeal.fragment_search.view.OnSearchResponse;
-import com.example.warmmeal.meal_screen.view.OnMealScreenResponse;
 import com.example.warmmeal.model.contracts.RemoteDataSource;
 import com.example.warmmeal.model.pojo.Categories;
 import com.example.warmmeal.model.pojo.Ingredients;
 import com.example.warmmeal.model.pojo.Meals;
 
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -45,7 +45,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class FragmentListener extends Fragment implements OnSearchResponse , OnRecyclerViewItemClickedListener,OnGetListsResponse{
+public class SearchFragment extends Fragment implements OnSearchResponse , OnRecyclerViewItemClickedListener,OnGetListsResponse{
 
 
     EditText searchEditText;
@@ -151,6 +151,7 @@ public class FragmentListener extends Fragment implements OnSearchResponse , OnR
             });
         }).subscribeOn(Schedulers.io())
                 .debounce(1000, TimeUnit.MILLISECONDS)
+                .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(searchText -> {doActionOnSearchBegin((String) searchText);}));
 

@@ -14,6 +14,7 @@ public interface LocalDataSource
     Completable insertFavouriteMeal(FavouriteMeal meal);
     Flowable<List<FavouriteMeal>> getAllFavouriteMeals(String userId);
     Completable deleteFavouriteMeal(FavouriteMeal meal);
+    Flowable<Integer> isFavouriteMealExists(String userId, String mealId);
 
     Completable insertCalenderMeal(PlanMeal meal);
     Flowable<List<PlanMeal>> getAllCalenderMeals(String userId );

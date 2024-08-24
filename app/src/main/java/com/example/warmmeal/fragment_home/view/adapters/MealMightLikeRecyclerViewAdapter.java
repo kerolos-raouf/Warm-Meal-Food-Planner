@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.warmmeal.R;
 import com.example.warmmeal.fragment_home.view.contracts.OnNestedRecyclerViewItemClickedListener;
+import com.example.warmmeal.model.firebase.FirebaseHandler;
 import com.example.warmmeal.model.pojo.Meal;
 
 import java.util.ArrayList;
@@ -79,16 +80,15 @@ public class MealMightLikeRecyclerViewAdapter extends RecyclerView.Adapter<MealM
 
 
         holder.addToFavourite.setOnClickListener((e)->{
-            Log.d("Kerolos", "onBindViewHolder: " + currentMeal.isFavourite());
-            if(currentMeal.isFavourite())
+            if(!meals.get(position).isFavourite() && FirebaseHandler.CURRENT_USER_ID != null)
             {
-                holder.addToFavourite.setImageResource(R.drawable.icon_favourite_border);
-                currentMeal.setFavourite(false);
+                holder.addToFavourite.setImageResource(R.drawable.icon_favourite_item);
+                meals.get(position).setFavourite(true);
             }
             else
             {
-                holder.addToFavourite.setImageResource(R.drawable.icon_favourite_item);
-                currentMeal.setFavourite(true);
+                holder.addToFavourite.setImageResource(R.drawable.icon_favourite_border);
+                meals.get(position).setFavourite(false);
             }
             listener.onAddToFavouriteClicked(currentMeal);
         });

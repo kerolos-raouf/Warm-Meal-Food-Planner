@@ -1,8 +1,11 @@
 package com.example.warmmeal.main_screen.view;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.warmmeal.R;
+import com.example.warmmeal.main_screen.presenter.MainScreenPresenter;
+import com.example.warmmeal.model.internet_connection.ConnectivityObserver;
 import com.example.warmmeal.model.network.NetworkAPI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -13,11 +16,20 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-public class MainScreen extends AppCompatActivity {
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
+public class MainScreen extends AppCompatActivity implements IMainScreen {
+
 
     BottomNavigationView navView;
     Toolbar toolbar;
     NavController navController;
+    ConnectivityObserver connectivityObserver;
+
+
+    MainScreenPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +50,8 @@ public class MainScreen extends AppCompatActivity {
 
     void init()
     {
+        connectivityObserver = new ConnectivityObserver(this);
+        presenter = new MainScreenPresenter(connectivityObserver, this);
         navView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.mainToolBar);
         setSupportActionBar(toolbar);
@@ -48,6 +62,11 @@ public class MainScreen extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.checkInternetStatus();
+    }
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -57,6 +76,16 @@ public class MainScreen extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        NetworkAPI.getInstance().clearDisposable();
+        presenter.clearDisposable();
+    }
+
+    @Override
+    public void onNetworkCallResponse(ConnectivityObserver.Status status, String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFail(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

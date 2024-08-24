@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="315dp"
+    android:layout_height="250dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginStart="@dimen/normalMargin"
     android:layout_marginEnd="@dimen/normalMargin"
@@ -63,17 +63,18 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="5dp"
+            android:id="@+id/itemYouMightLikeViewShadow"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="7dp"
             android:background="@drawable/item_cancel_button_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
         <ImageView
             android:id="@+id/itemYouMightLikeViewMealAdd"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_margin="10dp"
             android:src="@drawable/icon_favourite_border"
             app:layout_constraintBottom_toBottomOf="parent"
