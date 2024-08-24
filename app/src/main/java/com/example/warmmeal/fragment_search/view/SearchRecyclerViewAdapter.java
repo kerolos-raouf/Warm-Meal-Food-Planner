@@ -56,6 +56,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
         if(!showFavButton)
         {
             holder.addToFavButton.setVisibility(View.GONE);
+            holder.favShadow.setVisibility(View.GONE);
         }
 
         holder.addToFavButton.setOnClickListener((v) -> {
@@ -92,6 +93,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
         ImageView addToFavButton;
         TextView mealName;
         ImageView mealImage;
+        ImageView favShadow;
 
         public ViewHolder(View view) {
             super(view);
@@ -99,6 +101,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
             addToFavButton = view.findViewById(R.id.itemYouMightLikeViewMealAdd);
             mealName = view.findViewById(R.id.itemYouMightLikeViewMealName);
             mealImage = view.findViewById(R.id.itemYouMightLikeViewMealImage);
+            favShadow = view.findViewById(R.id.itemYouMightLikeViewShadow);
         }
     }
 

@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.example.warmmeal.fragment_search.view.FragmentListener"
+        android:name="com.example.warmmeal.fragment_search.view.SearchFragment"
         android:label="Search"
         tools:layout="@layout/fragment_search" />
 

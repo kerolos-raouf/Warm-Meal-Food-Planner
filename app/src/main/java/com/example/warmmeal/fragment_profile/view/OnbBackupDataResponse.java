@@ -1,8 +1,8 @@
 package com.example.warmmeal.fragment_profile.view;
 
-public interface OnPackUpDataResponse {
+public interface OnbBackupDataResponse {
 
-    void onPackUpDataSuccess();
+    void onPackUpDataSuccess(String message);
     void onPackUpDataFail(String message);
 
 }

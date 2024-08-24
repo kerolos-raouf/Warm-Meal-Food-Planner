@@ -8,15 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.warmmeal.R;
+import com.example.warmmeal.fragment_home.view.HomeFragment;
 import com.example.warmmeal.fragment_home.view.HomeFragmentItem;
 import com.example.warmmeal.fragment_home.view.contracts.OnNestedRecyclerViewItemClickedListener;
 
-import com.example.warmmeal.fragment_search.view.SearchRecyclerViewAdapter;
 import com.example.warmmeal.model.pojo.Meal;
 
 import java.util.ArrayList;
@@ -78,6 +76,19 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
         if (holder instanceof HeaderTextViewHolder) {
             String headerText = (String)items.get(position).getItem();
+            if(headerText.equals(HomeFragment.DAILY_INSPIRATION))
+            {
+                ((HeaderTextViewHolder) holder).headerImage.setImageResource(R.drawable.inspiration);
+            }else if(headerText.equals(HomeFragment.MEALS_YOU_MIGHT_LIKE))
+            {
+                ((HeaderTextViewHolder) holder).headerImage.setImageResource(R.drawable.favourite);
+            }else if(headerText.equals(HomeFragment.CATEGORY))
+            {
+                ((HeaderTextViewHolder) holder).headerImage.setImageResource(R.drawable.category);
+            }else
+            {
+                ((HeaderTextViewHolder) holder).headerImage.setImageResource(R.drawable.country);
+            }
             ((HeaderTextViewHolder) holder).header.setText(headerText);
         }
         else if(holder instanceof CategoryViewHolder) {
@@ -127,9 +138,11 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
     class HeaderTextViewHolder extends BaseViewHolder {
         TextView header;
+        ImageView headerImage;
         public HeaderTextViewHolder(View itemView) {
             super(itemView);
             header = itemView.findViewById(R.id.header_title);
+            headerImage = itemView.findViewById(R.id.header_image);
         }
     }
 

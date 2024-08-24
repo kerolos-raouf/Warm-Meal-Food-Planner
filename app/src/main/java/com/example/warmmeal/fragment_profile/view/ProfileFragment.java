@@ -11,7 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavAction;
 
 import com.example.warmmeal.R;
 import com.example.warmmeal.fragment_profile.presenter.ProfilePresenter;
@@ -25,13 +24,13 @@ import com.example.warmmeal.model.pojo.PlanMeal;
 import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
 import com.example.warmmeal.model.util.CustomAlertDialog;
+import com.example.warmmeal.model.util.CustomProgressBar;
 import com.example.warmmeal.model.util.ISkipAlertDialog;
 import com.example.warmmeal.model.util.Navigator;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
-public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetUserRegisterSateResponse, ISkipAlertDialog ,IProfileFragment,OnDownloadDataResponse,OnPackUpDataResponse{
+public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetUserRegisterSateResponse ,IProfileFragment,OnDownloadDataResponse, OnbBackupDataResponse {
 
 
 
@@ -45,6 +44,8 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
 
     ArrayList<FavouriteMeal> favouriteMeals;
     ArrayList<PlanMeal> planMeals;
+
+    CustomProgressBar customProgressBar;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -67,6 +68,7 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
         downloadButton = view.findViewById(R.id.profileDownload);
         logOutButton = view.findViewById(R.id.profileLogOut);
         customAlertDialog = new CustomAlertDialog(requireActivity());
+        customProgressBar = new CustomProgressBar(requireActivity());
 
         presenter = ProfilePresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(view.getContext()), SharedPrefHandler.getInstance(context)),this);
         presenter.getFavouriteMeals();
@@ -74,16 +76,50 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
     }
     private  void setUp() {
         packUpButton.setOnClickListener((e)->{
+            customAlertDialog.startAlertDialog(new ISkipAlertDialog() {
+                @Override
+                public void onPositiveButtonClick() {
+                    customProgressBar.startProgressBar();
+                    presenter.packUpData(favouriteMeals,planMeals,ProfileFragment.this);
+                }
 
+                @Override
+                public void onNegativeButtonClick() {
+
+                }
+            }, "Backup your data?", "Cancel", "Backup");
         });
 
         downloadButton.setOnClickListener((e)->{
+            customAlertDialog.startAlertDialog(new ISkipAlertDialog() {
+                @Override
+                public void onPositiveButtonClick() {
+                    customProgressBar.startProgressBar();
+                    presenter.downloadData(ProfileFragment.this);
+                }
 
+                @Override
+                public void onNegativeButtonClick() {
+
+                }
+            }, "Download your saved data?", "Cancel", "Download");
         });
 
         logOutButton.setOnClickListener((e)->{
-            customAlertDialog.startAlertDialog(this,"Are you sure you want to log out?","Cancel","Log Out");
+            customAlertDialog.startAlertDialog(new ISkipAlertDialog() {
+                @Override
+                public void onPositiveButtonClick() {
+                    presenter.logOut(ProfileFragment.this);
+                }
+
+                @Override
+                public void onNegativeButtonClick() {
+
+                }
+            }, "Are you sure you want to log out?", "Cancel", "Log Out");
         });
+
+
     }
 
     @Override
@@ -102,26 +138,17 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
         Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onPositiveButtonClick() {
-        presenter.logOut(this);
-    }
-
-    @Override
-    public void onNegativeButtonClick() {
-
-    }
 
     @Override
     public void onGetFavouriteMealsSuccess(ArrayList<FavouriteMeal> favouriteMeals) {
         this.favouriteMeals = favouriteMeals;
-        Toast.makeText(context, "done fav", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "done fav", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onGetPlanMealsSuccess(ArrayList<PlanMeal> planMeals) {
         this.planMeals = planMeals;
-        Toast.makeText(context, "done plan", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "done plan", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -129,23 +156,39 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
 
     }
 
-    @Override
-    public void onDownloadDataSuccess() {
 
+    @Override
+    public void onDownloadFavouritesSuccess(ArrayList<FavouriteMeal> favouriteMeals) {
+        for (FavouriteMeal favouriteMeal : favouriteMeals) {
+            presenter.insertFavouriteMeal(favouriteMeal);
+        }
+        customProgressBar.dismissProgressBar();
+    }
+
+    @Override
+    public void onDownloadPlanMealsSuccess(ArrayList<PlanMeal> planMeals) {
+        for (PlanMeal planMeal : planMeals) {
+            presenter.insertPlanMeal(planMeal);
+        }
+        Toast.makeText(context, "Data was downloaded successfully.", Toast.LENGTH_SHORT).show();
+        customProgressBar.dismissProgressBar();
     }
 
     @Override
     public void onDownloadDataFail(String message) {
-
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        customProgressBar.dismissProgressBar();
     }
 
     @Override
-    public void onPackUpDataSuccess() {
-
+    public void onPackUpDataSuccess(String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        customProgressBar.dismissProgressBar();
     }
 
     @Override
     public void onPackUpDataFail(String message) {
-
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        customProgressBar.dismissProgressBar();
     }
 }

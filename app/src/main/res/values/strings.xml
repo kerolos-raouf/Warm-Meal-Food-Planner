@@ -21,7 +21,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search_for_meal">Search for meal…</string>
-    <string name="pack_up">Pack Up</string>
+    <string name="back_up">Backup your data</string>
     <string name="log_out">Log Out</string>
     <string name="no_result_found">No Result Found.</string>
     <string name="add">+add</string>

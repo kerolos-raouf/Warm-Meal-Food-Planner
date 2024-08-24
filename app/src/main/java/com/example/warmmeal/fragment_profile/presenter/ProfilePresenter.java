@@ -1,8 +1,9 @@
 package com.example.warmmeal.fragment_profile.presenter;
 
 import com.example.warmmeal.fragment_profile.view.IProfileFragment;
+import com.example.warmmeal.fragment_profile.view.OnDownloadDataResponse;
 import com.example.warmmeal.fragment_profile.view.OnLogOutResponse;
-import com.example.warmmeal.fragment_profile.view.OnPackUpDataResponse;
+import com.example.warmmeal.fragment_profile.view.OnbBackupDataResponse;
 import com.example.warmmeal.login_ways.view.OnSetUserRegisterSateResponse;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
 import com.example.warmmeal.model.pojo.FavouriteMeal;
@@ -78,13 +79,45 @@ public class ProfilePresenter {
         }
     }
 
-    public void packUpData(OnPackUpDataResponse response) {
+    public void packUpData(ArrayList<FavouriteMeal> favouriteMeals, ArrayList<PlanMeal> planMeals, OnbBackupDataResponse response) {
         if(FirebaseHandler.CURRENT_USER_ID != null) {
-
+            repository.backupData(favouriteMeals, planMeals, response);
         }else
         {
             response.onPackUpDataFail("User is not logged in.");
         }
     }
+
+    public void downloadData(OnDownloadDataResponse response) {
+        if(FirebaseHandler.CURRENT_USER_ID != null) {
+            repository.downloadData(response);
+        }else
+        {
+            response.onDownloadDataFail("User is not logged in.");
+        }
+    }
+
+    public void insertFavouriteMeal(FavouriteMeal meal) {
+        compositeDisposable.add(repository.insertFavouriteMeal(meal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {},
+                        throwable -> iProfileFragment.onFail(throwable.getMessage())
+                )
+        );
+    }
+
+    public void insertPlanMeal(PlanMeal meal) {
+        compositeDisposable.add(repository.insertCalenderMeal(meal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {},
+                        throwable -> iProfileFragment.onFail(throwable.getMessage())
+                )
+        );
+    }
+
 
 }

@@ -64,7 +64,7 @@
 
                 android:background="@drawable/sign_up_button_background"
                 android:fontFamily="@font/roboto"
-                android:text="@string/pack_up"
+                android:text="@string/back_up"
                 android:textColor="@color/dark_gray"
                 app:backgroundTint="@color/white"
 

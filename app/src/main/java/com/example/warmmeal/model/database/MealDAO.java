@@ -36,4 +36,7 @@ public interface MealDAO {
     @Delete
     Completable deleteCalenderMeal(PlanMeal meal);
 
+    @Query("SELECT COUNT() FROM favouritemeal WHERE userId = :userId and idMeal = :mealId")
+    Flowable<Integer> isFavouriteMealExists(String userId,String mealId);
+
 }
