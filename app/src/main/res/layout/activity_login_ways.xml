@@ -64,7 +64,7 @@
         android:layout_marginEnd="@dimen/normalMargin"
         android:layout_marginStart="@dimen/normalMargin"
         android:layout_marginTop="50dp"
-        android:background="@drawable/sign_up_button_background"
+        android:background="@drawable/login_with_gmail_background"
         android:contentDescription="@string/gmail_login"
         android:src="@drawable/gmail_logo"
         app:layout_constraintEnd_toEndOf="parent"

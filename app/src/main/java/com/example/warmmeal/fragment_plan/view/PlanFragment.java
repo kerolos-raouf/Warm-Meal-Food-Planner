@@ -228,6 +228,7 @@ public class PlanFragment extends Fragment implements IPlanFragmentView,OnPlanFr
     @Override
     public void onFailure(String message) {
         Log.d("Kerolos", "onFailure: " + message);
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         //customProgressBar.dismissProgressBar();
     }
 
