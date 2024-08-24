@@ -18,6 +18,7 @@ import com.example.warmmeal.login_ways.view.LoginWays;
 import com.example.warmmeal.login_ways.view.OnSetUserRegisterSateResponse;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
+import com.example.warmmeal.model.internet_connection.ConnectivityObserver;
 import com.example.warmmeal.model.network.NetworkAPI;
 import com.example.warmmeal.model.pojo.FavouriteMeal;
 import com.example.warmmeal.model.pojo.PlanMeal;
@@ -76,33 +77,47 @@ public class ProfileFragment extends Fragment implements OnLogOutResponse,OnSetU
     }
     private  void setUp() {
         packUpButton.setOnClickListener((e)->{
-            customAlertDialog.startAlertDialog(new ISkipAlertDialog() {
-                @Override
-                public void onPositiveButtonClick() {
-                    customProgressBar.startProgressBar();
-                    presenter.packUpData(favouriteMeals,planMeals,ProfileFragment.this);
-                }
+            if(ConnectivityObserver.InternetStatus == ConnectivityObserver.Status.Available)
+            {
+                customAlertDialog.startAlertDialog(new ISkipAlertDialog() {
+                    @Override
+                    public void onPositiveButtonClick() {
+                        customProgressBar.startProgressBar();
+                        presenter.packUpData(favouriteMeals,planMeals,ProfileFragment.this);
+                    }
 
-                @Override
-                public void onNegativeButtonClick() {
+                    @Override
+                    public void onNegativeButtonClick() {
 
-                }
-            }, "Backup your data?", "Cancel", "Backup");
+                    }
+                }, "Backup your data?", "Cancel", "Backup");
+            }
+            else
+            {
+                Toast.makeText(context, "You lost internet connection.", Toast.LENGTH_SHORT).show();
+            }
+
         });
 
         downloadButton.setOnClickListener((e)->{
-            customAlertDialog.startAlertDialog(new ISkipAlertDialog() {
-                @Override
-                public void onPositiveButtonClick() {
-                    customProgressBar.startProgressBar();
-                    presenter.downloadData(ProfileFragment.this);
-                }
+            if(ConnectivityObserver.InternetStatus == ConnectivityObserver.Status.Available)
+            {
+                customAlertDialog.startAlertDialog(new ISkipAlertDialog() {
+                    @Override
+                    public void onPositiveButtonClick() {
+                        customProgressBar.startProgressBar();
+                        presenter.downloadData(ProfileFragment.this);
+                    }
 
-                @Override
-                public void onNegativeButtonClick() {
+                    @Override
+                    public void onNegativeButtonClick() {
 
-                }
-            }, "Download your saved data?", "Cancel", "Download");
+                    }
+                }, "Download your saved data?", "Cancel", "Download");
+            }else {
+                Toast.makeText(context, "You lost internet connection.", Toast.LENGTH_SHORT).show();
+            }
+
         });
 
         logOutButton.setOnClickListener((e)->{

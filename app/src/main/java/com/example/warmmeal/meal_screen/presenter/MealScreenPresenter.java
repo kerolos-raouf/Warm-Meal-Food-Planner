@@ -106,19 +106,19 @@ public class MealScreenPresenter {
                             {
                                 case Available:
                                     ConnectivityObserver.InternetStatus = ConnectivityObserver.Status.Available;
-                                    iMealScreen.onNetworkCallResponse(ConnectivityObserver.Status.Available, "Connected");
+                                    iMealScreen.onNetworkStateResponse(ConnectivityObserver.Status.Available, "Connected");
                                     break;
                                 case Unavailable:
                                     ConnectivityObserver.InternetStatus = ConnectivityObserver.Status.Unavailable;
-                                    iMealScreen.onNetworkCallResponse(ConnectivityObserver.Status.Unavailable, "Disconnected");
+                                    iMealScreen.onNetworkStateResponse(ConnectivityObserver.Status.Unavailable, "Disconnected");
                                     break;
                                 case Losing:
                                     ConnectivityObserver.InternetStatus = ConnectivityObserver.Status.Losing;
-                                    iMealScreen.onNetworkCallResponse(ConnectivityObserver.Status.Losing, "Losing Connection");
+                                    iMealScreen.onNetworkStateResponse(ConnectivityObserver.Status.Losing, "Losing Connection");
                                     break;
                                 case Lost:
                                     ConnectivityObserver.InternetStatus = ConnectivityObserver.Status.Lost;
-                                    iMealScreen.onNetworkCallResponse(ConnectivityObserver.Status.Lost, "Connection Lost");
+                                    iMealScreen.onNetworkStateResponse(ConnectivityObserver.Status.Lost, "Connection Lost");
                                     break;
                             }
                         },

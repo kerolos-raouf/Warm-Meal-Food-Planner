@@ -75,6 +75,9 @@ public class MealActivity extends AppCompatActivity implements IMealScreen, OnAd
 
     void init()
     {
+        ////progress bar
+        customProgressBar = new CustomProgressBar(this);
+
         ///connectivity observer
         connectivityObserver = new ConnectivityObserver(this);
 
@@ -100,6 +103,7 @@ public class MealActivity extends AppCompatActivity implements IMealScreen, OnAd
 
         if(ConnectivityObserver.InternetStatus == ConnectivityObserver.Status.Available)
         {
+            customProgressBar.startProgressBar();
             presenter.getMealById(mealId,this);
         }else
         {
@@ -217,19 +221,26 @@ public class MealActivity extends AppCompatActivity implements IMealScreen, OnAd
     }
 
     @Override
-    public void onNetworkCallResponse(ConnectivityObserver.Status status, String message) {
+    public void onNetworkStateResponse(ConnectivityObserver.Status status, String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        if(status != ConnectivityObserver.Status.Available)
+        {
+            customProgressBar.dismissProgressBar();
+            Toast.makeText(this, "Poor network connection.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onFail(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        customProgressBar.dismissProgressBar();
     }
 
     @Override
     public void onGetMealByIdSuccess(Meals meals) {
         currentMeal = meals.getMeals().get(0);
         setMealData(currentMeal);
+        customProgressBar.dismissProgressBar();
     }
 
     @Override
