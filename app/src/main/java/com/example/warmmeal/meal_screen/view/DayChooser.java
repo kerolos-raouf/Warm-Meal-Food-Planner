@@ -36,7 +36,7 @@ public class DayChooser {
         builder.setCancelable(true);
 
         Button monday = view.findViewById(R.id.dayChooserMonday);
-        Button tuesday = view.findViewById(R.id.dayChooserTuesday);
+        Button tuesday = view.findViewById(R.id.addToPhoneSetMeal);
         Button wednesday = view.findViewById(R.id.dayChooserWednesday);
         Button thursday = view.findViewById(R.id.dayChooserThursday);
         Button friday = view.findViewById(R.id.dayChooserFriday);

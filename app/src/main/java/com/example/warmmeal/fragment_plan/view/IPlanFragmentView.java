@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface IPlanFragmentView
 {
+    void onGetIsFavouriteSuccess(boolean isFavourite);
     void onGetAllMealsSuccess(List<PlanMeal> meals);
 
     void onDeleteMealSuccess();

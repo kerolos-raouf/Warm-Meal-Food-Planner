@@ -64,7 +64,16 @@ public class HomeFragmentPresenter {
     {
         compositeDisposable.add(repository.getMealsByFirstLetter(letter)
                 .subscribeOn(Schedulers.io())
-                .timeout(10000, TimeUnit.MILLISECONDS)
+                        .map(meals->{
+                            for(Meal meal : meals.getMeals())
+                            {
+                                compositeDisposable.add(repository.isFavouriteMealExists(FirebaseHandler.CURRENT_USER_ID, meal.getIdMeal())
+                                        .subscribeOn(Schedulers.io())
+                                        .subscribe(favourite -> meal.setFavourite(favourite!=0)));
+                            }
+                            return meals;
+                        })
+                .timeout(15000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
 

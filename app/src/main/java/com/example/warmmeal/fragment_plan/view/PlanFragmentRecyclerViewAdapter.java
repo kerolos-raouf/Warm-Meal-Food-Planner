@@ -49,6 +49,7 @@ public class PlanFragmentRecyclerViewAdapter extends RecyclerView.Adapter<PlanFr
 
         holder.mealName.setText(currentMeal.mealName);
         holder.deleteButton.setOnClickListener(view -> listener.onDeleteButtonClicked(currentMeal));
+        holder.mealImage.setOnClickListener(view -> listener.onMealClicked(currentMeal));
     }
 
     @Override

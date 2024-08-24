@@ -1,6 +1,7 @@
 package com.example.warmmeal.category_country_screen.presenter;
 
 import com.example.warmmeal.fragment_search.view.OnSearchResponse;
+import com.example.warmmeal.model.internet_connection.ConnectivityObserver;
 import com.example.warmmeal.model.repository.Repository;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -12,14 +13,17 @@ public class CategoryAndCountryPresenter {
     private Repository repository;
     private static CategoryAndCountryPresenter presenter;
     private final CompositeDisposable compositeDisposable;
-    private CategoryAndCountryPresenter(Repository repository) {
+    ConnectivityObserver connectivityObserver;
+
+    private CategoryAndCountryPresenter(Repository repository,ConnectivityObserver connectivityObserver) {
         this.repository = repository;
         compositeDisposable = new CompositeDisposable();
+        this.connectivityObserver = connectivityObserver;
     }
 
-    public static CategoryAndCountryPresenter getInstance(Repository repository) {
+    public static CategoryAndCountryPresenter getInstance(Repository repository,ConnectivityObserver connectivityObserver) {
         if (presenter == null) {
-            presenter = new CategoryAndCountryPresenter(repository);
+            presenter = new CategoryAndCountryPresenter(repository,connectivityObserver);
         }
         return presenter;
     }
@@ -45,6 +49,34 @@ public class CategoryAndCountryPresenter {
                         throwable -> response.onFailure(throwable.getMessage()
                         )
                 ));
+    }
+
+    public void checkInternetStatus() {
+        compositeDisposable.add(connectivityObserver.observeConnectivity()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        status -> {
+                            switch (status)
+                            {
+                                case Available:
+                                    ConnectivityObserver.InternetStatus = ConnectivityObserver.Status.Available;
+                                    break;
+                                case Unavailable:
+                                    ConnectivityObserver.InternetStatus = ConnectivityObserver.Status.Unavailable;
+                                    break;
+                                case Losing:
+                                    ConnectivityObserver.InternetStatus = ConnectivityObserver.Status.Losing;
+                                    break;
+                                case Lost:
+                                    ConnectivityObserver.InternetStatus = ConnectivityObserver.Status.Lost;
+                                    break;
+                            }
+                        },
+                        throwable -> {
+                        }
+                )
+        );
     }
 
 

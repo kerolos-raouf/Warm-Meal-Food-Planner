@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.warmmeal.R;
 
 import com.example.warmmeal.category_country_screen.view.CategoryAndCountryScreen;
@@ -65,6 +66,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     ////
     RecyclerView recyclerView;
     StackView stackView;
+    LottieAnimationView lottieAnimationView;
 
     ///lists
     ArrayList<Meal> dailyInspirationMeals;
@@ -93,8 +95,6 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
         super.onViewCreated(view, savedInstanceState);
         init(view);
         setUp();
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
-        recyclerView.setLayoutManager(layoutManager);
 
         mAdapter = new HomeRecyclerViewAdapter(getContext(), homeFragmentItems,this);
         recyclerView.setAdapter(mAdapter);
@@ -103,6 +103,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     void init(View view)
     {
+        lottieAnimationView = view.findViewById(R.id.homeLottieAnimation);
         isFavouriteMealsFetched = false;
         customProgressBar = new CustomProgressBar(getActivity());
         customProgressBar.startProgressBar();
@@ -122,6 +123,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
         presenter.getMealsByFirstLetter('b',DataPurpose.MORE_YOU_LIKE,this);
         presenter.getAllCategories(this);
         presenter.getAllCountries(this);
+
 
 
     }
@@ -215,9 +217,8 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     @Override
     public void onGetMealByCharacterForMoreYouLikeSuccess(Meals meals) {
         mealsYouMightLike = (ArrayList<Meal>) meals.getMeals();
-        setUpRecyclerViewWithLists();
-        presenter.getAllFavouriteMeals(FirebaseHandler.CURRENT_USER_ID,this);
 
+        setUpRecyclerViewWithLists();
     }
 
     @Override
@@ -254,6 +255,8 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     @Override
     public void onFailure(String message) {
         Log.d("Kerolos", "Home Fragment onFailure: " + message);
+        lottieAnimationView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
         customProgressBar.dismissProgressBar();
     }
 
@@ -286,17 +289,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     @Override
     public void onGetFavouriteMealSuccess(List<FavouriteMeal> favouriteMeals) {
-        if(!isFavouriteMealsFetched && FirebaseHandler.CURRENT_USER_ID != null)
-        {
-            FavouriteMeal.getFavouriteMealsList((ArrayList<FavouriteMeal>) favouriteMeals, dailyInspirationMeals);
-            FavouriteMeal.getFavouriteMealsList((ArrayList<FavouriteMeal>) favouriteMeals, mealsYouMightLike);
-            setUpRecyclerViewWithLists();
-            customProgressBar.dismissProgressBar();
-            isFavouriteMealsFetched = true;
-        }
-        else {
-            customProgressBar.dismissProgressBar();
-        }
+        customProgressBar.dismissProgressBar();
     }
 
     @Override

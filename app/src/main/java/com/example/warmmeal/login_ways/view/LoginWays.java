@@ -16,6 +16,7 @@ import com.example.warmmeal.login_ways.presenter.LoginWaysPresenter;
 import com.example.warmmeal.main_screen.view.MainScreen;
 import com.example.warmmeal.model.database.DatabaseHandler;
 import com.example.warmmeal.model.firebase.FirebaseHandler;
+import com.example.warmmeal.model.internet_connection.ConnectivityObserver;
 import com.example.warmmeal.model.repository.RepositoryImpl;
 import com.example.warmmeal.model.network.NetworkAPI;
 import com.example.warmmeal.model.shared_pref.SharedPrefHandler;
@@ -31,11 +32,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
-public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResponse, OnSetUserRegisterSateResponse {
+public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResponse, OnSetUserRegisterSateResponse,ILoginWays {
 
     ImageButton gmail;
     Button signUp,skip;
     TextView login;
+
+    ///connectivity observer
+    ConnectivityObserver connectivityObserver;
 
     //google auth
     GoogleSignInClient mGoogleSignInClient;
@@ -50,16 +54,19 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
         setContentView(R.layout.activity_login_ways);
         initViews();
         setUp();
+
+
     }
 
     void initViews()
     {
+        connectivityObserver = new ConnectivityObserver(this);
         progressBar = new CustomProgressBar(LoginWays.this);
         gmail = findViewById(R.id.loginWaysGmail);
         signUp = findViewById(R.id.loginWaysSignUp);
         login = findViewById(R.id.loginWaysLogin);
         skip = findViewById(R.id.loginWaysSkip);
-        presenter = LoginWaysPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance(this)));;
+        presenter = LoginWaysPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(this), SharedPrefHandler.getInstance(this)),connectivityObserver,this);
     }
 
     void setUp()
@@ -167,5 +174,15 @@ public class LoginWays extends AppCompatActivity implements OnLoginWithGmailResp
     @Override
     public void setUserRegisterState() {
         Navigator.navigate(this, MainScreen.class);
+    }
+
+    @Override
+    public void onGetNetWorkState(ConnectivityObserver.Status status, String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFail(String message) {
+
     }
 }
