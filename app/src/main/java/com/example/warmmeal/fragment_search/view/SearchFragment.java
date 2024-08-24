@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.warmmeal.R;
 import com.example.warmmeal.fragment_home.view.HomeFragment;
 import com.example.warmmeal.fragment_search.presenter.SearchPresenter;
@@ -58,6 +59,7 @@ public class SearchFragment extends Fragment implements OnSearchResponse , OnRec
     Chip chipIngredient;
     TextView noResult;
     ImageView searchIcon;
+    LottieAnimationView lottieAnimation;
 
     ////presenter
     SearchPresenter presenter;
@@ -92,6 +94,7 @@ public class SearchFragment extends Fragment implements OnSearchResponse , OnRec
 
     void init(View view)
     {
+        lottieAnimation = view.findViewById(R.id.searchLottieAnimation);
         compositeDisposable = new CompositeDisposable();
         customProgressBar = new CustomProgressBar(getActivity());
         ingredients = new ArrayList<>();
@@ -192,6 +195,9 @@ public class SearchFragment extends Fragment implements OnSearchResponse , OnRec
     public void onFailure(String message) {
         Log.d("Kerolos", "onFailure: " + message);
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        noResult.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
+        lottieAnimation.setVisibility(View.VISIBLE);
     }
 
 

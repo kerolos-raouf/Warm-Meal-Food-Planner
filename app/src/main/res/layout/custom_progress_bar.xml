@@ -6,7 +6,7 @@
     android:padding="20dp"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@color/light_gray"
+    android:background="#00FFFFFF"
     >
 
     <ProgressBar
@@ -19,7 +19,17 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/dark_gray"
         android:indeterminateTintMode="src_atop"
-        android:visibility="visible" />
+        android:visibility="gone" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/customProgressLottie"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_speed="1"
+        app:lottie_rawRes="@raw/loading"
+        />
 
     <TextView
         android:id="@+id/loadingText"
@@ -30,6 +40,7 @@
         android:text="Loading..."
         android:textColor="@color/dark_gray"
         android:textSize="20dp"
+        android:visibility="gone"
         />
 
 </LinearLayout>
