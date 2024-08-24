@@ -48,7 +48,7 @@ public class FavouritePresenter {
                             throwable -> response.onGetFavouriteMealFailure(throwable.getMessage())
                     ));
         }else {
-            response.onGetFavouriteMealFailure("You are not logged in");
+            response.onGetFavouriteMealFailure("You are in the guest mode, Please login first.");
         }
     }
 

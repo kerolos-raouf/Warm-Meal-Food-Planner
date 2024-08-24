@@ -31,6 +31,7 @@
         android:background="@drawable/custom_edit_text"
         android:fontFamily="@font/roboto_normal"
         android:hint="@string/email_hint_text"
+        android:inputType="textEmailAddress"
         android:paddingStart="@dimen/normalMargin"
         android:textColor="@color/dark_gray"
         android:textColorHint="@color/light_gray"

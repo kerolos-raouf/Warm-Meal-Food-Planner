@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.warmmeal.R;
@@ -63,10 +64,12 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     ////
     HomeFragmentPresenter presenter;
 
-    ////
+    ////views
     RecyclerView recyclerView;
     StackView stackView;
     LottieAnimationView lottieAnimationView;
+    SwipeRefreshLayout swipeRefreshLayout;
+
 
     ///lists
     ArrayList<Meal> dailyInspirationMeals;
@@ -103,6 +106,7 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
 
     void init(View view)
     {
+        swipeRefreshLayout = view.findViewById(R.id.homeRefreshView);
         lottieAnimationView = view.findViewById(R.id.homeLottieAnimation);
         isFavouriteMealsFetched = false;
         customProgressBar = new CustomProgressBar(getActivity());
@@ -119,11 +123,8 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
         presenter = HomeFragmentPresenter.getInstance(RepositoryImpl.getInstance(FirebaseHandler.getInstance(), NetworkAPI.getInstance(), DatabaseHandler.getInstance(context), SharedPrefHandler.getInstance(context)),this);
 
         //presenter.getMealsByFirstLetter('a',DataPurpose.INSPIRATION,this);
-        presenter.getRandomMeal();
-        presenter.getMealsByFirstLetter('b',DataPurpose.MORE_YOU_LIKE,this);
-        presenter.getAllCategories(this);
-        presenter.getAllCountries(this);
 
+        doHomeCalls();
 
 
     }
@@ -131,7 +132,21 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     void setUp()
     {
 
+        swipeRefreshLayout.setOnRefreshListener(()->{
+            customProgressBar.startProgressBar();
+            doHomeCalls();
+            swipeRefreshLayout.setRefreshing(false);
+        });
 
+    }
+
+    void doHomeCalls()
+    {
+        dailyInspirationMeals.clear();
+        presenter.getRandomMeal();
+        presenter.getMealsByFirstLetter('b',DataPurpose.MORE_YOU_LIKE,this);
+        presenter.getAllCategories(this);
+        presenter.getAllCountries(this);
     }
 
 
@@ -217,8 +232,9 @@ public class HomeFragment extends Fragment implements OnNestedRecyclerViewItemCl
     @Override
     public void onGetMealByCharacterForMoreYouLikeSuccess(Meals meals) {
         mealsYouMightLike = (ArrayList<Meal>) meals.getMeals();
-
         setUpRecyclerViewWithLists();
+        lottieAnimationView.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
